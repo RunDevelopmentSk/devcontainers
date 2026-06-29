@@ -1,0 +1,7 @@
+# Installed by .devcontainer/devcontainer.json > "postCreateCommand"
+
+pytest-odoo
+pre-commit
+# lint nástroje — verzie zarovnané s .pre-commit-config.yaml (ruff rev) / editorom
+ruff==0.7.4
+pylint==3.3.*

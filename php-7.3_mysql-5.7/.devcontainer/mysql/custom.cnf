@@ -1,0 +1,30 @@
+[mysqld]
+# SQL Mode - vylúčenie problematických módov
+# Vylúčené: ONLY_FULL_GROUP_BY, STRICT_TRANS_TABLES, STRICT_ALL_TABLES
+sql_mode=NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+
+# Character set
+character-set-server=utf8mb4
+collation-server=utf8mb4_unicode_ci
+
+# Performance
+innodb_buffer_pool_size=256M
+innodb_log_file_size=64M
+
+# Zvýšenie max_allowed_packet na 256MB (default je 4MB v MySQL 5.7)
+# Toto je potrebné pre veľké INSERT dotazy pri batch importoch produktov
+max_allowed_packet=256M
+
+# Zvýšenie timeoutov na 1 hodinu (default je 28800s = 8h pre wait_timeout)
+# Toto zabezpečí, že dlhé importy nebudú prerušené kvôli vypršaniu spojenia
+wait_timeout=3600
+interactive_timeout=3600
+
+# Zvýšenie net_read_timeout a net_write_timeout (default je 30s)
+# Toto zabezpečí, že veľké dáta môžu byť prenesené bez timeoutu
+net_read_timeout=300
+net_write_timeout=300
+
+# Zvýšenie connect_timeout (default je 10s)
+connect_timeout=60
+

@@ -1,0 +1,148 @@
+# Pre-commit hooks — automatický lint a formátovanie pri každom commite.
+#
+# Inštalácia (raz po klone, ak používaš devcontainer, tak sa nainštaluje automaticky - viď devcontainer.json > "postCreateCommand"):
+#   pip install pre-commit
+#   pre-commit install
+#
+# Manuálne spustenie pre staged súbory:
+#   pre-commit run
+#
+# Manuálne spustenie pre staged súbory, len hook s daným id alebo aliasom:
+#   pre-commit run prettier
+#
+# Manuálne spustenie pre vymenované súbory:
+#   pre-commit run --files foo.xml bar.py
+#
+# Manuálne spustenie pre všetky zmenené (staged + unstaged) súbory:
+#   pre-commit run --files $(git diff HEAD --name-only)
+#
+# Manuálne spustenie pre všetky súbory:
+#   pre-commit run --all-files
+#
+# Núdzové vypnutie hooks pri komite (neodporúča sa bežne):
+#   git commit --no-verify
+#
+# Ručná aktualizácia hookov na najnovšie verzie:
+#   pre-commit autoupdate
+
+repos:
+    # 1) Základné generic hooks
+    - repo: https://github.com/pre-commit/pre-commit-hooks
+      rev: v5.0.0
+      hooks:
+          - id: trailing-whitespace
+            exclude: '\.md$|\.csv$'
+          - id: end-of-file-fixer
+            exclude: '\.csv$'
+          - id: check-yaml
+          - id: check-json
+            # devcontainer.json je JSONC (JSON with Comments) — komentáre sú platné, ale štandardný JSON parser ich odmieta
+            exclude: '^\.aigiscode/|^\.devcontainer/devcontainer\.json$'
+          - id: check-toml
+          - id: check-merge-conflict
+          - id: check-added-large-files
+            args: ["--maxkb=1024"]
+          - id: mixed-line-ending
+            args: ["--fix=lf"]
+            exclude: '\.bat$|\.cmd$'
+
+    # 2) Ruff (Python) — lint + formátovanie.
+    # `ruff` (lint) beží PRED `ruff-format`, lebo --fix môže meniť kód (napr. poradie
+    # importov). Pravidlá sú v pyproject.toml. Defaultne beží len nad staged súbormi,
+    # takže existujúce issues blokujú iba pri dotknutí daného súboru (postupné čistenie).
+    - repo: https://github.com/astral-sh/ruff-pre-commit
+      rev: v0.7.4
+      hooks:
+          - id: ruff
+            args: [--fix]
+            files: ^extra-addons/
+          - id: ruff-format
+            files: ^extra-addons/
+
+    # 2b) Pylint (Python) — hlboká sémantická analýza, ktorú ruff nerobí (duplicate-code,
+    # used-before-assignment, attribute-defined-outside-init, refactor tipy). Prekryv
+    # s ruff je vypnutý v pyproject.toml ([tool.pylint."messages control"]).
+    # Konfig: pyproject.toml [tool.pylint.*] — pylint ho nájde automaticky.
+    # `language: system` → pylint z devcontainera (vidí Odoo prostredie).
+    - repo: local
+      hooks:
+          - id: pylint
+            name: pylint (odoo addons)
+            entry: pylint
+            language: system
+            types: [python]
+            files: ^extra-addons/
+            # pylint `ignore-paths` sa neuplatní na explicitne predané súbory (pre-commit
+            # vždy predáva cesty), preto migrácie/upgrades vylučujeme priamo tu.
+            exclude: ^extra-addons/.*/(migrations|upgrades)/
+
+    # 3) JSON Schema — GitHub Actions workflows
+    - repo: https://github.com/sirosen/check-jsonschema
+      rev: 0.30.0
+      hooks:
+          - id: check-github-workflows
+
+    # 4) Prettier — formátovanie XML/JS/MD/JSON/YAML/CSS; konfig v .prettierrc.cjs.
+    # repo: local + language: node — plugin @prettier/plugin-xml sa načíta priamo
+    # z .prettierrc.cjs cez require.resolve() (rovnaký prístup ako OCA), takže netreba
+    # wrapper ani --plugin na CLI. mirrors-prettier je archivovaný (deprecated).
+    - repo: local
+      hooks:
+          - id: prettier
+            name: prettier odoo xml views
+            entry: prettier
+            args: [--write, --list-different, --ignore-unknown]
+            language: node
+            additional_dependencies: &prettier_deps
+                - "prettier@3.1.0"
+                - "@prettier/plugin-xml@3.4.2"
+            files: ^extra-addons/.*/(views|data|security|demo)/.*\.xml$
+            exclude: ^extra-addons/.*/views/templates\.xml$
+          - id: prettier
+            name: prettier js static assets
+            entry: prettier
+            args: [--write, --list-different, --ignore-unknown]
+            language: node
+            additional_dependencies: *prettier_deps
+            files: ^extra-addons/.*/static/.*\.js$
+          - id: prettier
+            name: prettier markdown docs
+            alias: prettier-markdown-docs
+            entry: prettier
+            args: [--write, --list-different, --ignore-unknown]
+            language: node
+            additional_dependencies: *prettier_deps
+            files: \.md$
+          - id: prettier
+            name: prettier json/yaml/css (first-party)
+            entry: prettier
+            args: [--write, --list-different, --ignore-unknown]
+            language: node
+            additional_dependencies: *prettier_deps
+            files: ^(extra-addons|vendor-addons|tools|\.github)/.*\.(json|ya?ml|css|scss)$|^[^/]+\.(json|ya?ml)$
+            exclude: ^.*\.min\.(css|js)$
+
+    # 5) OCA odoo-pre-commit-hooks — Odoo-aware linter pre XML a manifesty
+    - repo: https://github.com/OCA/odoo-pre-commit-hooks
+      rev: v0.2.22
+      hooks:
+          - id: oca-checks-odoo-module
+            files: ^extra-addons/.*(\.(csv|xml)$|/__manifest__\.py$|/__openerp__\.py$)
+            args:
+                - --disable=xml-header-wrong, xml-field-numeric-without-eval, xml-deprecated-data-node, xml-create-user-wo-reset-password, file-not-used, xml-field-bool-without-eval, xml-id-position-first, xml-view-dangerous-replace-low-priority, xml-dangerous-qweb-replace-low-priority
+
+default_language_version:
+    python: python3.12
+
+# Hookmi neformátujeme migrácie a upgrade skripty (dynamicky generované)
+exclude: |
+    (?x)^(
+        bak-addons/.*|
+        _local/.*|
+        tests/e2e/.*|
+        \.aigiscode/.*|
+        \.pipeline/.*|
+        screenshots/.*|
+        .*\.min\.js|
+        .*\.min\.css
+    )$

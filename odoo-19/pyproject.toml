@@ -1,0 +1,203 @@
+# Project tool configuration.
+#
+# ruff  — rýchly povrchový lint + formátovač (https://docs.astral.sh/ruff/)
+# pylint — hlboká sémantická analýza; pokrýva to, čo ruff nevie
+#          (duplicate-code, used-before-assignment, attribute-defined-outside-init, …)
+
+[tool.ruff]
+# Odoo má dlhšie riadky — domain expressions, SQL, computed field bodies.
+line-length = 120
+target-version = "py312"
+# pre-commit predáva súbory explicitne; bez force-exclude by ruff ignoroval
+# extend-exclude (migrations/upgrades/e2e by sa aj tak lintovali/formátovali).
+force-exclude = true
+extend-exclude = [
+    "extra-addons/*/migrations",
+    "extra-addons/*/upgrades",
+    "bak-addons",
+    "_local",
+    "tests/e2e",
+    ".aigiscode",
+    ".pipeline",
+    "screenshots",
+]
+
+[tool.ruff.lint]
+# Konzervatívna sada — chceme upgrade-friendly nie revolúciu.
+select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes (unused imports/vars, undefined names)
+    "W",   # pycodestyle warnings
+    "I",   # isort (import order)
+    "B",   # flake8-bugbear (likely bugs)
+    "UP",  # pyupgrade (modern Python idioms)
+    "C4",  # comprehensions
+    "PIE", # misc lints
+    "RUF", # ruff-specific rules
+]
+ignore = [
+    # Odoo specifics ktoré sa nedajú "fixnút":
+    "E501",   # line too long — Odoo domény a long SQL string
+    "B008",   # function call in default arg — Odoo používa fields.Char(default=lambda...)
+    "B904",   # raise ... from err — Odoo UserError nedáva zmysel reťaziť
+    "UP007",  # `Optional[X]` → `X | None` — Odoo bytostne má dict types kde UP007 hluk
+    "UP009",  # `# coding: utf-8` shebang — Odoo legacy v starších moduloch, neprerábame
+    "RUF012", # mutable class attrs — Odoo _columns / fields style
+    # Slovenské reťazce a komentáre — diakritika trigger-uje:
+    "RUF001", # ambiguous unicode in string (false-positive na ž/š/č/ť/...)
+    "RUF002", # ambiguous unicode in docstring
+    "RUF003", # ambiguous unicode in comment
+    # Štýl ktorý nechceme vynucovať:
+    "E731",   # lambda assignment (kvôli onchange/default callbacks)
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Manifest súbory sú dict, nie kód:
+"__manifest__.py" = ["B018", "F401"]
+# Odoo __init__.py musí re-exportovať `controllers`, `models`, atď. — F401 by hlásil "unused":
+"extra-addons/**/__init__.py" = ["F401"]
+# Tests môžu mať dlhé reťazce + assert helpers + fixture re-imports:
+"tests/**/*.py" = ["B011", "F401", "F811"]
+# Migrácie majú dynamicky generovaný kód:
+"**/migrations/**/*.py" = ["F", "E", "B"]
+"**/upgrades/**/*.py" = ["F", "E", "B"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["odoo", "odoo_e2e"]
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
+
+[tool.ruff.format]
+# ruff format je drop-in replacement pre black (rovnaké formátovanie).
+quote-style = "double"
+indent-style = "space"
+docstring-code-format = false
+
+# =============================================================================
+# Pylint — hlboká sémantická analýza
+# Docs: https://pylint.readthedocs.io/en/stable/user_guide/configuration/
+# =============================================================================
+
+[tool.pylint.main]
+# Paralelný beh (0 = automaticky podľa počtu CPU jadier)
+jobs = 0
+# Adresáre, ktoré pylint preskočí
+ignore = [".git", "__pycache__", ".venv", "venv", "build", "dist"]
+ignore-patterns = [
+    "^\\.tox$",
+    "^\\.mypy_cache$",
+    "^\\.pytest_cache$",
+    "^node_modules$",
+    "^__manifest__\\.py$",
+]
+# Migrácie a upgrades sú dynamicky generované — rovnaká logika ako ruff extend-exclude
+ignore-paths = [
+    ".*/migrations/.*",
+    ".*/upgrades/.*",
+]
+# Reporty off — len chyby/warnings (vhodné pre CI aj pre-commit)
+reports = false
+score = false
+# Medzibehová cache výsledkov
+persistent = true
+
+[tool.pylint."messages control"]
+# Odoo je dynamické (fields, env, models…) — Odoo-friendly set vypnutí.
+disable = [
+    # Často zbytočné v Odoo module repos
+    "missing-module-docstring",
+    "missing-class-docstring",
+    "missing-function-docstring",
+    # Odoo metódy musia mať "self" aj keď nepoužité, alebo API diktuje podpis
+    "unused-argument",
+    # Odoo štýl: veľa krátkych názvov (id, ids, cr, uid, ctx)
+    "invalid-name",
+    # Odoo má veľa atribútov/fieldov → false positives
+    "too-few-public-methods",
+    "too-many-public-methods",
+    "too-many-ancestors",
+    # ORM metódy môžu byť veľké (create/write/action_*) — sleduj reviewom, nie pylintom
+    "too-many-locals",
+    "too-many-branches",
+    "too-many-statements",
+    "too-many-arguments",
+    # Odoo niekedy používa broad exceptions (napr. pri integráciách)
+    "broad-exception-caught",
+    # Niektoré verzie pylint sú hyper-prísne na f-string a logging
+    "logging-fstring-interpolation",
+    # Odoo importuje veľa vecí v __init__.py / __manifest__ kontexte
+    "wrong-import-order",
+    # https://pylint.readthedocs.io/en/stable/user_guide/messages/messages_overview.html
+    "line-too-long",
+    # Odoo má import cykly v __init__.py strome
+    "cyclic-import",
+    # Odoo dynamicky vytvára atribúty cez env, fields, atď.
+    "no-member",
+    # Odoo BaseModel má abstraktné metódy, ktoré nie vždy prepisujeme
+    "abstract-method",
+
+    # --- Prekryv s ruff (pyproject.toml select: E,F,W,I,B,UP,C4,PIE) ---
+    # Tieto kontroly robí ruff check — necháme ich výhradne na ňom,
+    # aby sa nezobrazovali dvakrát.
+    "unused-import",                  # ruff F401
+    "unused-variable",                # ruff F841
+    "undefined-variable",             # ruff F821
+    "unused-wildcard-import",         # ruff F405
+    "wildcard-import",                # ruff F403
+    "reimported",                     # ruff F811
+    "dangerous-default-value",        # ruff B006
+    "consider-using-f-string",        # ruff UP032
+    "unnecessary-comprehension",      # ruff C4
+    "unnecessary-pass",               # ruff PIE790
+    "pointless-statement",            # ruff B018
+    "f-string-without-interpolation", # ruff F541
+    "trailing-newlines",              # ruff W391
+    "missing-final-newline",          # ruff W292 / end-of-file-fixer
+    "unnecessary-semicolon",          # ruff E702/E703
+    "bad-indentation",                # ruff E111 + ruff-format
+    "multiple-statements",            # ruff E701
+]
+
+[tool.pylint.typecheck]
+# Kľúč k Odoo 19: modul `odoo` nie je klasický package → analýza importov môže zlyhať.
+ignored-modules = ["odoo"]
+# Toleruj dynamicky generované members (fields.*, api.*, models.*, _ atď.)
+generated-members = [
+    "odoo.*",
+    "openerp.*",
+    "models.*",
+    "fields.*",
+    "api.*",
+]
+
+[tool.pylint.format]
+# Odoo má dlhšie riadky (domény, SQL, long strings) — zhodné s ruff line-length
+max-line-length = 120
+
+[tool.pylint.design]
+max-args = 10
+max-attributes = 20
+max-locals = 25
+max-branches = 20
+max-statements = 80
+
+[tool.pylint.basic]
+# Povolené krátke mená typické pre Odoo / Python
+good-names = ["i", "j", "k", "ex", "pk", "id", "ids", "cr", "uid", "ctx", "env", "_", "x", "y"]
+# Ignoruj "dummy" premenné
+dummy-variables-rgx = "^(_|unused_|dummy_)"
+
+[tool.pylint.similarities]
+# Duplicate-code detekcia — toto je unikátna schopnosť pylintu (ruff to nevie)
+min-similarity-lines = 8
+ignore-imports = true
+ignore-signatures = true
+ignore-comments = true
+ignore-docstrings = true
+
+[tool.pylint.variables]
+# Odoo preklady: '_' je štandard, nech pylint nehlási "undefined"
+additional-builtins = ["_"]
+
+[tool.pylint.logging]
+# Odoo používa logging.getLogger(__name__)
+logging-modules = ["logging"]

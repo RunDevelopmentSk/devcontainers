@@ -1,0 +1,12 @@
+# There are no COPY and ADD commands in .devcontainer/Dockerfile 
+# so .dockerignore file doesn't play a role in optimizing the Docker image build.
+# But still it is a good practice to have defined which folders should be omitted 
+# if the project would be COPY-ed (in future) to Docker image on image build.
+.hg
+.git
+misc
+nbproject
+node_modules
+tmp
+userfiles
+vendor

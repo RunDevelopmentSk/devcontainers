@@ -1,0 +1,113 @@
+{
+    "name": "${localWorkspaceFolderBasename}",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "app",
+    "workspaceFolder": "/var/www/html",
+    "postStartCommand": "bash ./.devcontainer/post-start.sh",
+    "postCreateCommand": "bash ./.devcontainer/post-create.sh",
+    "containerEnv": {
+        "DOCKER_WORKDIR_LOCAL_BASENAME": "${localWorkspaceFolderBasename}"
+    },
+	"forwardPorts": [80, 8000, 4000, 3000, "phpmyadmin:80"],
+	"portsAttributes": {
+		"80": {
+			"label": "web"
+		},
+		"phpmyadmin:80": {
+			"label": "phpmyadmin"
+		},
+		"8000": {
+			"label": "hg serve"
+		},
+		"4000": {
+			"label": "gitbook serve"
+		},
+		"3000": {
+			"label": "npm start"
+		}
+	},
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "mrcrowl.hg",
+                //rblb//"eamodio.gitlens",
+                "mhutchie.git-graph",
+                "bmewburn.vscode-intelephense-client",
+                "xdebug.php-debug",
+                "mrmlnc.vscode-apache",
+                "mrmlnc.vscode-scss",
+                "geddski.macros",
+                "mtxr.sqltools",
+                "mtxr.sqltools-driver-mysql",
+                "davidanson.vscode-markdownlint",
+                "dbaeumer.vscode-eslint",
+                "dsznajder.es7-react-js-snippets",
+                "planbcoding.vscode-react-refactor",
+                "burkeholland.simple-react-snippets",
+                "augment.vscode-augment",
+                "openai.chatgpt",
+                "anthropic.claude-code"
+            ],
+            "settings": {
+                // general settings
+                "window.title": "${dirty}${rootName}${separator}${activeEditorShort}${separator}${profileName}${separator}${appName}",
+                "workbench.editor.openPositioning": "last",
+                "editor.renderWhitespace": "all",
+                "editor.renderControlCharacters": true,
+                "editor.wordWrap": "on",
+                "editor.formatOnSave": false,
+                "editor.wrappingStrategy": "advanced",
+                "terminal.integrated.suggest.enabled": true,
+                "[php]": {
+                  "outline.showVariables": false
+                },
+                "[javascript]": {
+                  "outline.showVariables": false
+                },
+                // - do not verify extensions signature because of bug in Docker for ARM processors on Mac
+                "extensions.verifySignature": false, 
+                "files.exclude": {
+                    "**/_book": true,
+                    "**/.hg": true,
+                    "**/.git": true,
+                    "**/*.orig": true,
+                    "**/export": true,
+                    "**/node_modules": true
+                },
+                "search.useIgnoreFiles": false,
+                "search.exclude": {
+                    "**/_book": true,
+                    "**/.hg": true,
+                    "**/.git": true,
+                    "**/*.orig": true,
+                    "**/build": true,
+                    "**/export": true,
+                    "**/locale/compiled": true,
+                    "**/node_modules": true,
+                    "**/tmp": true,
+                    "**/userfiles": true
+                    // allow search in vendor folder to resolve some problematic dependencies
+                    //"**/vendor": true,
+                },
+                // extensions settings
+                "hg.lineAnnotationEnabled": false,
+                "sqltools.connections": [
+                    {
+                        "mysqlOptions": {
+                            "authProtocol": "default",
+                            "enableSsl": "Disabled"
+                        },
+                        "previewLimit": 50,
+                        "server": "db",
+                        "port": 3306,
+                        "driver": "MySQL",
+                        "name": "Project DB",
+                        "database": "project",
+                        "username": "root",
+                        "password": "root"
+                    }
+                ]
+            }
+        }
+    }
+}

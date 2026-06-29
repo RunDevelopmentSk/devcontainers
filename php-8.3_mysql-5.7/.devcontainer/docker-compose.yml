@@ -1,0 +1,104 @@
+version: '3.7'
+
+services:
+  app:
+    image: developmentrunsk/fajnlamp:8.3
+    # To make it run on ARM processors too.
+    # If image is built as "multiplatform" (docker buildx) then comment this out
+    platform: linux/amd64
+    # Enable an init process and interactive TTY to properly handle signals,
+    # prevent zombie processes, and support interactive shells/tools
+    init: true
+    tty: true
+    stdin_open: true
+    environment:
+      - TZ=${TZ:-Europe/Bratislava}
+      # to make `npm start` hot reload functional (e.g. for React app development)
+      # set the mapped port on host machine
+      - WDS_SOCKET_PORT=${APP_PORT_3000_MAPPING:-50300}
+    # To change these ports an `.env` file with `APP_PORT_XX_MAPPING=YYYYY`
+    # must be created in the .devcontainer folder.
+    ports:
+      - ${APP_PORT_80_MAPPING:-50000}:80
+      # E.g. for `npm start`
+      - ${APP_PORT_3000_MAPPING:-50300}:3000
+      # E.g. for `gitbook serve`
+      - ${APP_PORT_4000_MAPPING:-50400}:4000
+      # E.g. for `hg serve`
+      - ${APP_PORT_8000_MAPPING:-50800}:8000
+    volumes:
+      # Mount project folder (`:cached` improves the performance on Mac and Windows)
+      - ..:/var/www/html:cached
+      # Mount other shared local folders if needed
+      #- ../../perly:/var/www/html/_shared/perly:cached
+      # Mount shared node_modules folder.
+      # If local node_modules folder does not exist, then docker will create it.
+      - ../../node_modules:/var/www/node_modules:cached
+      # Mount local user:
+      # - .hgrc and .gitconfig files to ensure the same user for Mercurial and Git.
+      # - .ssh files to allow Git to use local user SSH key for authentication.
+      # ATTENTION: If this does not work for WINDOWS, then an `.env` file with `HOME=C:\path\to\user\home`
+      # must be created in the .devcontainer folder.
+      - $HOME/.hgrc:/home/developer/.hgrc:ro
+      - $HOME/.gitconfig:/home/developer/.gitconfig:ro
+      - $HOME/.ssh:/home/developer/.ssh:ro
+      # Store image user files placed under preserved folder in named volume
+      - app-developer-preserved:/home/developer/preserved
+      # Store VS Code global storage data (e.g. augment code data) in named volume
+      # to preserve them even after the container is rebuild
+      - app-developer-vscode-global-storage:/home/developer/.vscode-server/data/User/globalStorage
+      # Store Claude Code config/login/settings
+      - app-developer-claude-code:/home/developer/.claude
+      # Store Antigravity / Gemini config/login/settings
+      - app-developer-gemini:/home/developer/.gemini
+      # Store Codex config/login/settings
+      - app-developer-codex:/home/developer/.codex
+      # Store Auggie config/login/settings
+      - app-developer-augment:/home/developer/.augment
+    extra_hosts:
+      # Map host.docker.internal to the host machine so that the app can access it like http://host.docker.internal
+      - "host.docker.internal:host-gateway"
+      # Map my-local-domain to the host machine so that the app can access it like http://my-local-domain
+      #- "my-local-domain:host-gateway"
+    depends_on:
+      - db
+      
+  db:
+    image: mysql:5.7
+    # To make it run on ARM processors too
+    platform: linux/amd64
+    environment:
+      - TZ=${TZ:-Europe/Bratislava}
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=project
+    volumes:
+      - mysql_data:/var/lib/mysql
+      # Custom MySQL configuration
+      - ./mysql/custom.cnf:/etc/mysql/conf.d/custom.cnf
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    # To make it run on ARM processors too
+    platform: linux/amd64
+    environment:
+      - TZ=${TZ:-Europe/Bratislava}
+      - PMA_HOST=db
+      - PMA_PORT=3306
+    # To change these ports an `.env` file with `PHPMYADMIN_PORT_80_MAPPING=YYYYY`
+    # must be created in the .devcontainer folder.
+    ports:
+      - ${PHPMYADMIN_PORT_80_MAPPING:-51000}:80
+    volumes:
+      # Custom PMA session configuration
+      - ./phpmyadmin/session.ini:/usr/local/etc/php/conf.d/session.ini
+    depends_on:
+      - db
+
+volumes:
+  app-developer-preserved:
+  app-developer-vscode-global-storage:
+  app-developer-claude-code:
+  app-developer-gemini:
+  app-developer-codex:
+  app-developer-augment:
+  mysql_data:
