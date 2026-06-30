@@ -11,10 +11,6 @@ Project DB.session.sql
 !/tmp/.gitkeep
 /export/
 *.log
-# AI agent local overrides (per-developer notes/settings, never commit)
-*.local.md
-*.local.json
-*.local.toml
 
 #
 # Debug

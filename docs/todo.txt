@@ -1,4 +1,4 @@
-
+- oddeľ ako doplnok ak `_pre-commit`
 
 ---
 Ako písať todo:
@@ -8,11 +8,11 @@ POZNÁMKY K HLAVNÉMU ZADANIU (~TIKETU) ABC
 *****************************************
 x dorob toto
 - skontroluj hento
-- oprav tam chybu 
+- oprav tam chybu
 - na stránke KLM:
     - skontroluj toto
     x dokonči hento
-    x? ako to mám urobiť? 
+    x? ako to mám urobiť?
         >> Klient povedal že takto...
 - prelož hentamto
 -? tomuto fakt nerozumiem. Ako to mám spraviť?
@@ -39,13 +39,13 @@ x urobená úloha
 -! dôležitá úloha
 x! urobená dôležitá úloha
 -? otázka
-x? zodpovedaná otázka 
+x? zodpovedaná otázka
     >> Odpoveď na otázku
 -?! dôležitá otázka
-x?! zodpovedaná dôležitá otázka 
+x?! zodpovedaná dôležitá otázka
     >> Odpoveď na otázku
--+ úloha ktorá nebola v časovom odhade 
--+! tutti-brutti úloha ktorá nebola v časovom odhade 
+-+ úloha ktorá nebola v časovom odhade
+-+! tutti-brutti úloha ktorá nebola v časovom odhade
 x+ úloha ktorá nebola v časovom odhade no urobila sa
 - úloha s podúlohami
     - podúloha

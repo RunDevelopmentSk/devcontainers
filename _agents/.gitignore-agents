@@ -1,0 +1,9 @@
+##ADD: Add following section to project .gitignore file and then delete this file
+
+#
+# AI agents
+#
+# local overrides (per-developer notes/settings, never commit)
+*.local.md
+*.local.json
+*.local.toml
