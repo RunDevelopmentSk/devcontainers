@@ -1,5 +1,5 @@
 #!/bin/bash
-##ADD:
+##ADD: Add following command:
 #
 #     bash "$(dirname "${BASH_SOURCE[0]}")/post-create-agents.sh"
 #
