@@ -1,4 +1,12 @@
-- oddeľ ako doplnok ak `_pre-commit`
+- oddeľ ako doplnok aj:
+    - `_pre-commit`
+    - `_runtools`
+- zváž nasledovný refactoring podľa toho ako sa to robí oficiálne:
+    - https://chatgpt.com/c/6a27c715-9ab4-83ed-872f-6dbd508d2407
+    - https://chatgpt.com/s/t_6a44bdb1257081918393efe5ce8dbecd
+- augment code
+    x odstráň VS Code rozšírenie
+    - odstráň zmienky o ňom
 
 ---
 Ako písať todo:

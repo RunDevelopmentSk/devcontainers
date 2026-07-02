@@ -44,7 +44,6 @@
                 "dsznajder.es7-react-js-snippets",
                 "planbcoding.vscode-react-refactor",
                 "burkeholland.simple-react-snippets",
-                "augment.vscode-augment",
                 "openai.chatgpt",
                 "anthropic.claude-code"
             ],
@@ -65,7 +64,7 @@
                   "outline.showVariables": false
                 },
                 // - do not verify extensions signature because of bug in Docker for ARM processors on Mac
-                "extensions.verifySignature": false, 
+                "extensions.verifySignature": false,
                 "files.exclude": {
                     "**/_book": true,
                     "**/.hg": true,

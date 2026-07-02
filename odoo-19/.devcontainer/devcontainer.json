@@ -43,7 +43,6 @@
         "geddski.macros",
         "mtxr.sqltools",
         "mtxr.sqltools-driver-pg",
-        "augment.vscode-augment",
         "openai.chatgpt",
         "anthropic.claude-code"
       ],
