@@ -34,7 +34,7 @@ Tam, kde agent štandard `.agents/` + `AGENTS.md` nepodporuje natívne, je to vy
 | `.augment/agents → ../.agents/agents`     | Auggie číta subagentov z `.augment/agents/` (`.md` súbory).                                       |
 | `.codex/agents → ../.agents/agents`       | Codex číta subagentov z `.codex/agents/` (`.toml` súbory).                                        |
 
-Antigravity a Codex nevyžadujú žiadne symlinky pre `AGENTS.md` ani `.agents/skills/` – čítajú ich natívne. Codex vlastné slash commands nepodporuje (zrušené vo verzii 0.117.0 v prospech skills).
+Augment, Antigravity a Codex nevyžadujú žiadne symlinky pre `AGENTS.md` ani `.agents/skills/` – čítajú ich natívne. Codex vlastné slash commands nepodporuje (zrušené vo verzii 0.117.0 v prospech skills).
 
 Príkazy na vytvorenie linkov sú (cesta k linovanému priečinku alebo súboru je vždy uvedená relátivne voči polohe linku):
 
@@ -223,7 +223,7 @@ CLI (`claude`) je v devcontaineri nainštalované **automaticky** pomocou `.devc
 
 Na [platform.claude.com](https://platform.claude.com/) je potrebné vytvoriť si osobný účet. V prípade súkromného použitia si zaplatiť niektorý z plánov. **V prípade pracovného použitia** požiadať o pridanie svojho osobného užívateľa medzi [firemných úžívateľov](https://platform.claude.com/settings/members) (s role `Clade Code` alebo `Developer`).
 
-Pri prihlásení v `claude` > `/login` zvoliť `2. Anthropic Console account · API usage billing` a použiť osobný účet vytvorený na [platform.claude.com](https://platform.claude.com/).
+Pri prihlásení v `claude` > `/login` zvoliť `2. Anthropic Console account · API usage billing`, použiť osobný účet vytvorený na [platform.claude.com](https://platform.claude.com/) a ako organizáciu vybrať "Quantea Technologies" .
 
 Na firemnom účte je možné sledovať [kredity spotrebované jednotlivými užívateľmi](https://platform.claude.com/cost?group_by=key_id).
 

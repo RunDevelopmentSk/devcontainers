@@ -1,6 +1,7 @@
 #!/bin/bash
 ##ADD: Add following command:
 #
+#     # install AI agents
 #     bash "$(dirname "${BASH_SOURCE[0]}")/post-create-agents.sh"
 #
 # at the end of .devcontainer/.post-create.sh
