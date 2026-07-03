@@ -1,12 +1,70 @@
 - oddeľ ako doplnok aj:
     - `_pre-commit`
     - `_runtools`
-- zváž nasledovný refactoring podľa toho ako sa to robí oficiálne:
+- zváž nasledovný refactoring doplnkov podľa toho ako sa to robí oficiálne (feature):
     - https://chatgpt.com/c/6a27c715-9ab4-83ed-872f-6dbd508d2407
     - https://chatgpt.com/s/t_6a44bdb1257081918393efe5ce8dbecd
-- augment code
-    x odstráň VS Code rozšírenie
-    x odstráň zmienky o ňom
+
+        {
+        "name": "${localWorkspaceFolderBasename}",
+        "dockerComposeFile": "docker-compose.yml",
+        "service": "app",
+        "workspaceFolder": "/workspace",
+
+        "features": {
+            "ghcr.io/rundevelopmentsk/devcontainer-features/runtools:latest": {},
+            "ghcr.io/rundevelopmentsk/devcontainer-features/agents:latest": {}
+        },
+
+        "postCreateCommand": "pre-commit install",
+        "shutdownAction": "stopCompose"
+        }
+- _agents:
+    - agent na urobenie code-review pre danú reviziu alebo pre danú vetvu. Nech je možné ho tiež spustiť v móde kedy sa spustí paralélne viacero subagentov a všetky ich pripomienky sa zvážia.
+    - agent na prepis poslednej odpovede alebo chatu do .md súboru
+    - agent na skomprimovanie chatu do .md súboru - pre oovzdanie chatu onému agentovi a tiež pre prípad prekročenia kontextového okna
+    - auggie, ???
+        - odlaď pamätanie si histórie chatov
+    - agy
+        - odlaď commands (workflows)
+    - _agents/docs/ai-agents.md
+        - pridaj link na github repo - že podľa tohto návodu sa to dá pridať do každého projektu
+        - pridaj zoznam toho čo každý zo štyroch agento v podporuje
+        - odsrtáň konkrétnoti, nech je to len všeobecné
+    - pridaj zapracovanie https://github.com/obra/superpowers
+    - odlaď chybu pri inštalácii v `php-8.3_mysql-5.7` devcontaineri u Vinca na iBooku:
+        ```
+        Installing Antigravity CLI...
+        ⠋ Detecting system environment...
+        ✓ Platform detected: linux_amd64
+        ⠋ Querying release repository...
+        ✓ Latest available version: 1.0.16
+        ⠋ Downloading release package...
+        ✓ Download complete and checksum verified.
+        ⠋ Extracting binary from archive...
+        ⠋ Configuring shell environment...
+        [percpu.cc : 345] RAW: rseq syscall failed with errno 38 after membarrier syscall succeeded.
+        I0703 10:24:52.676641  1710 installer.go:27] Running Antigravity CLI setup...
+        I0703 10:24:52.677759  1710 installer.go:147] Appending PATH export to profile /home/developer/.bashrc: export PATH="/home/developer/.local/bin:$PATH"
+        I0703 10:24:52.678267  1710 installer.go:184] Successfully updated shell profile: /home/developer/.bashrc
+        I0703 10:24:52.678314  1710 installer.go:147] Appending PATH export to profile /home/developer/.profile: export PATH="/home/developer/.local/bin:$PATH"
+        I0703 10:24:52.678369  1710 installer.go:184] Successfully updated shell profile: /home/developer/.profile
+        I0703 10:24:52.678459  1710 installer_unix.go:40] PATH verification: ~/.local/bin is correctly configured in active PATH environment.
+
+        ✅ Antigravity CLI installed successfully at /home/developer/.local/bin/agy
+        Run 'agy' to start the CLI
+        [percpu.cc : 345] RAW: rseq syscall failed with errno 38 after membarrier syscall succeeded.
+        Antigravity CLI (agy): 1.0.16 installed
+
+        Installing Auggie CLI...
+
+        added 3 packages in 3s
+        npm warn allow-scripts 1 package has install scripts not yet covered by allowScripts:
+        npm warn allow-scripts   node-pty@1.2.0-beta.14 (install: node scripts/prebuild.js || node-gyp rebuild; postinstall: node scripts/post-install.js)
+        npm warn allow-scripts
+        npm warn allow-scripts Run `npm approve-scripts --allow-scripts-pending` to review, or `npm approve-scripts <pkg>` to allow.
+        Auggie CLI (auggie): 0.32.0 (commit eb99b871) installed
+        ```
 
 ---
 Ako písať todo:
