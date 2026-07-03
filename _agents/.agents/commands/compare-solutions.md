@@ -9,7 +9,7 @@ description: >-
 
 Tenký vstupný bod – **celý postup, CLI tabuľka aj Output Contract sú v
 `.agents/agents/compare-solutions.md`** (needuplikuj ich sem). Command a sub-agent
-majú rovnaký výstup; tento command je vstupný bod pre Claude Code, Augment
+majú rovnaký výstup; tento command je vstupný bod pre Claude Code, Auggie
 a Antigravity. (Codex slash commands nepodporuje – tam vyvolaj priamo sub-agenta
 `compare-solutions`. Antigravity súborových sub-agentov nečíta – riaď sa obsahom
 `.agents/agents/compare-solutions.md`.)

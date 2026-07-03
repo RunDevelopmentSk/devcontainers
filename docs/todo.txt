@@ -6,7 +6,7 @@
     - https://chatgpt.com/s/t_6a44bdb1257081918393efe5ce8dbecd
 - augment code
     x odstráň VS Code rozšírenie
-    - odstráň zmienky o ňom
+    x odstráň zmienky o ňom
 
 ---
 Ako písať todo:

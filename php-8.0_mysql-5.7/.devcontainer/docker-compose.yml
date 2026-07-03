@@ -44,7 +44,7 @@ services:
       - $HOME/.ssh:/home/developer/.ssh:ro
       # Store image user files placed under preserved folder in named volume
       - app-developer-preserved:/home/developer/preserved
-      # Store VS Code global storage data (e.g. augment code data) in named volume
+      # Store VS Code global storage data in named volume
       # to preserve them even after the container is rebuild
       - app-developer-vscode-global-storage:/home/developer/.vscode-server/data/User/globalStorage
       # Store Claude Code config/login/settings
@@ -62,7 +62,7 @@ services:
       #- "my-local-domain:host-gateway"
     depends_on:
       - db
-      
+
   db:
     image: mysql:5.7
     # To make it run on ARM processors too

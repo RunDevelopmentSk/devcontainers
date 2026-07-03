@@ -10,7 +10,7 @@ description: >-
 # add-agent-asset
 
 Skill na bezpečné pridávanie nových agentových artefaktov tak, aby fungovali
-naprieč všetkými agentmi (Augment Code, Claude Code, Antigravity, Codex).
+naprieč všetkými agentmi (Auggie, Claude Code, Antigravity, Codex).
 **Zdroj pravdy je `docs/ai-agents.md`** – tento skill je len procedúra a checklist;
 detaily formátov a symlinkov needuplikuj, odkazuj naň.
 
@@ -39,9 +39,10 @@ Ak nejde o nový typ artefaktu, **nové symlinky netreba** – existujúce v
 ## 3. Kuchárka podľa typu
 
 ### Rule (`.agents/rules/<name>.md`)
-- Kombinovaný frontmatter: `description` + `type:` (Augment:
-  `always_apply|agent_requested|manual`) + `trigger:` (Antigravity:
-  `always_on|glob|model_decision|manual`). Neznáme kľúče každý agent ignoruje.
+- Kombinovaný frontmatter: `description` + `type:` (Auggie:
+  `always_apply|agent_requested`, `manual` CLI preskakuje – funguje len v IDE
+  rozšíreniach) + `trigger:` (Antigravity: `always_on|glob|model_decision|manual`).
+  Neznáme kľúče každý agent ignoruje.
 - Claude Code a Codex nemajú rules priečinok → ak má `always_apply|always_on` rule platiť aj pre nich,
   pridaj `@.agents/rules/<name>.md` import do `AGENTS.md`.
 
@@ -80,7 +81,7 @@ Ak nejde o nový typ artefaktu, **nové symlinky netreba** – existujúce v
 
 Po vytvorení over, že artefakt uvidí každý relevantný agent:
 
-- **Augment Code** – skills natívne z `.agents/skills`; commands/agents/rules cez
+- **Auggie** – skills natívne z `.agents/skills`; commands/agents/rules cez
   `.augment/*` symlinky,
 - **Claude Code** – cez `.claude/*` symlinky; rules len cez `@`-import v `AGENTS.md`,
 - **Antigravity** – `.agents/*` natívne; commands cez symlink `workflows → commands`;

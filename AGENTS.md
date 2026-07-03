@@ -6,7 +6,7 @@ trigger: always_on
 # Inštrukcie pre AI agentov
 
 Tento súbor je **spoločný zdroj pravdy** pre všetkých AI agentov v projekte
-(Augment Code, Claude Code, Antigravity, Codex). Augment Code, Antigravity
+(Auggie, Claude Code, Antigravity, Codex). Auggie, Antigravity
 a Codex ho čítajú natívne.
 
 ## Všeobecný popis

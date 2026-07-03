@@ -2,7 +2,7 @@
 
 V devcontaineri sú dostupní nasledovní programovací AI agenti:
 
-- **Augment Code** (VS Code rozšírenie) a/alebo `auggie` (Auggie CLI)
+- `auggie` (**Augment Code** CLI)
 - **Claude Code** (VS Code rozšírenie) a/alebo `claude` (Claude Code CLI)
 - `agy` (**Antigravity** CLI)
 - **Codex** (VS Code rozšírenie) a/alebo `codex` (Codex CLI)
@@ -25,16 +25,16 @@ Tam, kde agent štandard `.agents/` + `AGENTS.md` nepodporuje natívne, je to vy
 | ----------------------------------------- | ------------------------------------------------------------------------------------------------- |
 | `CLAUDE.md → AGENTS.md`                   | Claude Code číta `CLAUDE.md`.                                                                     |
 | `.claude/skills → ../.agents/skills`      | Claude Code číta skills z `.claude/skills/`.                                                      |
-| `.augment/rules → ../.agents/rules`       | Augment Code číta workspace rules z `.augment/rules/`.                                            |
+| `.augment/rules → ../.agents/rules`       | Auggie číta workspace rules z `.augment/rules/`.                                               |
 | `.mcp.json → .agents/mcp_config.json`     | Claude Code číta MCP konfiguráciu z `.mcp.json` v roote; Antigravity z `.agents/mcp_config.json`. |
-| `.augment/commands → ../.agents/commands` | Augment Code číta slash commands z `.augment/commands/`.                                          |
+| `.augment/commands → ../.agents/commands` | Auggie číta slash commands z `.augment/commands/`.                                             |
 | `.claude/commands → ../.agents/commands`  | Claude Code číta slash commands z `.claude/commands/`.                                            |
 | `.agents/workflows → commands`            | Antigravity číta slash commands z `.agents/workflows/`.                                           |
 | `.claude/agents → ../.agents/agents`      | Claude Code číta subagentov z `.claude/agents/` (`.md` súbory s YAML frontmatterom).              |
 | `.augment/agents → ../.agents/agents`     | Auggie číta subagentov z `.augment/agents/` (`.md` súbory).                                       |
 | `.codex/agents → ../.agents/agents`       | Codex číta subagentov z `.codex/agents/` (`.toml` súbory).                                        |
 
-Antigravity a Codex nevyžadujú žiadne symlinky pre `AGENTS.md` ani `.agents/skills/` – čítajú ich natívne. Codex vlastné slash commands nepodporuje (zrušené vo verzii 0.117.0 v prospech skills).
+Auggie, Antigravity a Codex nevyžadujú žiadne symlinky pre `AGENTS.md` ani `.agents/skills/` – čítajú ich natívne. Codex vlastné slash commands nepodporuje (zrušené vo verzii 0.117.0 v prospech skills).
 
 Príkazy na vytvorenie linkov sú (cesta k linovanému priečinku alebo súboru je vždy uvedená relátivne voči polohe linku):
 
@@ -55,14 +55,14 @@ ln -s ../.agents/agents .codex/agents
 
 Workspace rules sú v `.agents/rules/*.md` (Markdown s voliteľným YAML frontmatterom). Discovery podľa agenta:
 
-| Agent        | Discovery                                                                             |
-| ------------ | ------------------------------------------------------------------------------------- |
-| Antigravity  | natívne číta `.agents/rules/*.md`                                                     |
-| Augment Code | cez symlink `.augment/rules → ../.agents/rules`                                       |
-| Claude Code  | nemá rule priečinok; podľa potreby `@.agents/rules/<file>.md` import z `AGENTS.md`    |
-| Codex        | nemá rules priečinok; podľa potreby `.agents/rules/<file>.md` odvolanie z `AGENTS.md` |
+| Agent       | Discovery                                                                             |
+| ----------- | ------------------------------------------------------------------------------------- |
+| Antigravity | natívne číta `.agents/rules/*.md`                                                     |
+| Auggie  | cez symlink `.augment/rules → ../.agents/rules`                                       |
+| Claude Code | nemá rule priečinok; podľa potreby `@.agents/rules/<file>.md` import z `AGENTS.md`    |
+| Codex       | nemá rules priečinok; podľa potreby `.agents/rules/<file>.md` odvolanie z `AGENTS.md` |
 
-Augment Code a Antigravity používajú **rôzne frontmatter kľúče**, ale každý ignoruje neznáme kľúče – súbory teda fungujú v oboch z jedného umiestnenia. Augment Code rozlišuje `type: always_apply|agent_requested|manual`; Antigravity `trigger: always_on|glob (+ globs:)|model_decision|manual`. Pre `agent_requested` / `model_decision` rozhoduje agent o aktivácii podľa `description:`. Oba frontmatter bloky sa dajú kombinovať v jednom súbore.
+Auggie a Antigravity používajú **rôzne frontmatter kľúče**, ale každý ignoruje neznáme kľúče – súbory teda fungujú v oboch z jedného umiestnenia. Auggie rozlišuje `type: always_apply|agent_requested`; Antigravity `trigger: always_on|glob (+ globs:)|model_decision|manual`. Pre `agent_requested` / `model_decision` rozhoduje agent o aktivácii podľa `description:`. Oba frontmatter bloky sa dajú kombinovať v jednom súbore.
 
 Príklad kompatibilného súboru:
 
@@ -94,20 +94,20 @@ Zdieľaní subagentti sú definovamí v `.agents/agents/`. Keďže Claude Code a
 
 **Antigravity** v súčasnosti nepodporuje súborovo definovaných subagentov (len dynamické vytváranie cez `define_subagent` tool za behu). Ak to Google officiálne zavedie, doplníme.
 
-**Augment Code VS Code extension** má podporu subagentov v Beta – funguje cez rovnaký `.augment/agents/` adresár ako Auggie.
+**Auggie** podporuje subagentov cez rovnaký `.augment/agents/` adresár (dajú sa vytvoriť aj cez wizard `/agents` v interaktívnom režime).
 
 ### Čo zostane agent-špecifické
 
-Nasledujúce súbory a priečinky sa nedajú zjednotiť do `.agents/` ani symlinkovať (rôzne formáty, naming alebo discovery mechanizmy). Detaily ku každej položke sú v sekciách [Augment Code](#augment-code), [Claude Code](#claude-code), [Antigravity](#antigravity) a [Codex](#codex) nižšie.
+Nasledujúce súbory a priečinky sa nedajú zjednotiť do `.agents/` ani symlinkovať (rôzne formáty, naming alebo discovery mechanizmy). Detaily ku každej položke sú v sekciách [Auggie](#auggie), [Claude Code](#claude-code), [Antigravity](#antigravity) a [Codex](#codex) nižšie.
 
 | Agent            | Špecifické artefakty (nepokryté unifikovanou štruktúrou)                                                                                                                                              |
 | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Augment Code** | `.augment/settings.json` (+ `.local`), `.augmentignore`; **MCP cez UI**                                                                                                                               |
+| **Auggie**   | `.augment/settings.json` (+ `.local`), `.augmentignore`; MCP cez `auggie mcp` subpríkazy alebo `--mcp-config`                                                                                          |
 | **Claude Code**  | `CLAUDE.local.md` (privátne, gitignored), `.claude/settings.json` (+ `.local`; permissions/env/hooks)                                                                                                 |
 | **Antigravity**  | `GEMINI.md` (alternatívny workspace context), `.agents/hooks.json` (lifecycle hooks)                                                                                                                  |
 | **Codex**        | `AGENTS.override.md` (per-dir override), `.codex/config.toml` (model/sandbox/MCP/hooks), `.codex/hooks.json`, `.codex/rules/*.rules` (sandbox allow/block), `.agents/plugins/` + `plugins/` (pluginy) |
 
-**MCP**: zdieľaná JSON konfigurácia je v `.agents/mcp_config.json` (Claude Code aj Antigravity cez symlink `.mcp.json` vyššie). Augment Code MCP konfiguruje cez UI. Codex používa TOML – `[mcp_servers]` v `.codex/config.toml` – zdieľanie cez symlink nie je možné.
+**MCP**: zdieľaná JSON konfigurácia je v `.agents/mcp_config.json` (Claude Code aj Antigravity cez symlink `.mcp.json` vyššie). Auggie konfiguruje MCP servery cez `~/.augment/settings.json` (príkazy `auggie mcp add|add-json|list|remove`) alebo ad-hoc `--mcp-config`; zdieľanie cez `.agents/mcp_config.json` nie je priamo možné (iný formát). Codex používa TOML – `[mcp_servers]` v `.codex/config.toml` – zdieľanie cez symlink nie je možné.
 
 **Hooks** (lifecycle interceptory – `PreToolUse`, `PostToolUse`, `Stop` atď.):
 
@@ -126,15 +126,13 @@ JSON schéma hooks je takmer identická medzi Antigravity, Claude Code a Auggie 
   - Nastaviť `git config --global core.symlinks true` - toto stačí urobiť raz globálne, na začiatku.
   - Zapnúť "Settings" (`Win + I`) > "System" > "Advanced" > "For developers" - toto stačí urobiť raz globálne, na začiatku.
 - **Lokálne overrides**: súbory `*.local.md`, `*.local.json`, `*.local.toml` sú v `.gitignore` – použi ich na vlastné poznámky/nastavenia, ktoré nepatria do repa.
-- **Skill formát**: každý skill je adresár `.agents/skills/<name>/SKILL.md` s YAML frontmatterom `name` a `description` (spoločná požiadavka Augmentu, Codexu aj Antigravity).
+- **Skill formát**: každý skill je adresár `.agents/skills/<name>/SKILL.md` s YAML frontmatterom `name` a `description` (spoločná požiadavka Auggie CLI, Codexu aj Antigravity).
 
 Sekcie nižšie popisujú inštaláciu, prihlásenie a tiež všetky konfiguračné možnosti jednotlivých agentov.
 
-## Augment Code
+## Auggie
 
 ### Inštalácia
-
-VS Code rozšírenie je v devcontaineri nainštalované **automaticky** pomocou `.devcontainer/devcontainer.json` > `"customizations"` > `"vscode"` > `"extensions"` > `"augment.vscode-augment"`.
 
 CLI (`auggie`) je v devcontaineri nainštalované **automaticky** pomocou `.devcontainer/post-create.sh` > `# install Auggie CLI (Augment Code)`.
 
@@ -148,27 +146,26 @@ Na firemnom účte je možné sledovať [kredity spotrebované jednotlivými už
 
 ### Konfigurácia
 
-Augment Code je možné konfigurovať nasledovne:
+Auggie je možné konfigurovať nasledovne:
 
-| Súbor / priečinok                 | Na čo slúži                                      | Poznámka                                                                                                                                                                                                               |
-| --------------------------------- | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `.augment/rules/*.md`             | Projektové rules                                 | Rules v `.augment/rules` sú Markdown súbory; vo VS Code môžu byť **always_apply**, **manual**, alebo **agent_requested**. Workspace rules sú určené na commitovanie do repozitára. ([docs.augmentcode.com][augment-1]) |
-| `AGENTS.md`                       | Hierarchické pravidlá                            | Môže byť v roote aj podadresároch; Augment ho pri práci so súborom hľadá v aktuálnom adresári a rodičovských adresároch. ([docs.augmentcode.com][augment-2], [agents.md](https://agents.md/))                          |
+| Súbor / priečinok                 | Na čo slúži                                      | Poznámka                                                                                                                                                                                                           |
+| --------------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `.augment/rules/*.md`             | Projektové rules                                 | Rules v `.augment/rules` sú Markdown súbory; podporované typy sú **always_apply** a **agent_requested**. Workspace rules sú určené na commitovanie do repozitára. ([docs.augmentcode.com][augment-1]) |
+| `AGENTS.md`                       | Hierarchické pravidlá                            | Môže byť v roote aj podadresároch; Auggie ho pri práci so súborom hľadá v aktuálnom adresári a rodičovských adresároch. ([docs.augmentcode.com][augment-2], [agents.md](https://agents.md/))                          |
 | `CLAUDE.md`                       | Hierarchické pravidlá kompatibilné s Claude Code | Funguje podobne ako `AGENTS.md`; iba `AGENTS.md` a `CLAUDE.md` sa objavujú hierarchicky, nie `.augment/rules` v podadresároch. ([docs.augmentcode.com][augment-2])                                                     |
 | `.augment/skills/<name>/SKILL.md` | Skills                                           | Každý skill je vlastný adresár so `SKILL.md`; musí mať YAML frontmatter `name` a `description`. ([docs.augmentcode.com][augment-3])                                                                                    |
-| `.claude/skills/<name>/SKILL.md`  | Skills kompatibilné s Claude Code                | Augment ich vie objaviť ako workspace skills. ([docs.augmentcode.com][augment-3])                                                                                                                                      |
+| `.claude/skills/<name>/SKILL.md`  | Skills kompatibilné s Claude Code                | Auggie ich vie objaviť ako workspace skills. ([docs.augmentcode.com][augment-3])                                                                                                                                       |
 | `.agents/skills/<name>/SKILL.md`  | Štandardný agentskills.io formát                 | Tiež podporované ako workspace skills. ([docs.augmentcode.com][augment-3])                                                                                                                                             |
-| `.augment/commands/*.md`          | Vlastné slash commands                           | Objavia sa v `/` autocomplete menu v chate; napr. `.augment/commands/security-review.md` → `/security-review`. ([docs.augmentcode.com][augment-4])                                                                     |
+| `.augment/commands/*.md`          | Vlastné slash commands                           | Spustia sa cez `/security-review` v interaktívnom režime alebo `auggie command security-review`; napr. `.augment/commands/security-review.md` → `/security-review`. ([docs.augmentcode.com][augment-4])              |
 | `.augment/commands/foo/bar.md`    | Namespaced commands                              | Napr. `.augment/commands/frontend/component.md` → `/frontend:component`. ([docs.augmentcode.com][augment-4])                                                                                                           |
-| `.claude/commands/*.md`           | Claude-compatible commands                       | Augment ich vie použiť ako kompatibilné commands. ([docs.augmentcode.com][augment-4])                                                                                                                                  |
-| `.cursor/commands/*.md`           | Cursor-compatible commands                       | Podporované vo VS Code custom commands lokáciách. ([docs.augmentcode.com][augment-4])                                                                                                                                  |
-| `.augmentignore`                  | Čo sa nemá indexovať                             | Funguje podobne ako `.gitignore`; Augment indexuje workspace okrem súborov z `.gitignore` a `.augmentignore`. Vieš použiť aj `!` na zahrnutie gitignored súborov. ([docs.augmentcode.com][augment-5])                  |
+| `.claude/commands/*.md`           | Claude-compatible commands                       | Auggie ich automaticky rozpozná pre kompatibilitu s existujúcimi Claude Code setupmi. ([docs.augmentcode.com][augment-4])                                                                                              |
+| `.augmentignore`                  | Čo sa nemá indexovať                             | Funguje podobne ako `.gitignore`; Auggie indexuje workspace okrem súborov z `.gitignore` a `.augmentignore`. Vieš použiť aj `!` na zahrnutie gitignored súborov. ([docs.augmentcode.com][augment-5])                   |
 
-[augment-1]: https://docs.augmentcode.com/setup-augment/guidelines "Rules & Guidelines for Agent and Chat - Augment"
-[augment-2]: https://docs.augmentcode.com/cli/rules "Rules & Guidelines - Augment"
-[augment-3]: https://docs.augmentcode.com/using-augment/skills "Skills - Augment"
-[augment-4]: https://docs.augmentcode.com/using-augment/custom-commands "Custom Commands - Augment"
-[augment-5]: https://docs.augmentcode.com/setup-augment/workspace-indexing "Index your workspace - Augment"
+[augment-1]: https://docs.augmentcode.com/cli/rules "Rules & Guidelines - Auggie"
+[augment-2]: https://docs.augmentcode.com/cli/rules "Rules & Guidelines - Auggie"
+[augment-3]: https://docs.augmentcode.com/cli/skills "Skills - Auggie CLI"
+[augment-4]: https://docs.augmentcode.com/cli/custom-commands "Custom Commands - Auggie"
+[augment-5]: https://docs.augmentcode.com/cli/setup-auggie/workspace-indexing "Workspace indexing - Auggie"
 
 V adresárovej štrukúre to vyzerá nasledovne:
 
@@ -205,10 +202,6 @@ repo/
     skills/
       some-standard-skill/
         SKILL.md
-
-  .cursor/
-    commands/
-      some-cursor-compatible-command.md
 ```
 
 ## Claude Code
@@ -223,7 +216,7 @@ CLI (`claude`) je v devcontaineri nainštalované **automaticky** pomocou `.devc
 
 Na [platform.claude.com](https://platform.claude.com/) je potrebné vytvoriť si osobný účet. V prípade súkromného použitia si zaplatiť niektorý z plánov. **V prípade pracovného použitia** požiadať o pridanie svojho osobného užívateľa medzi [firemných úžívateľov](https://platform.claude.com/settings/members) (s role `Clade Code` alebo `Developer`).
 
-Pri prihlásení v `claude` > `/login` zvoliť `2. Anthropic Console account · API usage billing` a použiť osobný účet vytvorený na [platform.claude.com](https://platform.claude.com/).
+Pri prihlásení v `claude` > `/login` zvoliť `2. Anthropic Console account · API usage billing`, použiť osobný účet vytvorený na [platform.claude.com](https://platform.claude.com/) a ako organizáciu vybrať "Quantea Technologies" .
 
 Na firemnom účte je možné sledovať [kredity spotrebované jednotlivými užívateľmi](https://platform.claude.com/cost?group_by=key_id).
 
