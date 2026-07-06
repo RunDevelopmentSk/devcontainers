@@ -164,7 +164,14 @@ Príkazy ("slash commands") na bežnú prácu s `auggie` CLI sú:
 
 Pozri si tiež pridané príkazy v `.agents/commands` a zručnosti v `.agents/skills`.
 
-Ak nefunguje "Home" a "End" klávesa tak použi "CTRL SHIFT A" a "CTRL SHIFT E".
+Klávesové skratky:
+- začiatok riadku: `Ctrl Shift A`
+- koniec riadku: `Ctrl Shift E`
+- posun o slovo späť: `Alt B`
+- posun o slovo dopredu: `Alt F`
+- zmazať od kurzora po začiatok riadku: `Ctrl U`
+- zmazať od kurzora po koniec riadku: `Ctrl Shift K`
+- zmazať predchádzajúce slovo: `Ctrl W`
 
 ### Konfigurácia
 
