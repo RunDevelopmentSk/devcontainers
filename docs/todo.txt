@@ -1,4 +1,12 @@
-- codex, claude - pridaj príkaz na nastavenie sutomatikého behu
+- zapracuj agentické toolkity:
+    x https://github.com/github/spec-kit
+        - pridaj ešte sekciu do docs/ai-agents.md
+    - https://github.com/garrytan/gstack
+    - https://github.com/obra/superpowers
+    -? https://github.com/bmad-code-org/bmad-method
+    -? https://github.com/Fission-AI/openspec
+    -? https://github.com/open-gsd/gsd-core
+
 - oddeľ ako doplnok aj:
     - `_pre-commit`
     - `_runtools`
