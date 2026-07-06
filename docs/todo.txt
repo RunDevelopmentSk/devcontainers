@@ -21,16 +21,13 @@
         }
 - _agents:
     - agent na urobenie code-review pre danú reviziu alebo pre danú vetvu. Nech je možné ho tiež spustiť v móde kedy sa spustí paralélne viacero subagentov a všetky ich pripomienky sa zvážia.
-    - agent na prepis poslednej odpovede alebo chatu do .md súboru
+    x agent na prepis poslednej odpovede alebo chatu do .md súboru
+        - upravho tak aby sa to dalo urobiť z iného chatu (na základe response id)
     - agent na skomprimovanie chatu do .md súboru - pre oovzdanie chatu onému agentovi a tiež pre prípad prekročenia kontextového okna
-    - auggie, ???
-        - odlaď pamätanie si histórie chatov
-    - agy
-        - odlaď commands (workflows)
+        - upravho tak aby sa to dalo urobiť z iného chatu (na základe response id)
     - _agents/docs/ai-agents.md
-        - pridaj link na github repo - že podľa tohto návodu sa to dá pridať do každého projektu
         - pridaj zoznam toho čo každý zo štyroch agento v podporuje
-        - odsrtáň konkrétnoti, nech je to len všeobecné
+        - odstráň konkrétnoti, nech je to len všeobecné
     - pridaj zapracovanie https://github.com/obra/superpowers
     - odlaď chybu pri inštalácii v `php-8.3_mysql-5.7` devcontaineri u Vinca na iBooku:
         ```

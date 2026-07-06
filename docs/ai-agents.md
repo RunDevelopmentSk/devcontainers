@@ -7,6 +7,8 @@ V devcontaineri sú dostupní nasledovní programovací AI agenti:
 - `agy` (**Antigravity** CLI)
 - **Codex** (VS Code rozšírenie) a/alebo `codex` (Codex CLI)
 
+Aktuálnu verziu si môžeš do daného projektu stiahnúť z [github.com/RunDevelopmentSk/devcontainers](https://github.com/RunDevelopmentSk/devcontainers) > `_agents`.
+
 Detaily použitia jednotlivých AI agentov sú popísané tu nižšie.
 
 ## Unifikovaná konfigurácia (`.agents/` + `AGENTS.md`)
@@ -144,6 +146,24 @@ Pri prihlásení v `auggie` použiť osobný účet vytvorený na [app.augmentc
 
 Na firemnom účte je možné sledovať [kredity spotrebované jednotlivými užívateľmi](https://app.augmentcode.com/account/analytics).
 
+### Príkazy
+
+Príkazy ("slash commands") na bežnú prácu s `auggie` CLI sú:
+
+- **výber modelu:** `/model`
+- **výber konverzácie:** `/sessions`, tu je možné konverzácie aj mazať
+- **nová konverzácia:** `/new`
+- **premenovanie konverzácie:** `/rename <name>`
+- **uloženie konverzácie:** ukladá automaticky
+- **kompresia konverzácie:** nemá vstavaný príkaz
+- **vytvorenie kópie konverzácie:** `/fork`
+- **kopírovanie poslednej odpovede:** `/copy`
+- **uloženie/prepis konverzácie do súboru:** nemá vstavaný príkaz, no je možné použiť pridaný príkaz `/save-chat`, pred spustením `/save-chat` je vhodné vytvoriť kópiu konverzácie pomocou `/fork`, aby história pôvodnej konverzácie ostala nedotknutá
+- **code-review:** nemá vstavaný príkaz
+- **ukončenie práce:** `/exit`
+
+Pozri si tiež pridané príkazy v `.agents/commands` a zručnosti v `.agents/skills`.
+
 ### Konfigurácia
 
 Auggie je možné konfigurovať nasledovne:
@@ -219,6 +239,24 @@ Na [platform.claude.com](https://platform.claude.com/) je potrebné vytvoriť si
 Pri prihlásení v `claude` > `/login` zvoliť `2. Anthropic Console account · API usage billing`, použiť osobný účet vytvorený na [platform.claude.com](https://platform.claude.com/) a ako organizáciu vybrať "Quantea Technologies" .
 
 Na firemnom účte je možné sledovať [kredity spotrebované jednotlivými užívateľmi](https://platform.claude.com/cost?group_by=key_id).
+
+### Príkazy
+
+Príkazy ("slash commands") na bežnú prácu s `claude` CLI sú:
+
+- **výber modelu:** `/model`
+- **výber konverzácie:** `/resume`
+- **nová konverzácia:** `/clear`
+- **premenovanie konverzácie:** `/rename`
+- **uloženie konverzácie:** ukladá automaticky
+- **kompresia konverzácie:** `/compact`
+- **vytvorenie kópie konverzácie:** `/fork`
+- **kopírovanie poslednej odpovede:** `/copy`, `/copy [N]` na výber konkrétnej odpovede
+- **uloženie/prepis konverzácie do súboru:** `/export`
+- **code-review:** `/code-review`
+- **ukončenie práce:** `/exit`
+
+Pozri si tiež pridané príkazy v `.agents/commands` a zručnosti v `.agents/skills`.
 
 ### Konfigurácia
 
@@ -302,6 +340,24 @@ Pre google účet, ktorý sa rozhodneš použiť ako firemný účet, je potrebn
 - [Pridať mu billing account](https://console.cloud.google.com/billing), napr. `Run billing`.
 - Povoliť `Agent platform API`: [konzola](https://console.cloud.google.com/apis/dashboard?cloudshell=true) (ikona `|>_|` vpravo hore) > `gcloud services enable aiplatform.googleapis.com`
 
+### Príkazy
+
+Príkazy ("slash commands") na bežnú prácu s `agy` CLI sú:
+
+- **výber modelu:** `/model`
+- **výber konverzácie:** `/resume`
+- **nová konverzácia:** `/clear`
+- **premenovanie konverzácie:** `/rename`
+- **uloženie konverzácie:** ukladá automaticky
+- **kompresia konverzácie:** nemá vstavaný príkaz
+- **vytvorenie kópie konverzácie:** `/fork`
+- **kopírovanie poslednej odpovede:** `/copy`
+- **uloženie/prepis konverzácie do súboru:** nemá vstavaný príkaz, no je možné použiť pridaný príkaz `/save-chat`, pred spustením `/save-chat` je vhodné vytvoriť kópiu konverzácie pomocou `/fork`, aby história pôvodnej konverzácie ostala nedotknutá
+- **code-review:** nemá vstavaný príkaz
+- **ukončenie práce:** `/exit`
+
+Pozri si tiež pridané príkazy v `.agents/commands` a zručnosti v `.agents/skills`.
+
 ### Konfigurácia
 
 Antigravity je možné konfigurovať nasledovne:
@@ -371,6 +427,24 @@ Na [chatgpt.com](https://chatgpt.com/) je potrebné vytvoriť si osobný účet.
 Pri prihlásení v `codex` zvoliť `1. Sign in with ChatGPT` (pripadne `2. Sign in with Device Code` ak prvá možnosť nefunguje), použiť osobný účet vytvorený na [chatgpt.com](https://chatgpt.com/) a pri prihlásení v prehliadači vybrať `Run Development's Workspace`.
 
 Na firemnom účte je možné sledovať [kredity spotrebované jednotlivými užívateľmi](https://chatgpt.com/admin/usage).
+
+### Príkazy
+
+Príkazy ("slash commands") na bežnú prácu s `codex` CLI sú:
+
+- **výber modelu:** `/model`
+- **výber konverzácie:** `/resume`
+- **nová konverzácia:** `/new`, `/clear`
+- **premenovanie konverzácie:** `/rename`
+- **uloženie konverzácie:** ukladá automaticky
+- **kompresia konverzácie:** `/compact`
+- **vytvorenie kópie konverzácie:** `/fork`
+- **kopírovanie poslednej odpovede:** `/copy`
+- **uloženie/prepis konverzácie do súboru:** nemá vstavaný príkaz, no je možné použiť pridaný príkaz `/save-chat`, pred spustením `/save-chat` je vhodné vytvoriť kópiu konverzácie pomocou `/fork`, aby história pôvodnej konverzácie ostala nedotknutá
+- **code-review:** nemá vstavaný príkaz
+- **ukončenie práce:** `/exit`
+
+Pozri si tiež pridané zručnosti v `.agents/skills`. Pridané príkazy v `.agents/commands` nie sú podporované v `codex` CLI.
 
 ### Konfigurácia
 
