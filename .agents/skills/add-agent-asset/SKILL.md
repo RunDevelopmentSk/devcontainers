@@ -69,7 +69,6 @@ Ak nejde o nový typ artefaktu, **nové symlinky netreba** – existujúce v
 
 ## 4. Synchronizácia dokumentácie a registrov (DoD)
 
-- nový **subagent** → doplň riadok do tabuľky subagentov v `docs/ai-agents.md`,
 - nový **always-apply rule** → doplň do zoznamu „Vždy platné prierezové pravidlá"
   v `AGENTS.md` a pridaj `@`-import,
 - **nový typ artefaktu/agenta vyžadujúci nový symlink** → doplň riadok do tabuľky

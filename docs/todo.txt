@@ -25,9 +25,6 @@
         - upravho tak aby sa to dalo urobiť z iného chatu (na základe response id)
     - agent na skomprimovanie chatu do .md súboru - pre oovzdanie chatu onému agentovi a tiež pre prípad prekročenia kontextového okna
         - upravho tak aby sa to dalo urobiť z iného chatu (na základe response id)
-    - _agents/docs/ai-agents.md
-        - pridaj zoznam toho čo každý zo štyroch agento v podporuje
-        - odstráň konkrétnoti, nech je to len všeobecné
     - pridaj zapracovanie https://github.com/obra/superpowers
     - odlaď chybu pri inštalácii v `php-8.3_mysql-5.7` devcontaineri u Vinca na iBooku:
         ```

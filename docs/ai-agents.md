@@ -15,30 +15,34 @@ Detaily použitia jednotlivých AI agentov sú popísané tu nižšie.
 
 Pre všetkých agentov sa používa **jeden zdroj pravdy** pre projektové inštrukcie, workspace rules a skills naprieč všetkými agentmi:
 
-- [`AGENTS.md`](../AGENTS.md) v koreňovom adresári – hlavné projektové inštrukcie v štandardnom [agents.md](https://agents.md/) formáte.
-- [`.agents/rules/`](../.agents/rules/) – modulárne workspace pravidlá.
-- [`.agents/skills/`](../.agents/skills/) – cross-tool skills v štandardnom [agentskills.io](https://agentskills.io/) formáte.
-- [`.agents/commands/`](../.agents/commands/) – custom slash commands zdieľané naprieč agentmi; každý súbor `<name>.md` vytvára `/name` command.
-- [`.agents/agents/`](../.agents/agents/) – subagenti zdieľaní naprieč agentmi; `.md` pre Claude Code a Auggie, `.toml` pre Codex (každý agent si zoberie formát, ktorý pozná).
+- [`AGENTS.md`](../AGENTS.md) v koreňovom adresári – hlavné projektové inštrukcie v štandardnom [agents.md](https://agents.md/) formáte. Akceptujú:
+    - `auggie`
+    - `claude` (symlink `CLAUDE.md`)
+    - `agy`
+    - `codex`
+- [`.agents/rules/`](../.agents/rules/) – modulárne workspace pravidlá. Akceptujú:
+    - `auggie` (symlink `.augment/rules`)
+    - `claude` (odkaz v `AGENTS.md`)
+    - `agy`
+    - `codex` (odkaz v `AGENTS.md`)
+- [`.agents/skills/`](../.agents/skills/) – cross-tool skills v štandardnom [agentskills.io](https://agentskills.io/) formáte. Akceptujú:
+    - `auggie`
+    - `claude` (symlink `.claude/skills`)
+    - `agy`
+    - `codex`
+- [`.agents/commands/`](../.agents/commands/) – custom slash commands zdieľané naprieč agentmi; každý súbor `<name>.md` vytvára `/name` command. Akceptujú:
+    - `auggie` (symlink `.augment/commands`)
+    - `claude` (symlink `.claude/commands`)
+    - `agy` (symlink `.agents/workflows`)
+- [`.agents/agents/`](../.agents/agents/) – subagenti zdieľaní naprieč agentmi. Akceptujú:
+    - `auggie` (symlink `.augment/agents`), formát `.md`
+    - `claude` (symlink `.claude/agents`), formát `.md`
+    - `codex` (symlink `.codex/agents`), formát `toml`
+- [`.agents/mcp_config.json`](../.agents/mcp_config.json) – zdieľaná JSON konfigurácia MCP serverov. Akceptujú:
+    - `agy`
+    - `claude` (symlink `.mcp.json`)
 
-Tam, kde agent štandard `.agents/` + `AGENTS.md` nepodporuje natívne, je to vyriešené **symbolickými linkmi commitnutými do repa**:
-
-| Symlink                                   | Dôvod                                                                                             |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| `CLAUDE.md → AGENTS.md`                   | Claude Code číta `CLAUDE.md`.                                                                     |
-| `.claude/skills → ../.agents/skills`      | Claude Code číta skills z `.claude/skills/`.                                                      |
-| `.augment/rules → ../.agents/rules`       | Auggie číta workspace rules z `.augment/rules/`.                                               |
-| `.mcp.json → .agents/mcp_config.json`     | Claude Code číta MCP konfiguráciu z `.mcp.json` v roote; Antigravity z `.agents/mcp_config.json`. |
-| `.augment/commands → ../.agents/commands` | Auggie číta slash commands z `.augment/commands/`.                                             |
-| `.claude/commands → ../.agents/commands`  | Claude Code číta slash commands z `.claude/commands/`.                                            |
-| `.agents/workflows → commands`            | Antigravity číta slash commands z `.agents/workflows/`.                                           |
-| `.claude/agents → ../.agents/agents`      | Claude Code číta subagentov z `.claude/agents/` (`.md` súbory s YAML frontmatterom).              |
-| `.augment/agents → ../.agents/agents`     | Auggie číta subagentov z `.augment/agents/` (`.md` súbory).                                       |
-| `.codex/agents → ../.agents/agents`       | Codex číta subagentov z `.codex/agents/` (`.toml` súbory).                                        |
-
-Auggie, Antigravity a Codex nevyžadujú žiadne symlinky pre `AGENTS.md` ani `.agents/skills/` – čítajú ich natívne. Codex vlastné slash commands nepodporuje (zrušené vo verzii 0.117.0 v prospech skills).
-
-Príkazy na vytvorenie linkov sú (cesta k linovanému priečinku alebo súboru je vždy uvedená relátivne voči polohe linku):
+Príkazy na vytvorenie symbolických linkov sú (cesta k linkovanému priečinku alebo súboru je vždy uvedená relátivne voči polohe linku):
 
 ```sh
 ln -s AGENTS.md CLAUDE.md
@@ -70,24 +74,20 @@ Príklad kompatibilného súboru:
 
 ```markdown
 ---
-description: Odoo ORM a Python konvencie pre extra-addons
+description: Krátky popis, kedy má agent toto pravidlo zohľadniť
 type: agent_requested
 trigger: model_decision
 ---
 
-# Odoo ORM konvencie
+# Názov pravidla
 
-- Polia rozširovaných modelov pridávaj cez `_inherit`, nie cez override.
+- Konkrétne pravidlo alebo konvencia.
 - …
 ```
 
 ### Subagenti
 
-Zdieľaní subagentti sú definovamí v `.agents/agents/`. Keďže Claude Code a Auggie používajú **Markdown** (`.md`) a Codex **TOML** (`.toml`), adresár obsahuje oba formáty pre každého subagenta. Každý agent si pri discovery zoberie súbory formátu, ktorý pozná; iné ignoruje.
-
-| Subagent        | Súbory                                    | Popis                                                     |
-| --------------- | ----------------------------------------- | --------------------------------------------------------- |
-| `code-reviewer` | `code-reviewer.md` + `code-reviewer.toml` | Code review zameraný na Odoo konvencie, bezpečnosť a štýl |
+Zdieľaní subagentti sú definovaní v `.agents/agents/`. Keďže Claude Code a Auggie používajú **Markdown** (`.md`) a Codex **TOML** (`.toml`), adresár obsahuje oba formáty pre každého subagenta (`<name>.md` + `<name>.toml`). Každý agent si pri discovery zoberie súbory formátu, ktorý pozná; iné ignoruje.
 
 **Formáty:**
 
@@ -163,6 +163,8 @@ Príkazy ("slash commands") na bežnú prácu s `auggie` CLI sú:
 - **ukončenie práce:** `/exit`
 
 Pozri si tiež pridané príkazy v `.agents/commands` a zručnosti v `.agents/skills`.
+
+Ak nefunguje "Home" a "End" klávesa tak použi "CTRL SHIFT A" a "CTRL SHIFT E".
 
 ### Konfigurácia
 
