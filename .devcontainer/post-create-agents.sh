@@ -1,6 +1,7 @@
 #!/bin/bash
 ##ADD: Add following command:
 #
+#     # install AI agents
 #     bash "$(dirname "${BASH_SOURCE[0]}")/post-create-agents.sh"
 #
 # at the end of .devcontainer/.post-create.sh
@@ -36,6 +37,11 @@ sudo chown "$CURRENT_USER:$CURRENT_USER" "$HOME/.gemini"
 # - install
 curl -fsSL https://antigravity.google/cli/install.sh | bash
 echo "Antigravity CLI (agy): $(agy --version || true) installed"
+# - ensure brain directory exists and create symlink to project tmp folder
+mkdir -p "$HOME/.gemini/antigravity-cli/brain"
+if [ ! -L "tmp/.antigravity" ] && [ ! -e "tmp/.antigravity" ]; then
+  ln -s "$HOME/.gemini/antigravity-cli/brain" "tmp/.antigravity"
+fi
 
 # install Codex CLI
 echo "" && echo "Installing Codex CLI..."

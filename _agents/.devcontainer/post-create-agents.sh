@@ -37,6 +37,11 @@ sudo chown "$CURRENT_USER:$CURRENT_USER" "$HOME/.gemini"
 # - install
 curl -fsSL https://antigravity.google/cli/install.sh | bash
 echo "Antigravity CLI (agy): $(agy --version || true) installed"
+# - ensure brain directory exists and create symlink to project tmp folder
+mkdir -p "$HOME/.gemini/antigravity-cli/brain"
+if [ ! -L "tmp/.antigravity" ] && [ ! -e "tmp/.antigravity" ]; then
+  ln -s "$HOME/.gemini/antigravity-cli/brain" "tmp/.antigravity"
+fi
 
 # install Codex CLI
 echo "" && echo "Installing Codex CLI..."

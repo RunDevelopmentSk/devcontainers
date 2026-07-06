@@ -129,6 +129,7 @@ JSON schéma hooks je takmer identická medzi Antigravity, Claude Code a Auggie 
   - Zapnúť "Settings" (`Win + I`) > "System" > "Advanced" > "For developers" - toto stačí urobiť raz globálne, na začiatku.
 - **Lokálne overrides**: súbory `*.local.md`, `*.local.json`, `*.local.toml` sú v `.gitignore` – použi ich na vlastné poznámky/nastavenia, ktoré nepatria do repa.
 - **Skill formát**: každý skill je adresár `.agents/skills/<name>/SKILL.md` s YAML frontmatterom `name` a `description` (spoločná požiadavka Auggie CLI, Codexu aj Antigravity).
+- Antigravity sa občas odvoláva na súbory vytvorené v priečinku `~/.gemini/antigravity-cli/brain`. Pre zjednodušenie prístupu k týmto súborom je vytvorený symlink `tmp/antigravity → ~/.gemini/antigravity-cli/brain`.
 
 Sekcie nižšie popisujú inštaláciu, prihlásenie a tiež všetky konfiguračné možnosti jednotlivých agentov.
 
@@ -151,6 +152,7 @@ Na firemnom účte je možné sledovať [kredity spotrebované jednotlivými už
 Príkazy ("slash commands") na bežnú prácu s `auggie` CLI sú:
 
 - **výber modelu:** `/model`
+- **nastavenie povolení:** `/permissions`
 - **výber konverzácie:** `/sessions`, tu je možné konverzácie aj mazať
 - **nová konverzácia:** `/new`
 - **premenovanie konverzácie:** `/rename <name>`
@@ -254,6 +256,7 @@ Na firemnom účte je možné sledovať [kredity spotrebované jednotlivými už
 Príkazy ("slash commands") na bežnú prácu s `claude` CLI sú:
 
 - **výber modelu:** `/model`
+- **nastavenie povolení:** `/permissions`
 - **výber konverzácie:** `/resume`
 - **nová konverzácia:** `/clear`
 - **premenovanie konverzácie:** `/rename`
@@ -354,6 +357,7 @@ Pre google účet, ktorý sa rozhodneš použiť ako firemný účet, je potrebn
 Príkazy ("slash commands") na bežnú prácu s `agy` CLI sú:
 
 - **výber modelu:** `/model`
+- **nastavenie povolení:** `/permissions`
 - **výber konverzácie:** `/resume`
 - **nová konverzácia:** `/clear`
 - **premenovanie konverzácie:** `/rename`
@@ -442,6 +446,7 @@ Na firemnom účte je možné sledovať [kredity spotrebované jednotlivými už
 Príkazy ("slash commands") na bežnú prácu s `codex` CLI sú:
 
 - **výber modelu:** `/model`
+- **nastavenie povolení:** `/permissions`
 - **výber konverzácie:** `/resume`
 - **nová konverzácia:** `/new`, `/clear`
 - **premenovanie konverzácie:** `/rename`

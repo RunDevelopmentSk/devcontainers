@@ -1,3 +1,4 @@
+- codex, claude - pridaj príkaz na nastavenie sutomatikého behu
 - oddeľ ako doplnok aj:
     - `_pre-commit`
     - `_runtools`
