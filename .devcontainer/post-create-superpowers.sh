@@ -4,7 +4,7 @@
 #     # install Superpowers skills
 #     bash "$(dirname "${BASH_SOURCE[0]}")/post-create-superpowers.sh"
 #
-# at the end of .devcontainer/post-create.sh (after # install AI agents)
+# at the end of .devcontainer/post-create-agents.sh (after # install AI agents)
 #
 ##ADD: For Antigravity, SUPERPOWERS_INSTALL="vendor" below cannot simulate the official
 # SessionStart hook (see install_vendor() > register_session_start_hook()) because Antigravity

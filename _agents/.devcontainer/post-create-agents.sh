@@ -59,3 +59,7 @@ sudo chown "$CURRENT_USER:$CURRENT_USER" "$HOME/.augment"
 # - install
 npm install -g @augmentcode/auggie
 echo "Auggie CLI (auggie): $(auggie --version || true) installed"
+
+# install Superpowers skills
+#SUPERPOWERS_INSTALL="per-agent" # "per-agent"|"vendor"
+#bash "$(dirname "${BASH_SOURCE[0]}")/post-create-superpowers.sh"
