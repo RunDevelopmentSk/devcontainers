@@ -1,26 +1,26 @@
-# Devcontainer-y
+# Devcontainers
 
-Tento projekt slúži ako zdieľaná špecifikácia pre devcontainer-y (VS Code) používané v iných projektoch ako vývojové prostredia pre danú technológiu. Aktuálne sú pokryté nasledovné technológie:
+This project serves as a shared specification for devcontainers (VS Code) used in other projects as development environments for a given technology. Currently, the following technologies are covered:
 
 - `odoo-19`
 - `php-7.3_mysql-5.7`
 - `php-8.0_mysql-5.7`
 - `php-8.3_mysql-5.7`
-- `ubuntu-noble` - Python prípadne iné "všeobecné" projekty bežiace na Linuxe.
+- `ubuntu-noble` - Python or other "general" projects running on Linux.
 
-Na pridanie devcontainer-a do daného projektu stačí skopírovať obsah priečinka (korešpondujúceho s technológiou projektu) do projektového priečinka.
+To add a devcontainer to a given project, simply copy the contents of the folder (corresponding to the project's technology) into the project folder.
 
-## Doplnky
+## Add-ons
 
-V projekte sú obsiahnuté aj doplnky, ktoré možno do devcontainerov pridať. Tieto sú obsiahnuté v adresároch začínajúcich podtržítkom. Aktuálne ide o nasledovné doplnky:
+The project also includes add-ons that can be added to devcontainers. These are contained in directories starting with an underscore. Currently, these are the following add-ons:
 
-- `_agents` - prídáva `claude`, `codex`, `agy` a `auggie` CLI AI agentov formou [zjednotenej konfigurácie](../docs/ai-agents.md).
-- `_agents-specskit` - pridáva [speckit nástroje](https://github.com/github/spec-kit) pre AI agentov.
-- `_agents-superpowers` - pridáva [superpowers nástroje](https://github.com/obra/superpowers) pre AI agentov.
+- `_agents` - adds `claude`, `codex`, `agy`, and `auggie` CLI AI agents via a [unified configuration](../docs/ai-agents.md).
+- `_agents-specskit` - adds [speckit tools](https://github.com/github/spec-kit) for AI agents.
+- `_agents-superpowers` - adds [superpowers tools](https://github.com/obra/superpowers) for AI agents.
 
-Na pridanie doplnku do devcontainer-a v danom projekte je potrebné:
+To add an add-on to a devcontainer in a given project, it is necessary to:
 
-- Skopírovať obsah priečinka doplnku do projektového priečinka.
-- Poďľa pokynov `.devcontainers/<nazov-doplnku>.md` > `## Pridanie` zapracovať do existujúcich súborov devcontainera/projektu.
+- Copy the contents of the add-on folder into the project folder.
+- According to the instructions in `.devcontainers/<add-on-name>.md` > `## Adding`, integrate into the existing files of the devcontainer/project.
 
-Ak doplnok obsahuje priečinok s názvom niektorého devcontainer-a začínajúci podtržítkom (napr. `_odoo-19`), tak v prípade, že doplnok nahrávaš do korešpondujúceho devcontainer-a (t.j. do `odoo-19`), tak do projektového priečinku nakopíruj ešte aj tento špecifiký obsah doplnku pre danú technológiu (t.j. obsah priečinku `_odoo-19`). Následne môžeš priečinky začínajúce podtržítkom zmazať.
+If the add-on contains a folder named after one of the devcontainers but starting with an underscore (e.g., `_odoo-19`), then if you are applying the add-on to the corresponding devcontainer (i.e., to `odoo-19`), also copy this technology-specific add-on content (i.e., the content of the `_odoo-19` folder) into the project folder. Afterwards, you can delete new-added toplevel folders starting with an underscore.
