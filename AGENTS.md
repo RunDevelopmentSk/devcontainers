@@ -3,12 +3,19 @@ type: always_apply
 trigger: always_on
 ---
 
-# Inštrukcie pre AI agentov
+# Instructions for AI agents
 
-Tento súbor je **spoločný zdroj pravdy** pre všetkých AI agentov v projekte
+This file is a **shared source of truth** for all AI agents in the project
 (Auggie, Claude Code, Antigravity, Codex). Auggie, Antigravity
-a Codex ho čítajú natívne.
+and Codex read it natively. Claude Code reads it via the symlink `CLAUDE.md → AGENTS.md`.
 
-## Všeobecný popis
+Configuration details of individual agents and the unified structure are in
+[`docs/ai-agents.md`](docs/ai-agents.md).
 
-Aktuálny projekt obsahuje devcontainer-y, ktoré môžu byť použité v iných projektoch ako vývojové prostredia pre danú technológiu. Jednotlivé devcontainer-y sú nezávislé, hoci niekedy dosť podobné, keďže len aktualizujú  danú technológiu pre jej novšiu verziu.
+Before working, check:
+
+- `.agents/rules/*.md` – modular workspace rules
+
+## General description
+
+The current project contains devcontainers that can be used in other projects as development environments for a given technology. Individual devcontainers are independent, although sometimes quite similar, as they only update a given technology for its newer version.

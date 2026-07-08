@@ -3,29 +3,29 @@ type: always_apply
 trigger: always_on
 ---
 
-# Inštrukcie pre AI agentov
+# Instructions for AI agents
 
-Tento súbor je **spoločný zdroj pravdy** pre všetkých AI agentov v projekte
+This file is a **shared source of truth** for all AI agents in the project
 (Auggie, Claude Code, Antigravity, Codex). Auggie, Antigravity
-a Codex ho čítajú natívne; Claude Code ho číta cez symlink `CLAUDE.md → AGENTS.md`.
+and Codex read it natively; Claude Code reads it via the symlink `CLAUDE.md → AGENTS.md`.
 
-Detaily konfigurácie jednotlivých agentov a unifikovanej štruktúry sú v
+Configuration details of individual agents and the unified structure are in
 [`docs/ai-agents.md`](docs/ai-agents.md).
 
-Pred prácou si pozri:
+Before working, check:
 
-- `.agents/rules/*.md` – modulárne workspace pravidlá
+- `.agents/rules/*.md` – modular workspace rules
 
-## Všeobecný popis
+## General description
 
-Aktuálny projekt je postavený na  <@todo>. Funkčný kód je umiestnený v adresaroch <@todo>.
+The current project is built on  <@todo>. Functional code is located in the directories <@todo>.
 
-Ide o projekt <@todo>.
+It is a <@todo> project.
 
-Analýza je v súbore <@todo>.
+The analysis is in the file <@todo>.
 
-Hlavnou stratégiou pri vývoji je vyhnuť sa programovaniu, pokiaľ je to možné a namiesto programovania použiť existujúce <@todo> moduly a ich konfiguráciu. Tam, kde toto nie je možné, sa požadovaná funkcionalita pridáva buď formou vlastného alebo vendor modulu.
+The main development strategy is to avoid programming as much as possible and instead use existing <@todo> modules and their configuration. Where this is not possible, the required functionality is added either in the form of a custom or vendor module.
 
-## Rôzne
+## Misc
 
 <@todo>
