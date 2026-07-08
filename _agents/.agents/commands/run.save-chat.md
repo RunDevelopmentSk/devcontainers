@@ -6,9 +6,9 @@ description: >-
   appends missing extension and always adds a suffix with the agent's name.
 ---
 
-# /save-chat – Save entire chat history to .md
+# /run.save-chat – Save entire chat history to .md
 
-Follow the procedure according to the **`save-chat`** skill (`.agents/skills/save-chat/SKILL.md`). The command and the skill have the same output; this command is the entry point for Claude Code, Auggie, and Antigravity. (Codex does not support slash commands – use the `save-chat` skill directly there.)
+Follow the procedure according to the **`run-save-chat`** skill (`.agents/skills/run-save-chat/SKILL.md`). The command and the skill have the same output; this command is the entry point for Claude Code, Auggie, and Antigravity. (Codex does not support slash commands – use the `run-save-chat` skill directly there.)
 
 In short (details in the skill):
 
@@ -21,6 +21,6 @@ In short (details in the skill):
 3. Add the suffix `-<agent>` before `.md` (e.g., `my-chat-auggie.md`).
 4. Write the **literal** (verbatim) content of the entire conversation – **all** prompts and responses in chronological order, each turn under bold headers `**Prompt:**` / `**Response:**` (as many blocks as there were turns), where **each non-empty line of the prompt and response is indented by 4 spaces to the right** (format template: `.agents/user-prompts/ai-namespacing-auggie.md`, exact format in the skill); if the folder is missing, create it; if the file exists, ask about overwriting; announce the resulting path.
 
-Hard rules: prompts and responses are verbatim (the only modification is the 4-space line indentation), the entire chat history is saved (not just the last turn), the agent suffix is always added, no secrets in the file (`.agents/rules/secret-safety.md`).
+Hard rules: prompts and responses are verbatim (the only modification is the 4-space line indentation), the entire chat history is saved (not just the last turn), the agent suffix is always added, no secrets in the file (`.agents/rules/run.secret-safety.md`).
 
 If the user provided an argument (name, potentially with a folder), narrow the procedure accordingly.

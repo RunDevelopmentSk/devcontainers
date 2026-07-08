@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# Fan-out orchestrator for the compare-solutions subagent.
+# Fan-out orchestrator for the run.compare-solutions subagent.
 # Runs multiple CLI agents (claude/auggie/codex/agy) headless on the same
 # prompt, saves outputs to tmp/ (leaves them for inspection). auggie runs
 # read-only (--ask); claude additionally has WebFetch/WebSearch/Bash, and codex runs without
 # an internal sandbox (bypass) - read-only nature is ensured by prompt + container.
 # The prompt is passed to claude/codex/auggie via FILE/STDIN (not via argv); agy is
 # an exception (its CLI has no file/stdin input) - its prompt is passed as an argument via
-# the environment. Never include secrets in the prompt - .agents/rules/secret-safety.md.
+# the environment. Never include secrets in the prompt - .agents/rules/run.secret-safety.md.
 # After execution, writes an overview to <out-dir>/manifest.tsv (agent, model, status, exit,
 # duration, lines) and flags suspiciously short outputs as SHORT.
 # Only stdout (pure analysis for comparison) goes to <agent>[_<model>].md; stderr
@@ -96,7 +96,7 @@ run_agent() {
       # --permission-mode plan is NOT USED: in plan mode, the final message is only a stub
       # ("analysis delivered above") and the entire content is discarded.
       # NOTE: these --tools are tools of the EXECUTED claude subagent –
-      # they are unrelated to `tools:` in the orchestrator's frontmatter (compare-solutions.md).
+      # they are unrelated to `tools:` in the orchestrator's frontmatter (run.compare-solutions.md).
       local ctools="Read,Grep,Glob,WebFetch,WebSearch,Bash"
       local a=(--permission-mode default --tools "$ctools" --allowedTools "$ctools")
       [[ -n "$model" ]] && a+=(--model "$model")
@@ -114,7 +114,7 @@ run_agent() {
       local a=(--print --quiet --ask --allow-indexing --wait-for-indexing)
       [[ -n "$model" ]] && a+=(--model "$model")
       # Login: retrieve saved session (`auggie token print`) and pass it
-      # via ENVIRONMENT (AUGMENT_SESSION_AUTH), not via argv – secret-safety.
+      # via ENVIRONMENT (AUGMENT_SESSION_AUTH), not via argv – run.secret-safety.
       # NEVER print the session value.
       # `auggie token print` returns multiline output; JSON is on the line SESSION=<json>.
       # cut -d= -f2- preserves potential '=' inside the value (base64 padding, etc.).

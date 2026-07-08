@@ -1,5 +1,5 @@
 ---
-name: save-response
+name: run-save-response
 description: >-
   Literally (verbatim) save the last prompt and agent response to a .md file.
   Without a specified name, it asks whether to auto-generate it or have the user enter it;
@@ -8,14 +8,14 @@ description: >-
   "save response".
 ---
 
-# save-response
+# run-save-response
 
 Skill for **literally saving the last prompt and agent response** to a Markdown file. Content is saved **verbatim** – exactly as it was written/printed, without summarization, shortening, or modifications.
 
 ## When to use
 
 - "save last response", "rewrite response to .md", "save response",
-- the entry point is also the command `/save-response`.
+- the entry point is also the command `/run.save-response`.
 
 ## Input
 
@@ -83,10 +83,10 @@ Write the **literal** (verbatim) content in exactly this format to the final pat
 
 - The prompt and response are **verbatim** – no paraphrasing or additions (the only allowed modification is the 4-space line indentation).
 - The agent suffix is **always** added.
-- Never save secrets to the file (`.agents/rules/secret-safety.md`).
+- Never save secrets to the file (`.agents/rules/run.secret-safety.md`).
 
 ## Related
 
-- `.agents/commands/save-response.md` – paired command `/save-response` (entry point to this skill).
+- `.agents/commands/run.save-response.md` – paired command `/run.save-response` (entry point to this skill).
 - `docs/ai-agents.md` – source of truth on unified agent configuration.
-- `.agents/rules/secret-safety.md` – no secrets in files or prompts.
+- `.agents/rules/run.secret-safety.md` – no secrets in files or prompts.

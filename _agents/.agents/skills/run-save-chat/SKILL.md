@@ -1,5 +1,5 @@
 ---
-name: save-chat
+name: run-save-chat
 description: >-
   Literally (verbatim) save the entire chat history – all prompts and agent
   responses – to a .md file. Without a specified name, it asks whether to auto-generate
@@ -8,14 +8,14 @@ description: >-
   conversation to .md".
 ---
 
-# save-chat
+# run-save-chat
 
 Skill for **literally saving the entire chat history** – all prompts and agent responses – to a Markdown file. Content is saved **verbatim** – exactly as it was written/printed, without summarization, shortening, or modifications.
 
 ## When to use
 
 - "save chat", "save entire conversation to .md",
-- the entry point is also the command `/save-chat`.
+- the entry point is also the command `/run.save-chat`.
 
 ## Input
 
@@ -93,11 +93,11 @@ Write the **literal** (verbatim) content of the entire conversation in chronolog
 - Prompts and responses are **verbatim** – no paraphrasing or additions (the only allowed modification is the 4-space line indentation).
 - The **entire** chat history is saved, not just the last turn.
 - The agent suffix is **always** added.
-- Never save secrets to the file (`.agents/rules/secret-safety.md`).
+- Never save secrets to the file (`.agents/rules/run.secret-safety.md`).
 
 ## Related
 
-- `.agents/commands/save-chat.md` – paired command `/save-chat` (entry point to this skill).
-- `.agents/skills/save-response/SKILL.md` – equivalent for saving only the last prompt and response.
+- `.agents/commands/run.save-chat.md` – paired command `/run.save-chat` (entry point to this skill).
+- `.agents/skills/run-save-response/SKILL.md` – equivalent for saving only the last prompt and response.
 - `docs/ai-agents.md` – source of truth on unified agent configuration.
-- `.agents/rules/secret-safety.md` – no secrets in files or prompts.
+- `.agents/rules/run.secret-safety.md` – no secrets in files or prompts.

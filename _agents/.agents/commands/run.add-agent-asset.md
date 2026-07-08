@@ -4,11 +4,11 @@ description: >-
   in accordance with the unified configuration of AI agents (docs/ai-agents.md).
 ---
 
-# /add-agent-asset – Add agent artifact
+# /run.add-agent-asset – Add agent artifact
 
-Follow the procedure according to the **`add-agent-asset`** skill (`.agents/skills/add-agent-asset/SKILL.md`). The command and the skill have the same output; this command is the entry point for Claude Code, Auggie, and Antigravity. (Codex does not support slash commands – use the `add-agent-asset` skill directly there.)
+Follow the procedure according to the **`run-add-agent-asset`** skill (`.agents/skills/run-add-agent-asset/SKILL.md`). The command and the skill have the same output; this command is the entry point for Claude Code, Auggie, and Antigravity. (Codex does not support slash commands – use the `run-add-agent-asset` skill directly there.)
 
-Follow the `add-agent-asset` skill procedure:
+Follow the `run-add-agent-asset` skill procedure:
 
 1. Determine the artifact type (rule / skill / command / subagent).
 2. Create file(s) in the correct location with mandatory frontmatter according to `docs/ai-agents.md` (source of truth); respect naming conventions and English language.

@@ -162,7 +162,7 @@ Commands ("slash commands") for standard work with the `auggie` CLI are:
 - **compact conversation:** has no built-in command
 - **create a copy of conversation:** `/fork`
 - **copy last response:** `/copy`
-- **save/overwrite conversation to file:** has no built-in command, but you can use the added `/save-chat` command. Before running `/save-chat`, it is recommended to create a copy of the conversation using `/fork` so that the history of the original conversation remains untouched
+- **save/overwrite conversation to file:** has no built-in command, but you can use the added `/run.save-chat` command. Before running `/run.save-chat`, it is recommended to create a copy of the conversation using `/fork` so that the history of the original conversation remains untouched
 - **code-review:** has no built-in command
 - **exit work:** `/exit`
 
@@ -373,7 +373,7 @@ Commands ("slash commands") for standard work with the `agy` CLI are:
 - **compact conversation:** has no built-in command
 - **create a copy of conversation:** `/fork`
 - **copy last response:** `/copy`
-- **save/overwrite conversation to file:** has no built-in command, but you can use the added `/save-chat` command. Before running `/save-chat`, it is recommended to create a copy of the conversation using `/fork` so that the history of the original conversation remains untouched
+- **save/overwrite conversation to file:** has no built-in command, but you can use the added `/run.save-chat` command. Before running `/run.save-chat`, it is recommended to create a copy of the conversation using `/fork` so that the history of the original conversation remains untouched
 - **code-review:** has no built-in command
 - **exit work:** `/exit`
 
@@ -464,7 +464,7 @@ Commands ("slash commands") for standard work with the `codex` CLI are:
 - **compact conversation:** `/compact`
 - **create a copy of conversation:** `/fork`
 - **copy last response:** `/copy`
-- **save/overwrite conversation to file:** has no built-in command, but you can use the added `/save-chat` command. Before running `/save-chat`, it is recommended to create a copy of the conversation using `/fork` so that the history of the original conversation remains untouched
+- **save/overwrite conversation to file:** has no built-in command, but you can use the added `/run.save-chat` command. Before running `/run.save-chat`, it is recommended to create a copy of the conversation using `/fork` so that the history of the original conversation remains untouched
 - **code-review:** has no built-in command
 - **exit work:** `/exit`
 

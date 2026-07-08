@@ -1,5 +1,5 @@
 ---
-name: add-agent-asset
+name: run-add-agent-asset
 description: >-
   Adding and modifying agent artifacts (skills, rules, slash commands,
   subagents) in accordance with the unified configuration of AI agents described in
@@ -7,7 +7,7 @@ description: >-
   "add agent artifact".
 ---
 
-# add-agent-asset
+# run-add-agent-asset
 
 Skill for safely adding new agent artifacts so that they work across all agents (Auggie, Claude Code, Antigravity, Codex).
 **The source of truth is `docs/ai-agents.md`** – this skill is only a procedure and checklist; do not duplicate symlink or format details, refer to it instead.
@@ -72,5 +72,5 @@ After creation, verify that the artifact is visible to each relevant agent:
 ## Related
 
 - `docs/ai-agents.md` – **source of truth** about unified configuration and symlinks.
-- `.agents/rules/secret-safety.md` – never include secrets in artifacts – neither in files nor in prompts.
-- `.agents/commands/add-agent-asset.md` – paired command `/add-agent-asset` (entry point to this skill).
+- `.agents/rules/run.secret-safety.md` – never include secrets in artifacts – neither in files nor in prompts.
+- `.agents/commands/run.add-agent-asset.md` – paired command `/run.add-agent-asset` (entry point to this skill).
