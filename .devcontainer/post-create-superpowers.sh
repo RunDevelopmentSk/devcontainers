@@ -1,26 +1,9 @@
 #!/bin/bash
-##ADD: Add following command:
-#
-#     # install Superpowers skills
-#     bash "$(dirname "${BASH_SOURCE[0]}")/post-create-superpowers.sh"
-#
-# at the end of .devcontainer/post-create-agents.sh (after # install AI agents)
-#
-##ADD: For Antigravity, SUPERPOWERS_INSTALL="vendor" below cannot simulate the official
-# SessionStart hook (see install_vendor() > register_session_start_hook()) because Antigravity
-# has no SessionStart hook - it reads GEMINI.md as a workspace context file instead (see
-# docs/ai-agents.md > Antigravity). To get the same automatic session-start injection there,
-# add the following line to GEMINI.md in the repository root (create the file if missing):
-#
-#     @.agents/skills/using-superpowers/SKILL.md
-#
-# (Not needed for SUPERPOWERS_INSTALL="per-agent" - `agy plugin install` already ships
-# Superpowers' own bootstrap for Antigravity.)
 
 # Superpowers (https://github.com/obra/superpowers) skills library.
 #
 # SUPERPOWERS_INSTALL controls how it gets installed:
-#   - "per-agent" (default) installs the official plugin separately for claude, codex and agy via
+#   - "original" (default) installs the official plugin separately for claude, codex and agy via
 #                 their own CLI plugin managers (global, per-user cache, NOT versioned in
 #                 this repo, NOT shared with auggie - auggie has no plugin manager, so it
 #                 would not get Superpowers at all with this option).
@@ -33,11 +16,11 @@
 #
 # This variable may be preset/exported by the caller (e.g. post-create-agents.sh) before
 # running this script; the value below is only default used when not already set.
-SUPERPOWERS_INSTALL="${SUPERPOWERS_INSTALL:-per-agent}"
+SUPERPOWERS_INSTALL="${SUPERPOWERS_INSTALL:-original}"
 
 # Version to download for "vendor": "latest" (default) always fetches the newest release
 # tag; set to a concrete tag (e.g. "v6.1.1") to pin a specific version instead.
-# (Ignored for "per-agent" - each agent's plugin manager tracks its own version.)
+# (Ignored for "original" - each agent's plugin manager tracks its own version.)
 #
 # This variable may be preset/exported by the caller (e.g. post-create-agents.sh) before
 # running this script; the value below is only default used when not already set.
@@ -92,7 +75,7 @@ install_vendor() {
 # path works for all of them (matches the assumption already made inside the hook script itself).
 # Non-destructive: merges into each settings file's existing "hooks.SessionStart" array instead
 # of overwriting the file, and skips a target if the same hook command is already present.
-# Antigravity has no SessionStart hook - see the ##ADD: note at the top of this file.
+# Antigravity has no SessionStart hook.
 register_session_start_hook() {
   local repo_root hook_command
   repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -182,11 +165,11 @@ case "$SUPERPOWERS_INSTALL" in
   vendor)
     install_vendor
     ;;
-  per-agent)
+  original)
     install_per_agent
     ;;
   *)
-    echo "Unknown SUPERPOWERS_INSTALL value: '$SUPERPOWERS_INSTALL' (expected 'vendor' or 'per-agent')" >&2
+    echo "Unknown SUPERPOWERS_INSTALL value: '$SUPERPOWERS_INSTALL' (expected 'vendor' or 'original')" >&2
     exit 1
     ;;
 esac

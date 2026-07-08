@@ -11,7 +11,7 @@ Aktuálnu verziu si môžeš do daného projektu stiahnúť z [github.com/RunDev
 
 Detaily použitia jednotlivých AI agentov sú popísané tu nižšie.
 
-## Unifikovaná konfigurácia (`.agents/` + `AGENTS.md`)
+## Zjednotená konfigurácia (`.agents/` + `AGENTS.md`)
 
 Pre všetkých agentov sa používa **jeden zdroj pravdy** pre projektové inštrukcie, workspace rules a skills naprieč všetkými agentmi:
 
@@ -102,7 +102,7 @@ Zdieľaní subagentti sú definovaní v `.agents/agents/`. Keďže Claude Code a
 
 Nasledujúce súbory a priečinky sa nedajú zjednotiť do `.agents/` ani symlinkovať (rôzne formáty, naming alebo discovery mechanizmy). Detaily ku každej položke sú v sekciách [Auggie](#auggie), [Claude Code](#claude-code), [Antigravity](#antigravity) a [Codex](#codex) nižšie.
 
-| Agent            | Špecifické artefakty (nepokryté unifikovanou štruktúrou)                                                                                                                                              |
+| Agent            | Špecifické artefakty (nepokryté zjednotenou konfiguráciou)                                                                                                                                              |
 | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Auggie**   | `.augment/settings.json` (+ `.local`), `.augmentignore`; MCP cez `auggie mcp` subpríkazy alebo `--mcp-config`                                                                                          |
 | **Claude Code**  | `CLAUDE.local.md` (privátne, gitignored), `.claude/settings.json` (+ `.local`; permissions/env/hooks)                                                                                                 |
@@ -152,7 +152,9 @@ Na firemnom účte je možné sledovať [kredity spotrebované jednotlivými už
 Príkazy ("slash commands") na bežnú prácu s `auggie` CLI sú:
 
 - **výber modelu:** `/model`
-- **nastavenie povolení:** `/permissions`
+- **povolenie plných práv:**
+    - `auggie` ma vo východzej konfigurácii plné práva
+    - kontrolovana verzia: `/permissions` > `A` > `Locals settings (personal)` > ...
 - **výber konverzácie:** `/sessions`, tu je možné konverzácie aj mazať
 - **nová konverzácia:** `/new`
 - **premenovanie konverzácie:** `/rename <name>`
@@ -256,7 +258,10 @@ Na firemnom účte je možné sledovať [kredity spotrebované jednotlivými už
 Príkazy ("slash commands") na bežnú prácu s `claude` CLI sú:
 
 - **výber modelu:** `/model`
-- **nastavenie povolení:** `/permissions`
+- **povolenie plných práv:**
+    - rýchla verzia: `claude --dangerously-skip-permissions`
+    - prepínanie za behu: `Shift Tab`
+    - kontrolovana verzia: `/permissions` > `Allow`|`Ask`|`Deny`|... > `Bash`, `Bash(npm *)`, `Edit`, `Edit(src/**)`, `Write`, `Read`, `WebFetch`, `WebSearch`, `NotebookEdit`, `Skill`, `Workflow`, `Monitor`, ...
 - **výber konverzácie:** `/resume`
 - **nová konverzácia:** `/clear`
 - **premenovanie konverzácie:** `/rename`
@@ -357,7 +362,10 @@ Pre google účet, ktorý sa rozhodneš použiť ako firemný účet, je potrebn
 Príkazy ("slash commands") na bežnú prácu s `agy` CLI sú:
 
 - **výber modelu:** `/model`
-- **nastavenie povolení:** `/permissions`
+- **povolenie plných práv:**
+    - rýchla verzia: `agy --dangerously-skip-permissions`
+    - pomalšia verzia: `/config` > `Tools Permission` > `always-proceed`
+    - kontrolovana verzia: `/permissions` > `Project` > `allowlist` > `command(*)`, `read_file(*)`, `write_file(*)`, `read_url(*)`, `mcp(*)`
 - **výber konverzácie:** `/resume`
 - **nová konverzácia:** `/clear`
 - **premenovanie konverzácie:** `/rename`
@@ -446,7 +454,9 @@ Na firemnom účte je možné sledovať [kredity spotrebované jednotlivými už
 Príkazy ("slash commands") na bežnú prácu s `codex` CLI sú:
 
 - **výber modelu:** `/model`
-- **nastavenie povolení:** `/permissions`
+- **povolenie plných práv:**
+    - rýchla verzia: `codex --dangerously-bypass-approvals-and-sandbox`
+    - pomalšia verzia: `/permissions` > `Full Access`
 - **výber konverzácie:** `/resume`
 - **nová konverzácia:** `/new`, `/clear`
 - **premenovanie konverzácie:** `/rename`

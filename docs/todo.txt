@@ -1,11 +1,16 @@
 - zapracuj agentické toolkity:
-    x https://github.com/github/spec-kit
+    x https://github.com/obra/superpowers
         - pridaj ešte sekciu do docs/ai-agents.md
+    x https://github.com/github/spec-kit
     - https://github.com/garrytan/gstack
-    - https://github.com/obra/superpowers
     -? https://github.com/bmad-code-org/bmad-method
     -? https://github.com/Fission-AI/openspec
     -? https://github.com/open-gsd/gsd-core
+- docs/ai-agents.md
+    - pridaj popis ako nastaviť full permissions pre jednotlivých agentov
+- urob namespacing existujúcich agent artefaktov podľa speckit:
+    - commands: speckit.
+    - skills: speckit-
 
 - oddeľ ako doplnok aj:
     - `_pre-commit`
