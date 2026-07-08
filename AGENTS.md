@@ -7,7 +7,7 @@ trigger: always_on
 
 This file is a **shared source of truth** for all AI agents in the project
 (Auggie, Claude Code, Antigravity, Codex). Auggie, Antigravity
-and Codex read it natively. Claude Code reads it via the symlink `CLAUDE.md → AGENTS.md`.
+and Codex read it natively; Claude Code reads it via the symlink `CLAUDE.md → AGENTS.md`.
 
 Configuration details of individual agents and the unified structure are in
 [`docs/ai-agents.md`](docs/ai-agents.md).

@@ -249,13 +249,8 @@ median=0
 if [[ ${#elig[@]} -gt 0 ]]; then
   mapfile -t sorted < <(printf '%s\n' "${elig[@]}" | sort -n)
   n=${#sorted[@]}; mid=$((n/2))
-  if (( n % 2 == 1 )); then median="${sorted[$mid]}"; else median=$(( (sorted[mid-1] + sorted[sorted_mid]) / 2 )); fi
+  if (( n % 2 == 1 )); then median="${sorted[$mid]}"; else median=$(( (sorted[mid-1] + sorted[mid]) / 2 )); fi
 fi
-# fix minor index variable typo above if sorting (sorted[mid-1] + sorted[mid]) / 2 - wait let's look at original code:
-# if (( n % 2 == 1 )); then median="${sorted[$mid]}"; else median=$(( (sorted[mid-1] + sorted[mid]) / 2 )); fi
-# Original had: sorted[mid-1] + sorted[mid], let's check exact line 251:
-# if (( n % 2 == 1 )); then median="${sorted[$mid]}"; else median=$(( (sorted[mid-1] + sorted[mid]) / 2 )); fi
-# It is exactly sorted[mid-1] + sorted[mid].
 thr=$(( median / 5 ))   # 20% of median
 
 MAN="$OUT_DIR/manifest.tsv"

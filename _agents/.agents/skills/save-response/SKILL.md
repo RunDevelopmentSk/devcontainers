@@ -90,6 +90,3 @@ Write the **literal** (verbatim) content in exactly this format to the final pat
 - `.agents/commands/save-response.md` – paired command `/save-response` (entry point to this skill).
 - `docs/ai-agents.md` – source of truth on unified agent configuration.
 - `.agents/rules/secret-safety.md` – no secrets in files or prompts.
-```
-
-,Description:

@@ -1,6 +1,6 @@
-# Programming AI Agents
+# Coding AI Agents
 
-The following programming AI agents are available in the devcontainer:
+The following coding AI agents are available in the devcontainer:
 
 - `auggie` (**Augment Code** CLI)
 - **Claude Code** (VS Code extension) and/or `claude` (Claude Code CLI)
@@ -445,7 +445,15 @@ The CLI (`codex`) is installed **automatically** in the devcontainer using `.dev
 
 You need to create a personal account on [chatgpt.com](https://chatgpt.com/). **Codex can also be used for free** via your personal GPT account, but you must expect limits and availability based on capacity, or you can pay for one of the [plans](https://chatgpt.com/#pricing). **For work use**, request to have your personal user added to the [company users](https://chatgpt.com/admin/members).
 
-**select model:** `/model`
+When logging into `codex`, select `1. Sign in with ChatGPT` (or `2. Sign in with Device Code` if the first option does not work), use the personal account created on [chatgpt.com](https://chatgpt.com/), and select `Run Development's Workspace` when logging in via the browser.
+
+On the corporate account, you can track [credits consumed by individual users](https://chatgpt.com/admin/usage).
+
+### Commands
+
+Commands ("slash commands") for standard work with the `codex` CLI are:
+
+- **select model:** `/model`
 - **allow full permissions:**
     - fast version: `codex --dangerously-bypass-approvals-and-sandbox`
     - slower version: `/permissions` > `Full Access`
