@@ -1,38 +1,38 @@
 #!/usr/bin/env bash
-# Fan-out orchestrátor pre sub-agenta compare-solutions.
-# Spustí viacero CLI agentov (claude/auggie/codex/agy) headless nad rovnakým
-# promptom, výstupy uloží do tmp/ (ponecháva ich na kontrolu). auggie beží
-# read-only (--ask); claude má navyše WebFetch/WebSearch/Bash a codex beží bez
-# interného sandboxu (bypass) – read-only charakter zaisťuje prompt + kontajner.
-# Prompt sa claude/codex/auggie odovzdáva SÚBOROM/STDIN (nie cez argv); agy je
-# výnimka (jeho CLI nemá file/stdin vstup) – prompt mu ide ako argument cez
-# prostredie. Do promptu nikdy nevkladaj tajomstvá – .agents/rules/secret-safety.md.
-# Po behu zapíše prehľad do <out-dir>/manifest.tsv (agent, model, status, exit,
-# trvanie, riadky) a označí podozrivo krátke výstupy statusom SHORT.
-# Do <agent>[_<model>].md ide LEN stdout (čistá analýza na porovnanie); stderr
-# smeruje do sidecaru <agent>[_<model>].stderr (prázdny sa zmaže). Pri zlyhaní sa
-# do .md pridá chvost stderr, nech je dôvod viditeľný. Codex je výnimka – jeho
-# stdout-log (reasoning + tool) je v sidecar <agent>.transcript, v .md len -o správa.
+# Fan-out orchestrator for the compare-solutions subagent.
+# Runs multiple CLI agents (claude/auggie/codex/agy) headless on the same
+# prompt, saves outputs to tmp/ (leaves them for inspection). auggie runs
+# read-only (--ask); claude additionally has WebFetch/WebSearch/Bash, and codex runs without
+# an internal sandbox (bypass) - read-only nature is ensured by prompt + container.
+# The prompt is passed to claude/codex/auggie via FILE/STDIN (not via argv); agy is
+# an exception (its CLI has no file/stdin input) - its prompt is passed as an argument via
+# the environment. Never include secrets in the prompt - .agents/rules/secret-safety.md.
+# After execution, writes an overview to <out-dir>/manifest.tsv (agent, model, status, exit,
+# duration, lines) and flags suspiciously short outputs as SHORT.
+# Only stdout (pure analysis for comparison) goes to <agent>[_<model>].md; stderr
+# is routed to the sidecar <agent>[_<model>].stderr (an empty one is deleted). Upon failure,
+# the tail of stderr is appended to .md to make the reason visible. Codex is an exception - its
+# stdout-log (reasoning + tool) is in the sidecar <agent>.transcript, while .md only has the -o message.
 set -uo pipefail
 
-# --- recursion guard: orchestrátor nikdy nesmie spustiť sám seba ---
+# --- recursion guard: orchestrator must never run itself ---
 if [[ "${COMPARE_SOLUTIONS_ACTIVE:-}" == "1" ]]; then
-  echo "compare-solutions: rekurzívne spustenie je zakázané (COMPARE_SOLUTIONS_ACTIVE=1)." >&2
+  echo "compare-solutions: recursive execution is forbidden (COMPARE_SOLUTIONS_ACTIVE=1)." >&2
   exit 3
 fi
 export COMPARE_SOLUTIONS_ACTIVE=1
 
 usage() {
   cat >&2 <<'EOF'
-Použitie:
-  compare-solutions-fanout.sh --prompt-file <súbor> [--out-dir <dir>] [agent[:model] ...]
+Usage:
+  compare-solutions-fanout.sh --prompt-file <file> [--out-dir <dir>] [agent[:model] ...]
   compare-solutions-fanout.sh --check [agent[:model] ...]
 
-  --prompt-file   povinné (okrem --check); súbor so zadaním pre subagentov
-  --out-dir       voliteľné; default tmp/compare-solutions/<timestamp>
-  --check         self-test: over auth + platnosť flagov lacným promptom (bez fan-outu)
-  agent[:model]   voliteľné; default "claude auggie" (modely podľa konfigurácie CLI)
-                  podporované agenty: claude, auggie, codex, agy
+  --prompt-file   mandatory (except --check); file with the task for subagents
+  --out-dir       optional; default tmp/compare-solutions/<timestamp>
+  --check         self-test: verify auth + flag validity with a cheap prompt (no fan-out)
+  agent[:model]   optional; default "claude auggie" (models based on CLI configuration)
+                  supported agents: claude, auggie, codex, agy
 EOF
 }
 
@@ -43,37 +43,37 @@ while [[ $# -gt 0 ]]; do
     --out-dir) OUT_DIR="${2:-}"; shift 2;;
     --check) CHECK_MODE=1; shift;;
     -h|--help) usage; exit 0;;
-    --*) echo "Neznámy prepínač: $1" >&2; usage; exit 2;;
+    --*) echo "Unknown option: $1" >&2; usage; exit 2;;
     *) SPECS+=("$1"); shift;;
   esac
 done
 
 if [[ "$CHECK_MODE" == "1" ]]; then
-  # self-test: lacný prompt (ignoruje --prompt-file), len overenie auth + flagov
-  CHECK_TMP_PROMPT="$(mktemp)"; printf 'Odpovedz presne jedným slovom: OK\n' > "$CHECK_TMP_PROMPT"
+  # self-test: cheap prompt (ignores --prompt-file), only verification of auth + flags
+  CHECK_TMP_PROMPT="$(mktemp)"; printf 'Respond with exactly one word: OK\n' > "$CHECK_TMP_PROMPT"
   PROMPT_FILE="$CHECK_TMP_PROMPT"
   [[ -z "$OUT_DIR" ]] && OUT_DIR="tmp/compare-solutions/check-$(date +%Y%m%d-%H%M%S)"
 else
-  [[ -z "$PROMPT_FILE" || ! -f "$PROMPT_FILE" ]] && { echo "Chýba platný --prompt-file." >&2; usage; exit 2; }
+  [[ -z "$PROMPT_FILE" || ! -f "$PROMPT_FILE" ]] && { echo "Missing valid --prompt-file." >&2; usage; exit 2; }
   [[ -z "$OUT_DIR" ]] && OUT_DIR="tmp/compare-solutions/$(date +%Y%m%d-%H%M%S)"
 fi
 [[ ${#SPECS[@]} -eq 0 ]] && SPECS=(claude auggie)
 mkdir -p "$OUT_DIR"
-# vstupný prompt KOPÍRUJEME do out-dir → v <timestamp>/prompt.md je vždy kópia
-# zadania a zdrojový súbor sa štandardne nezmaže (nedeštruktívne cp).
-# Výnimka – throwaway prompt, ktorý pripravuje orchestrátor
-# (tmp/compare-solutions/prompt.md): ten po skopírovaní zmažeme (net efekt = mv),
-# aby na vrchnej úrovni tmp/compare-solutions/ nič nezostalo.
-# Poistka: ak už PROMPT_FILE JE cieľ (napr. cez --out-dir), kopírovanie preskoč.
+# we COPY the input prompt to out-dir → there is always a copy of the task
+# in <timestamp>/prompt.md and the source file is not deleted by default (non-destructive cp).
+# Exception – throwaway prompt prepared by the orchestrator
+# (tmp/compare-solutions/prompt.md): we delete this after copying (net effect = mv)
+# so that nothing is left at the top level of tmp/compare-solutions/.
+# Safety guard: if PROMPT_FILE IS already the target (e.g., via --out-dir), skip copying.
 THROWAWAY_PROMPT="tmp/compare-solutions/prompt.md"
 if [[ "$(readlink -f "$PROMPT_FILE")" != "$(readlink -f "$OUT_DIR/prompt.md")" ]]; then
   cp "$PROMPT_FILE" "$OUT_DIR/prompt.md"
-  # len throwaway zdroj zmažeme; vlastný --prompt-file na inej ceste ostane
+  # only delete throwaway source; custom --prompt-file on a different path remains untouched
   if [[ "$(readlink -f "$PROMPT_FILE")" == "$(readlink -f "$THROWAWAY_PROMPT")" ]]; then
     rm -f "$PROMPT_FILE"
   fi
 fi
-PROMPT_FILE="$OUT_DIR/prompt.md"   # ďalej pracujeme s kópiou v out-dir
+PROMPT_FILE="$OUT_DIR/prompt.md"   # from now on we work with the copy in out-dir
 printf '%s\n' "${SPECS[@]}" > "$OUT_DIR/specs.txt"
 
 run_agent() {
@@ -81,65 +81,66 @@ run_agent() {
   local start ec=0 dur stderr="${out%.md}.stderr"
   start=$(date +%s)
   if ! command -v "$agent" >/dev/null 2>&1; then
-    echo "SKIP: '$agent' nie je nainštalovaný/dostupný." > "$out"
+    echo "SKIP: '$agent' is not installed/available." > "$out"
     dur=$(( $(date +%s) - start ))
-    # placeholder '-' pre prázdny model: tab je pre `read` whitespace a prázdne
-    # polia by kolabovali (posun stĺpcov v manifeste)
+    # placeholder '-' for empty model: tab is whitespace for `read` and empty
+    # fields would collapse (column shift in manifest)
     printf '%s\t%s\t%s\t%s\n' "$agent" "${model:--}" "SKIP" "$dur" > "$meta"
     return 0
   fi
   case "$agent" in
     claude)
-      # nástroje: čítacie (Read/Grep/Glob) + WebFetch/WebSearch/Bash na overovanie;
-      # --allowedTools ich predschváli, aby v -p bežali bez interaktívneho promptu.
-      # Analýza sa stane finálnou správou, takže -p/text output ju správne zachytí.
-      # --permission-mode plan sa NEPOUŽÍVA: v plan móde je finálna správa len stub
-      # ("analýza doručená vyššie") a celý obsah sa zahodí.
-      # POZN.: tieto --tools sú nástroje SPÚŠŤANÉHO claude subagenta –
-      # nesúvisia s `tools:` vo frontmatteri orchestrátora (compare-solutions.md).
+      # tools: read tools (Read/Grep/Glob) + WebFetch/WebSearch/Bash for verification;
+      # --allowedTools pre-approves them so they run in -p without an interactive prompt.
+      # The analysis becomes the final message, so -p/text output captures it correctly.
+      # --permission-mode plan is NOT USED: in plan mode, the final message is only a stub
+      # ("analysis delivered above") and the entire content is discarded.
+      # NOTE: these --tools are tools of the EXECUTED claude subagent –
+      # they are unrelated to `tools:` in the orchestrator's frontmatter (compare-solutions.md).
       local ctools="Read,Grep,Glob,WebFetch,WebSearch,Bash"
       local a=(--permission-mode default --tools "$ctools" --allowedTools "$ctools")
       [[ -n "$model" ]] && a+=(--model "$model")
-      # stdout → .md (analýza), stderr → sidecar; pri zlyhaní chvost stderr do .md
+      # stdout → .md (analysis), stderr → sidecar; upon failure, tail of stderr is appended to .md
       claude -p "${a[@]}" < "$PROMPT_FILE" > "$out" 2>"$stderr"; ec=$?
       if [[ $ec -ne 0 ]]; then
         [[ -s "$stderr" ]] && tail -n 20 "$stderr" >> "$out"
-        echo "[claude zlyhal, exit $ec]" >> "$out"
+        echo "[claude failed, exit $ec]" >> "$out"
       fi
       ;;
     auggie)
-      # --ask = len retrieval/non-editing nástroje (read-only beh)
-      # --allow-indexing = preskoč potvrdenie indexovania; --wait-for-indexing =
-      # počkaj na dokončenie indexu pred retrieval (rovnaký kontext ako z konzoly)
+      # --ask = retrieval/non-editing tools only (read-only run)
+      # --allow-indexing = skip indexing confirmation; --wait-for-indexing =
+      # wait for index completion before retrieval (same context as from console)
       local a=(--print --quiet --ask --allow-indexing --wait-for-indexing)
       [[ -n "$model" ]] && a+=(--model "$model")
-      # Prihlásenie: prevezmi uloženú session (`auggie token print`) a odovzdaj ju
-      # cez PROSTREDIE (AUGMENT_SESSION_AUTH), nie cez argv – secret-safety.
-      # Hodnotu session NIKDY nevypisuj.
-      # `auggie token print` vracia viaceriadkový výstup; JSON je na riadku SESSION=<json>.
-      # cut -d= -f2- zachová prípadné '=' vo vnútri hodnoty (base64 padding a pod.).
+      # Login: retrieve saved session (`auggie token print`) and pass it
+      # via ENVIRONMENT (AUGMENT_SESSION_AUTH), not via argv – secret-safety.
+      # NEVER print the session value.
+      # `auggie token print` returns multiline output; JSON is on the line SESSION=<json>.
+      # cut -d= -f2- preserves potential '=' inside the value (base64 padding, etc.).
       local sess=""; sess="$(auggie token print 2>/dev/null | grep -m1 '^SESSION=' | cut -d= -f2-)" || sess=""
-      # stdout → .md (analýza), stderr → sidecar; pri zlyhaní chvost stderr do .md
+      # stdout → .md (analysis), stderr → sidecar; upon failure, tail of stderr is appended to .md
       if [[ -n "$sess" ]]; then
         AUGMENT_SESSION_AUTH="$sess" auggie "${a[@]}" --instruction-file "$PROMPT_FILE" > "$out" 2>"$stderr"; ec=$?
-        [[ $ec -ne 0 ]] && { [[ -s "$stderr" ]] && tail -n 20 "$stderr" >> "$out"; echo "[auggie zlyhal, exit $ec – over prihlásenie alebo enterprise gating non-interactive režimu]" >> "$out"; }
+        [[ $ec -ne 0 ]] && { [[ -s "$stderr" ]] && tail -n 20 "$stderr" >> "$out"; echo "[auggie failed, exit $ec – verify login or enterprise gating of non-interactive mode]" >> "$out"; }
       else
         auggie "${a[@]}" --instruction-file "$PROMPT_FILE" > "$out" 2>"$stderr"; ec=$?
-        [[ $ec -ne 0 ]] && { [[ -s "$stderr" ]] && tail -n 20 "$stderr" >> "$out"; echo "[auggie zlyhal, exit $ec – nepodarilo sa získať session (auggie token print); over prihlásenie]" >> "$out"; }
+        [[ $ec -ne 0 ]] && { [[ -s "$stderr" ]] && tail -n 20 "$stderr" >> "$out"; echo "[auggie failed, exit $ec – failed to obtain session (auggie token print); verify login]" >> "$out"; }
       fi
       ;;
     codex)
-      # Kontext: dev-kontajner je externý sandbox, takže interný sandbox codexu
-      # nepotrebujeme (a v kontajneri bez unprivileged userns by bwrap aj tak
-      # zlyhal – "No permissions to create new namespace"). Preto beží štandardne
-      # cez --dangerously-bypass-approvals-and-sandbox (presne na externé sandboxové
-      # prostredia); read-only charakter zaisťuje prompt + externý kontajner.
-      # -a/--ask-for-approval bol z codex CLI odstránený (>=0.14x).
+      # Context: dev-container is an external sandbox, so we do not need
+      # the internal codex sandbox (and in a container without unprivileged userns,
+      # bwrap would fail anyway – "No permissions to create new namespace").
+      # Therefore, it runs by default via --dangerously-bypass-approvals-and-sandbox
+      # (specifically for external sandbox environments); read-only nature is ensured
+      # by the prompt + external container.
+      # -a/--ask-for-approval was removed from codex CLI (>=0.14x).
       local a=(exec --skip-git-repo-check --dangerously-bypass-approvals-and-sandbox)
       [[ -n "$model" ]] && a+=(-m "$model")
       local last_msg; last_msg="$(mktemp)"
-      # transcript (reasoning + tool log) ide do sidecar .transcript; do hlavného
-      # .md dávame LEN finálnu správu (-o) → čistý, porovnateľný výstup ako claude -p
+      # transcript (reasoning + tool log) goes to sidecar .transcript; we put
+      # ONLY the final message (-o) into the main .md → pure, comparable output like claude -p
       local transcript="${out%.md}.transcript"
       codex "${a[@]}" -o "$last_msg" < "$PROMPT_FILE" > "$transcript" 2>&1; ec=$?
       if [[ -s "$last_msg" ]]; then
@@ -147,46 +148,46 @@ run_agent() {
       fi
       rm -f "$last_msg"
       if [[ $ec -ne 0 ]]; then
-        # pri zlyhaní nie je finálna správa → zviditeľni dôvod z transcriptu v .md
+        # upon failure, final message is missing → make the reason from transcript visible in .md
         [[ -s "$transcript" ]] && tail -n 20 "$transcript" >> "$out"
-        echo "[codex zlyhal, exit $ec]" >> "$out"
+        echo "[codex failed, exit $ec]" >> "$out"
       fi
       ;;
     agy)
-      # agy CLI nemá vstup promptu súborom ani zo stdin (viď `agy --help`) → prompt
-      # aj model idú cez PROSTREDIE (AGY_PROMPT, AGY_MODEL) a v PTY príkaze na ne iba
-      # ODKÁŽEME ("$AGY_PROMPT" / "$AGY_MODEL"); do -c reťazca sa nič nevkladá doslova,
-      # takže sa žiadny obsah (prompt ani model) nereparsuje shellom (robustné voči
-      # úvodzovkám/metaznakom v oboch). Prompt NESMIE obsahovať tajomstvá.
-      # agy -p pri non-TTY mlčky zahodí stdout (issue #76) → spúšťame cez PTY (script).
-      # PTY zlučuje stdout+stderr agy do typescriptu (→ .md); sidecar .stderr tu drží
-      # len chyby samotného `script`. Pri zlyhaní pridáme chvost stderr do .md.
-      # --model pridá vnútorný shell len ak je AGY_MODEL neprázdny.
+      # agy CLI has no input prompt via file or from stdin (see `agy --help`) -> prompt
+      # and model are passed via ENVIRONMENT (AGY_PROMPT, AGY_MODEL) and only REFERENCED
+      # in the PTY command ("$AGY_PROMPT" / "$AGY_MODEL"); nothing is literally inserted into
+      # the -c string, so no content (prompt or model) is reparsed by the shell (robust against
+      # quotes/metacharacters in both). The prompt MUST NOT contain secrets.
+      # agy -p silently discards stdout on non-PTY (issue #76) -> we run via PTY (script).
+      # PTY merges agy stdout+stderr into the typescript (-> .md); sidecar .stderr here only
+      # holds errors of `script` itself. Upon failure, we append the tail of stderr to .md.
+      # --model is added by the inner shell only if AGY_MODEL is non-empty.
       local agy_cmd='if [ -n "$AGY_MODEL" ]; then agy -p --model "$AGY_MODEL" "$AGY_PROMPT"; else agy -p "$AGY_PROMPT"; fi'
       AGY_MODEL="$model" AGY_PROMPT="$(cat "$PROMPT_FILE")" script -qec "$agy_cmd" /dev/null > "$out" 2>"$stderr"; ec=$?
       if [[ $ec -ne 0 ]]; then
         [[ -s "$stderr" ]] && tail -n 20 "$stderr" >> "$out"
-        echo "[agy zlyhal, exit $ec]" >> "$out"
+        echo "[agy failed, exit $ec]" >> "$out"
       fi
-      [[ -s "$out" ]] || echo "[agy: prázdny výstup – pozri issue #76 (non-TTY stdout)]" >> "$out"
+      [[ -s "$out" ]] || echo "[agy: empty output – see issue #76 (non-TTY stdout)]" >> "$out"
       ;;
     *)
-      echo "SKIP: neznámy agent '$agent'." > "$out"
+      echo "SKIP: unknown agent '$agent'." > "$out"
       dur=$(( $(date +%s) - start ))
       printf '%s\t%s\t%s\t%s\n' "$agent" "${model:--}" "SKIP" "$dur" > "$meta"
       return 0
       ;;
   esac
-  # prázdny stderr sidecar nenechávaj v out-dir
+  # do not leave empty stderr sidecar in out-dir
   [[ -f "$stderr" && ! -s "$stderr" ]] && rm -f "$stderr"
   dur=$(( $(date +%s) - start ))
   printf '%s\t%s\t%s\t%s\n' "$agent" "${model:--}" "$ec" "$dur" > "$meta"
   return 0
 }
 
-# --- self-test režim (--check): over auth + platnosť flagov, bez drahého fan-outu ---
+# --- self-test mode (--check): verify auth + flag validity, no costly fan-out ---
 if [[ "$CHECK_MODE" == "1" ]]; then
-  echo "compare-solutions --check: overujem ${#SPECS[@]} agentov lacným promptom → $OUT_DIR" >&2
+  echo "compare-solutions --check: verifying ${#SPECS[@]} agents with a cheap prompt → $OUT_DIR" >&2
   mkdir -p "$OUT_DIR/.meta"
   cpids=(); clabels=()
   for spec in "${SPECS[@]}"; do
@@ -217,7 +218,7 @@ if [[ "$CHECK_MODE" == "1" ]]; then
   exit $crc
 fi
 
-echo "compare-solutions: spúšťam ${#SPECS[@]} subagentov, výstup → $OUT_DIR" >&2
+echo "compare-solutions: running ${#SPECS[@]} subagents, output → $OUT_DIR" >&2
 mkdir -p "$OUT_DIR/.meta"
 PIDS=(); LABELS=()
 for spec in "${SPECS[@]}"; do
@@ -231,18 +232,18 @@ done
 
 for pid in "${PIDS[@]}"; do wait "$pid" || true; done
 
-# --- agregácia: manifest.tsv + detekcia skrátených výstupov ---
+# --- aggregation: manifest.tsv + short output detection ---
 labels=(); ag=(); mo=(); ecf=(); du=(); ln=()
 for label in "${LABELS[@]}"; do
   meta="$OUT_DIR/.meta/${label}.meta"; out="$OUT_DIR/${label}.md"
   a=""; m=""; e=""; d="0"
   [[ -f "$meta" ]] && IFS=$'\t' read -r a m e d < "$meta"
-  [[ "$m" == "-" ]] && m=""   # spätné premapovanie placeholdera na prázdny model
+  [[ "$m" == "-" ]] && m=""   # map placeholder back to empty model
   l=$(wc -l < "$out" 2>/dev/null || echo 0); l="${l//[^0-9]/}"; l="${l:-0}"
   labels+=("$label"); ag+=("${a:-?}"); mo+=("$m"); ecf+=("${e:-?}"); du+=("${d:-0}"); ln+=("$l")
 done
 
-# medián riadkov cez použiteľné výstupy (exit 0) → relatívny prah pre "SHORT"
+# line median over usable outputs (exit 0) → relative threshold for "SHORT"
 elig=(); for i in "${!labels[@]}"; do [[ "${ecf[$i]}" == "0" ]] && elig+=("${ln[$i]}"); done
 median=0
 if [[ ${#elig[@]} -gt 0 ]]; then
@@ -250,7 +251,7 @@ if [[ ${#elig[@]} -gt 0 ]]; then
   n=${#sorted[@]}; mid=$((n/2))
   if (( n % 2 == 1 )); then median="${sorted[$mid]}"; else median=$(( (sorted[mid-1] + sorted[mid]) / 2 )); fi
 fi
-thr=$(( median / 5 ))   # 20 % mediánu
+thr=$(( median / 5 ))   # 20% of median
 
 MAN="$OUT_DIR/manifest.tsv"
 printf 'agent\tmodel\tstatus\texit\tduration_s\tlines\n' > "$MAN"
@@ -265,11 +266,11 @@ for i in "${!labels[@]}"; do
 done
 
 echo "" >&2
-echo "Hotovo. Čiastkové riešenia (ponechané na kontrolu):" >&2
+echo "Done. Intermediate solutions (left for inspection):" >&2
 ls -1 "$OUT_DIR"/*.md >&2 || true
 echo "" >&2
-echo "Prehľad (manifest.tsv):" >&2
+echo "Overview (manifest.tsv):" >&2
 column -t -s "$(printf '\t')" "$MAN" >&2 2>/dev/null || cat "$MAN" >&2
-[[ -n "$short_list" ]] && echo "⚠️  Podozrivo krátky výstup (možno sumarizovaný – over ručne):${short_list}" >&2
-echo "$OUT_DIR"   # cesta na stdout pre orchestrátora
+[[ -n "$short_list" ]] && echo "⚠️  Suspiciously short output (potentially summarized – check manually):${short_list}" >&2
+echo "$OUT_DIR"   # path to stdout for the orchestrator
 exit $rc

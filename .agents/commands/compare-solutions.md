@@ -1,37 +1,25 @@
 ---
 description: >-
-  Vyrieš komplexnú úlohu porovnaním návrhov viacerých CLI subagentov
-  (claude/auggie/codex/agy) s rôznymi LLM modelmi a predlož odporúčané riešenie.
-  Spúšťa sa len na požiadanie; čiastkové výstupy ostávajú v tmp/ na kontrolu.
+  Solve a complex task by comparing proposals from multiple CLI subagents
+  (claude/auggie/codex/agy) with different LLM models and present a recommended solution.
+  Runs only on request; intermediate outputs remain in tmp/ for verification.
 ---
 
-# /compare-solutions – porovnaj návrhy viacerých subagentov
+# /compare-solutions – Compare proposals from multiple subagents
 
-Tenký vstupný bod – **celý postup, CLI tabuľka aj Output Contract sú v
-`.agents/agents/compare-solutions.md`** (needuplikuj ich sem). Command a sub-agent
-majú rovnaký výstup; tento command je vstupný bod pre Claude Code, Auggie
-a Antigravity. (Codex slash commands nepodporuje – tam vyvolaj priamo sub-agenta
-`compare-solutions`. Antigravity súborových sub-agentov nečíta – riaď sa obsahom
-`.agents/agents/compare-solutions.md`.)
+Thin entry point – **the entire procedure, CLI table, and Output Contract are in `.agents/agents/compare-solutions.md`** (do not duplicate them here). The command and the sub-agent have the same output; this command is the entry point for Claude Code, Auggie, and Antigravity. (Codex does not support slash commands – invoke the `compare-solutions` sub-agent directly there. Antigravity does not read file-based sub-agents – refer to the content of `.agents/agents/compare-solutions.md`.)
 
-V skratke (detaily v sub-agentovi):
+In short (details in the sub-agent):
 
-1. Zisti dostupnosť CLI a **over platné model-ID** (`auggie model list`,
-   `agy models`; `claude`/`codex` cez `--help`).
-2. Navrhni maticu agent × model (**default `claude` a `auggie`**), upozorni na
-   násobenie kreditov a **počkaj na potvrdenie** používateľa.
-3. Priprav prompt do súboru s **Output Contract** (presné znenie v sub-agentovi)
-   a spusti orchestračný skript (`--check` pred fan-outom lacno overí auth/flagy):
+1. Check CLI availability and **verify valid model-IDs** (`auggie model list`, `agy models`; `claude`/`codex` via `--help`).
+2. Propose an agent × model matrix (**default `claude` and `auggie`**), warn about credit multiplication, and **wait for user confirmation**.
+3. Prepare the prompt in a file with the **Output Contract** (exact text in the sub-agent) and run the orchestration script (`--check` before fan-out cheaply verifies auth/flags):
    ```bash
    .agents/agents/scripts/compare-solutions-fanout.sh \
      --prompt-file tmp/compare-solutions/prompt.md  claude auggie
    ```
-4. Porovnaj a zanalyzuj výstupy; predlož **odporúčané riešenie** (návrh, nie
-   vykonanie zmien) a uveď cestu k `tmp/` priečinku s čiastkovými riešeniami.
+4. Compare and analyze outputs; present a **recommended solution** (a proposal, not execution of changes) and provide the path to the `tmp/` folder containing the individual solutions.
 
-Tvrdé pravidlá: len na požiadanie (nikdy automaticky), **žiadne rekurzívne
-spúšťanie** orchestrátora, subagenti len navrhujú (needitujú repo), tajomstvá
-nikdy do promptu ani argv (`.agents/rules/secret-safety.md`).
+Hard rules: only on request (never automatically), **no recursive execution** of the orchestrator, subagents only propose (they do not edit the repo), never include secrets in the prompt or argv (`.agents/rules/secret-safety.md`).
 
-Ak používateľ uviedol argument (zadanie, ktoré CLI, koľko, aké modely), zúž
-postup podľa neho.
+If the user provided an argument (task, which CLIs, how many, which models), narrow the procedure accordingly.

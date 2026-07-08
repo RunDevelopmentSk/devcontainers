@@ -1,23 +1,18 @@
 ---
 description: >-
-  Pridaj nový agentový artefakt (skill, rule, slash command alebo subagent)
-  v súlade s unifikovanou konfiguráciou AI agentov (docs/ai-agents.md).
+  Add a new agent artifact (skill, rule, slash command, or subagent)
+  in accordance with the unified configuration of AI agents (docs/ai-agents.md).
 ---
 
-# /add-agent-asset – pridaj agentový artefakt
+# /add-agent-asset – Add agent artifact
 
-Spusti postup podľa skillu **`add-agent-asset`**
-(`.agents/skills/add-agent-asset/SKILL.md`). Command a skill majú rovnaký
-výstup; tento command je vstupný bod pre Claude Code, Auggie a Antigravity.
-(Codex slash commands nepodporuje – tam použi priamo skill `add-agent-asset`.)
+Follow the procedure according to the **`add-agent-asset`** skill (`.agents/skills/add-agent-asset/SKILL.md`). The command and the skill have the same output; this command is the entry point for Claude Code, Auggie, and Antigravity. (Codex does not support slash commands – use the `add-agent-asset` skill directly there.)
 
-Postupuj podľa skillu `add-agent-asset`:
+Follow the `add-agent-asset` skill procedure:
 
-1. Rozhodni typ artefaktu (rule / skill / command / subagent).
-2. Vytvor súbor(y) na správnom mieste s povinným frontmatterom podľa
-   `docs/ai-agents.md` (zdroj pravdy); rešpektuj konvencie názvov a slovenčinu.
-3. Zosynchronizuj dokumentáciu/registre podľa DoD checklistu v skille (zoznam
-   rules v `AGENTS.md`; nové symlinky len pri novom type artefaktu).
-4. Over cross-tool discovery (Auggie / Claude / Antigravity / Codex).
+1. Determine the artifact type (rule / skill / command / subagent).
+2. Create file(s) in the correct location with mandatory frontmatter according to `docs/ai-agents.md` (source of truth); respect naming conventions and English language.
+3. Sync documentation/registries according to the DoD checklist in the skill (list of rules in `AGENTS.md`; new symlinks only for a new type of artifact).
+4. Verify cross-tool discovery (Auggie / Claude / Antigravity / Codex).
 
-Ak používateľ uviedol argument (typ artefaktu, názov, účel), zúž postup podľa neho.
+If the user provided an argument (artifact type, name, purpose), narrow the procedure accordingly.

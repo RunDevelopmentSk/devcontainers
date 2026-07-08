@@ -1,20 +1,20 @@
-# AI agenti
+# AI agents
 
-Devcontainer doplnok [`_agents`](https://github.com/RunDevelopmentSk/devcontainers).
-Prídáva `claude`, `codex`, `agy` a `auggie` CLI AI agentov formou [zjednotenej konfigurácie](../docs/ai-agents.md).
+Devcontainer feature [`_agents`](https://github.com/RunDevelopmentSk/devcontainers).
+Adds `claude`, `codex`, `agy` and `auggie` CLI AI agents in the form of a [unified configuration](../docs/ai-agents.md).
 
-## Pridanie
+## Installation
 
-Skopíruj obsah priečinka `_agents` do projektového priečiku.
+Copy the contents of the `_agents` folder into the project folder.
 
-Na koniec súboru `.devcontainer/.post-create.sh` pridaj:
+Add the following to the end of the `.devcontainer/.post-create.sh` file:
 
 ```sh
 # install AI agents
 bash "$(dirname "${BASH_SOURCE[0]}")/post-create-agents.sh"
 ```
 
-Do súboru `.gitignore` pridaj:
+Add the following to the `.gitignore` file:
 
 ```sh
 #
@@ -26,10 +26,10 @@ Do súboru `.gitignore` pridaj:
 *.local.toml
 ```
 
-Urob rebuild devcontainera.
+Rebuild the devcontainer.
 
-## Zmazanie
+## Removal
 
-Zmaž, čo bolo pridané.
+Delete everything that was added.
 
-Urob rebuild devcontainera.
+Rebuild the devcontainer.

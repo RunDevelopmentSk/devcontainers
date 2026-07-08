@@ -1,184 +1,183 @@
-[< Späť](README.md)
+[< Back](README.md)
 
-# Práca na projekte lokálne v devcontaineri
+# Working on the project locally in a devcontainer
 
-Aby si mohol pracovať lokálne na projekte v devcontaineri tak urob nasledovné:
+To work locally on the project in a devcontainer, do the following:
 
-- Ak používaš systém Windows:
-  - Aby sa existujúce symlinks v projekte správne naklonovali je potrebné mať `git config core.symlinks=true` a používateľ právo `SeCreateSymbolicLinkPrivilege`:
-    - Nastaviť `git config --global core.symlinks true` - toto stačí urobiť raz globálne, na začiatku.
-    - Zapnúť "Settings" (`Win + I`) > "System" > "Advanced" > "For developers" - toto stačí urobiť raz globálne, na začiatku.
-  - v naklonovanom projekte v priečinku `.devcontainer` vytvor súbor `.env` s obsahom `HOME=C:\Users\<my_user>`. Takto pre prostredie devcontainera vytvoríme premennú `HOME`, tak ako existuje na Linuxe a MacOS.
+- If you use Windows:
+  - For existing symlinks in the project to clone correctly, you need to have `git config core.symlinks=true` and the user must have `SeCreateSymbolicLinkPrivilege` permission:
+    - Set `git config --global core.symlinks true` - this only needs to be done once globally, at the beginning.
+    - Go to "Settings" (`Win + I`) > "System" > "Advanced" > "For developers" - this only needs to be done once globally, at the beginning.
+  - In the cloned project under the `.devcontainer` folder, create a `.env` file containing `HOME=C:\Users\<my_user>`. This creates the `HOME` variable for the devcontainer environment as it exists on Linux and MacOS.
 
-- Nainštaluj si [Docker Desktop](https://docs.docker.com/desktop/). **POZOR:** Nestačí len nainštalovať stiahnuté inštalačky! Podrobne si prečítaj aj nasledovné inštrukcie. **POZOR:** V prípade architektúr postavených na ARM procesoroch (momentálne len MacOS) majú niektoré verzie Dockera problém. V takom prípade treba len googliť ohľadom vzniknutej chyby.
+- Install [Docker Desktop](https://docs.docker.com/desktop/). **ATTENTION:** It is not enough to just install the downloaded installer! Read the following instructions carefully. **ATTENTION:** On ARM-based architectures (currently only MacOS), some versions of Docker have issues. In that case, you just need to google the error.
 
-- Nainštaluj si [VS Code](https://code.visualstudio.com/download).
+- Install [VS Code](https://code.visualstudio.com/download).
 
-- Vo VS Code si nainštaluj rozšírenia [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) a [Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker).
+- In VS Code, install the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) and [Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker) extensions.
 
-- Otvor projekt vo VS Code. Ak si v konzole v projektovom priečinku, tak stačí spustiť `code .`. Na ďalšie pohodlnejšie čítanie tohto návodu vo VS Code stlač `CTRL SHIFT V`.
+- Open the project in VS Code. If you are in the console in the project folder, simply run `code .`. For a more comfortable reading of this guide in VS Code, press `CTRL SHIFT V`.
 
-- Súc vo VS Code stlač `CTRL SHIFT P` a vyber `Dev Containers: Rebuild Without Cache and Reopen in Container`. Počkaj kým sa VS Code prepne do devcontainera. Ak sa ti zobrazí VS Code upozornenie `Cannot activate the 'XYZ' extension because it depends on the 'Python' extension, which is not loaded. ...`, tak len stlač `Reload Window`. Ide len o to, že niektoré rozšírenia VS Code, už potrebujú mať nainštalované `Python` rozšírenie no a zrejme to tak kvôli súbehu okolností nie je a `Reload Window` to dá do poriadku.
+- Once in VS Code, press `CTRL SHIFT P` and select `Dev Containers: Rebuild Without Cache and Reopen in Container`. Wait for VS Code to switch into the devcontainer. If you see a VS Code warning saying `Cannot activate the 'XYZ' extension because it depends on the 'Python' extension, which is not loaded. ...`, just click `Reload Window`. This is just because some VS Code extensions require the `Python` extension to be installed, which might not have loaded due to timing, and `Reload Window` will fix it.
 
-## Úvodné spustenie Odoo a inicializácia databázy
+## Initial Odoo startup and database initialization
 
-- Súc vo VS Code v devcontaineri spusti v konzole príkaz `odoo`.
+- Once in VS Code in the devcontainer, run the `odoo` command in the console.
 
-- V prehliadači otvor URL http://localhost:50030/. Táto URL je dostupná aj vo VS Code v záložke "Ports" (`CTRL P` > `view ports`) > "drinkcentrum-is-odoo odoo". Pri prvom spustení Odoo sa ti zobrazí konfiguračná obrazovka na nastavenie názvu databázy a prístupu do Odoo:<br><img src="./img/odoo-create-db-screen.png" style="width:400px;"><br>Zadaj si rovnaké prístupy (najmä názov databázy), aby ti projekt fungoval na základe prednastavených hodnôt v [`.devcontainer/config/odoo.conf`](../.devcontainer/config/odoo.conf) a [`.devcontainer/docker-compose.yml`](../.devcontainer/docker-compose.yml). Môžeš vybrať aj konkrétny jazyk a krajinu. Podľa vybranej krajiny sa nastaví napríklad fiškálna lokalizácia (dané, ...). Prípadne si zaškrtni aj natiahnutie demo dat.
+- Open http://localhost:50030/ in your browser. This URL is also available in VS Code in the "Ports" tab (`CTRL P` > `view ports`) > "drinkcentrum-is-odoo odoo". Upon the first Odoo run, a configuration screen will appear to set the database name and Odoo access credentials:<br><img src="./img/odoo-create-db-screen.png" style="width:400px;"><br>Enter the same credentials (especially the database name) so the project works based on preconfigured values in [`.devcontainer/config/odoo.conf`](../.devcontainer/config/odoo.conf) and [`.devcontainer/docker-compose.yml`](../.devcontainer/docker-compose.yml). You can also select a specific language and country. The fiscal localization (taxes, etc.) will be configured according to the selected country. You can also check the box to load demo data.
 
-- Po úvodnom vytvorení databázy sa ti zobrazí prihlasovacia obrazovka. Ak si zadal horeuvedené prihlasovacie údaje, tak sa prihlásiš pomocou uživateľa `test@run.sk` a hesla `odoo`.
+- After the initial database creation, the login screen will appear. If you entered the credentials above, you can log in using the username `test@run.sk` and password `odoo`.
 
-- V zobrazenom zozname applikácií vyhľadaj modul `my_module` a aktivuj ho. Po aktivácii modulu budeš zrejme presmerovaný na obrazovku "Discuss" > "Inbox". Ak sa chceš dostať do nainštalovaného modulu `my_module`, tak klikni vľavo hore na ![Home Menu](./img/odoo-home-menu.png) a zvoľ si v ňom požadovaný modul.
+- Search for the `my_module` module in the displayed list of applications and activate it. After activating the module, you will likely be redirected to the "Discuss" > "Inbox" screen. To access the installed `my_module` module, click the top left icon ![Home Menu](./img/odoo-home-menu.png) and select the desired module.
 
-### Viacere databázy
+### Multiple databases
 
-Na vytvorenie ďalšej Odoo databázy použi nasledovný postup:
+To create another Odoo database, use the following procedure:
 
-- Súc vo VS Code v devcontaineri spusti v konzole príkaz `odoo`.
-- Otvor si [URL správcu databáz](http://localhost:50030/web/database/manager).
-- Klikni na "Create Database" a vytvor novú databázu podľa horeuvedeného návodu. Zmeň len "Database Name" napr. na `odoo_1`.
+- Once in VS Code in the devcontainer, run the `odoo` command in the console.
+- Open the [database manager URL](http://localhost:50030/web/database/manager).
+- Click "Create Database" and create a new database according to the guide above. Just change the "Database Name" to, e.g., `odoo_1`.
 
-Pokiaľ sa príkaz `odoo` spustí bez explicitného určenia databázy, tak je možné databazu prepnúť pri prihlasovaní do Odoo.
-Pokiaľ sa prikaz `odoo` spustí s explicitným určením databázy (napr. `odoo -d odoo_1`), tak nie je možné pri prihlásení prepnúť databázu.
+If the `odoo` command is started without explicitly specifying a database, you can switch databases when logging into Odoo.
+If the `odoo` command is started with an explicit database specified (e.g., `odoo -d odoo_1`), you cannot switch databases at login.
 
-Viacere databázy sa dajú využiť napr. tak, že v jednej máš natiannuté demo data Odoo a druhá je čistá, pripravená
-na nahrávanie produkčných dat. Na spustenie dvoch súčasne bežiacich inštancií Odoo nad rôznymi databázami si otvor bežiacu Odoo aplikáciu v dvôch rôznych prehliadačoch (pípadne použi anonymné okno dané prehliadača) a v každom si zvoľ inú databázu.
+Multiple databases can be used, for example, to keep one loaded with Odoo demo data and have a second clean database ready for production data upload. To run two concurrent Odoo instances with different databases, open the running Odoo application in two different browsers (or use an incognito window of the given browser) and select a different database in each.
 
-### Reset databázy
+### Database reset
 
-Ak si popri testovaní rôzných možností zaplietol okolnosti v databáze tak, že by bolo najlepšie začať odznova, tak to sprav nasledovne:
+If you messed up the database during testing and it would be best to start over, do the following:
 
-- Otvor si [URL správcu databáz](http://localhost:50030/web/database/manager).
-- Klikni na "Delete" a zadaj "Master password" (malo by byť nastavené na `odoo` ak si DB vytvoril podľa horeuvedeného návodu).
-- Vytvor databázu odznova podľa horeuvedeného návodu.
+- Open the [database manager URL](http://localhost:50030/web/database/manager).
+- Click "Delete" and enter the "Master password" (it should be set to `odoo` if you created the DB according to the guide above).
+- Recreate the database according to the guide above.
 
-### Export a import databázy
+### Export and import database
 
-Toto je popísané v návode k [spusteniu projektu v produkčnom prostredí cez Docker](prodcontainer-deployment.md).
+This is described in the guide on [running the project in a production environment via Docker](prodcontainer-deployment.md).
 
-## Prístup k databáze
+## Database access
 
-Na prácu s databázou sú v devcontaineri pripravené tri možnosti:
+Three options are prepared in the devcontainer for working with the database:
 
-- **PgAdmin** - vo VS Code v záložke "Ports" (`CTRL P` > `view ports`) klikni na link "drinkcentrum-is-odoo pgadmin" (port tohto linku sa mení lebo PgAdmin beží ako osobitná služba - viď `docker-compose.yml`). Prístupy na prihlásenie do PgAdmina sú užívateľ `test@run.sk` a heslo `odoo` (viď viď `docker-compose.yml` > `services` > `pgadmin` > `environment`). Pri prvom prihlásení je potrebné pripojiť databázu:
-  - Klikni na "Add New Server":<br>![Add New Server](./img/pgadmin-add-new-server.png).
-  - Vyplň údaje pripojenia k DB (heslo je `odoo`):<br><img src="./img/pgadmin-register-server-general.png" style="width:400px;"><br><br><img src="./img/pgadmin-register-server-connection.png" style="width:400px;">
-- **SQLTools** rozšírenie vo VS Code - v ľavom bočnom menu klikni na ikonu "SQLTools" rozšírenie (![SQLTools](./img/vs-code-sqltools-icon.png)) a pri dostupnom pripojení "Project DB" klikni vpravo na zelenú ikonu zásuvky:<br>![Connect](./img/vs-code-sqltools-connections.png).
-- **psql** - na spustenie konzolového nástroja buď spusti vo VS Code v konzole (`CTRL SHIFT T`) príkaz `psql -h db -d odoo -U odoo` a následne zadaj heslo `odoo`. Alebo spusti v konzole príkaz `make db-cli`, ktorý je vlastne aliasom / skratkou k predošlému príkazu (viď `Makefile`). Na rýchle oboznámenie sa s prácou v `psql` si pozri napríklad tento [ťahák](https://quickref.me/postgres.html). Na ukončenie práce s `psql` zadaj `\q`.
+- **PgAdmin** - in VS Code in the "Ports" tab (`CTRL P` > `view ports`), click the link "drinkcentrum-is-odoo pgadmin" (the port of this link changes because PgAdmin runs as a separate service - see `docker-compose.yml`). The credentials to log into PgAdmin are username `test@run.sk` and password `odoo` (see `docker-compose.yml` > `services` > `pgadmin` > `environment`). On first login, you need to connect the database:
+  - Click "Add New Server":<br>![Add New Server](./img/pgadmin-add-new-server.png).
+  - Fill in the DB connection details (password is `odoo`):<br><img src="./img/pgadmin-register-server-general.png" style="width:400px;"><br><br><img src="./img/pgadmin-register-server-connection.png" style="width:400px;">
+- **SQLTools** extension in VS Code - click the "SQLTools" extension icon (![SQLTools](./img/vs-code-sqltools-icon.png)) in the left side menu, and under the available connection "Project DB", click the green plug icon on the right:<br>![Connect](./img/vs-code-sqltools-connections.png).
+- **psql** - to run the console tool, either run the `psql -h db -d odoo -U odoo` command in the VS Code terminal (`CTRL SHIFT T`) and enter password `odoo`, or run `make db-cli` in the console, which is an alias/shortcut for the previous command (see `Makefile`). To quickly get acquainted with working in `psql`, see this [cheat sheet](https://quickref.me/postgres.html). To exit `psql`, type `\q`.
 
-## Popis prostredia
+## Environment description
 
-Inštalácia Odoo sa nachádza v `/usr/lib/python3/dist-packages/odoo` a do projektového priečinku je nalinkovaná ako `odoo-sources` (symbolický link). Nainštalované Odoo moduly sa nachádzajú v priečinku `odoo-sources/addons`. Základné moduly (`res`, `ir`) sa nachádzajú v priečinku `odoo-sources/addons/base`.
+Odoo is installed in `/usr/lib/python3/dist-packages/odoo` and linked into the project folder as `odoo-sources` (symbolic link). Installed Odoo modules are located in the `odoo-sources/addons` folder. Core modules (`res`, `ir`) are located in the `odoo-sources/addons/base` folder.
 
-Príkaz `odoo-bin` je v devcontaineri dostupný ako `odoo`. [Popis dostupných parametrov](https://www.odoo.com/documentation/17.0/developer/reference/cli.html) pre tento príkaz.
+The `odoo-bin` command is available in the devcontainer as `odoo`. [Description of available parameters](https://www.odoo.com/documentation/17.0/developer/reference/cli.html) for this command.
 
-Konfiguračný súbor je `.devcontainer/config/odoo.conf`.
+The configuration file is `.devcontainer/config/odoo.conf`.
 
-Nové interné (nami napísané) moduly sa pridávajú do priečinka `extra-addons`. Nové externé (stiahnuté) moduly sa pridávajú do priečinka `vendor-addons`.
+New internal (custom written) modules are added to the `extra-addons` folder. New external (downloaded) modules are added to the `vendor-addons` folder.
 
-### Doinštalovanie Python balíčkov
+### Installing Python packages
 
-Na doinštalovanie Python balíčkou pomocou príkazu `pip3` je potrebné zmeniť `.devcontainer/Dockerfile.dev-odoo17` a to nasledovným spôsobom:
+To install additional Python packages using `pip3`, you need to modify `.devcontainer/Dockerfile.dev-odoo17` as follows:
 
-- V sekcii `# Install following Python packages:` pridaj potrebné balíčky.
-- Znovu-vystavaj Docker obraz podľa inštrukcií v `.devcontainer/Dockerfile.dev-odoo17` > `BUILD & RUN COMMANDS:`.
-- Vo VS Code stlač `CTRL SHIFT P` a vyber `Dev Containers: Rebuild Without Cache...`.
+- Add the necessary packages in the `# Install following Python packages:` section.
+- Rebuild the Docker image according to the instructions in `.devcontainer/Dockerfile.dev-odoo17` > `BUILD & RUN COMMANDS:`.
+- In VS Code, press `CTRL SHIFT P` and select `Dev Containers: Rebuild Without Cache...`.
 
-Na to, aby sa urobené zmeny efektívne zdieľali s ostatnými, je potrebné nový Docker obraz potlačiť na DockerHub podľa inštrukcií v `.devcontainer/Dockerfile.dev-odoo17` > `PUBLISH ON DOCKERHUB:`.
+To effectively share the changes with others, you need to push the new Docker image to DockerHub according to the instructions in `.devcontainer/Dockerfile.dev-odoo17` > `PUBLISH ON DOCKERHUB:`.
 
-## Bežná práca
+## Everyday work
 
-Pri bežnej práci na projekte je postačujúce vo VS Code na prepnutie do devcotainera stlačiť `CTRL SHIFT P` a vybrať `Dev Containers: Reopen in Container`. Počkaj kým sa VS Code prepne do devcontainera.
+For daily work on the project, it is sufficient in VS Code to press `CTRL SHIFT P` and select `Dev Containers: Reopen in Container` to switch to the devcontainer. Wait for VS Code to switch to the devcontainer.
 
-Prí práci na `my_module` (v databaze `odoo`) vieš použiť nasledovné príkazy:
+When working on `my_module` (in the `odoo` database), you can use the following commands:
 
-- **Spustenie Odoo** s tým že sa aktualizuje `my_module` podľa posledncýh zmien: `odoo -d odoo -u my_module`
-  - Na aktualizáciu viacerých modulov naraz použi `-u my_module_1,my_module_2`.
-  - **Výstup prikazu** sa zapisuje do `/var/log/odoo/odoo.log`. Nastavené je to v súbore `.devcontainer/config/odoo.conf` > `logfile` - ak by sa tento konfig zakomentoval, tak by sa výstup zapisoval priamo do konzoly. Priečinok `/var/log/odoo` je do projektového priečinku nalinkovaný ako `tmp/log`. Inou možnosťou, ako zachytiť výstup do súboru `odoo.log` priamo v projektovom priečinku, je použiť `odoo -d odoo -u my_module > odoo.log 2>&1`.
-  - Ak chceš použiť **debugger** tak spusti: `python3 -m debugpy --listen 0.0.0.0:5678 /usr/bin/odoo -d odoo -u my_module` a naslédne stlač `SHIFT F5` (na zastavenie automaticky spusteného debug pripojenia) a potom stlač `F5` (na spustenie debug pripojenia na základe ['.vscode/launch.json`](../.vscode/launch.json)).
-  - Prípadne môžeš k uvedeným `odoo` príkazom pripojiť aj [`--dev` parameter](https://www.odoo.com/documentation/17.0/developer/reference/cli.html#cmdoption-odoo-bin-dev)
-- Na opätovnú aktualizáciu modulu `my_module` je potrebné stopnúť spustený `odoo` príkaz pomocou `CTRL C` a opäť ho spustiť horeuvedeným spôsobom.
+- **Run Odoo** and update `my_module` with the latest changes: `odoo -d odoo -u my_module`
+  - To update multiple modules at once, use `-u my_module_1,my_module_2`.
+  - **Command output** is written to `/var/log/odoo/odoo.log`. This is configured in the `.devcontainer/config/odoo.conf` > `logfile` file. If this configuration were commented out, the output would print directly to the console. The `/var/log/odoo` folder is linked to the project folder as `tmp/log`. Another option to capture output to the `odoo.log` file directly in the project folder is to use `odoo -d odoo -u my_module > odoo.log 2>&1`.
+  - If you want to use the **debugger**, run: `python3 -m debugpy --listen 0.0.0.0:5678 /usr/bin/odoo -d odoo -u my_module` and then press `SHIFT F5` (to stop the automatically started debug connection) and then press `F5` (to start the debug connection based on ['.vscode/launch.json`](../.vscode/launch.json)).
+  - Optionally, you can also append the [`--dev` parameter](https://www.odoo.com/documentation/17.0/developer/reference/cli.html#cmdoption-odoo-bin-dev) to the `odoo` commands.
+- To update the `my_module` module again, stop the running `odoo` command using `CTRL C` and run it again in the same way as above.
 
-Tieto príkazy nie je potrebné zakaždým zadávať znovu, pretože v devcontaineri je funkčná história príkazov v konzole.
+You don't need to type these commands every time, as the console command history is fully functional in the devcontainer.
 
-Ak si chceš zobraziť logy bežiaceho `odoo` procesu, tak klikni na "Remote Explorer" (![Remote Explorer](./img/vs-code-remote-explorer-icon.png)) v bočnom menu, v zozname "Dev Containers" výhľadaj kontajner projektu, klikni naň právým tlačítkom myši a v kontextovom menu vyber "Show Container Log".
+If you want to view the logs of the running `odoo` process, click "Remote Explorer" (![Remote Explorer](./img/vs-code-remote-explorer-icon.png)) in the side menu, search for the project container in the "Dev Containers" list, right-click it, and select "Show Container Log" from the context menu.
 
-### Spustenie testov
+### Running tests
 
-Testy v `extra-addons/*/tests/` sú Odoo natívne unit testy (`TransactionCase`). Dajú sa spustiť dvoma spôsobmi:
+Tests in `extra-addons/*/tests/` are native Odoo unit tests (`TransactionCase`). They can be run in two ways:
 
-#### Spôsob 1: `odoo --test-enable` (štandardný)
+#### Method 1: `odoo --test-enable` (standard)
 
 ```bash
 odoo -d odoo -u my_module --test-enable --stop-after-init --no-http
 ```
 
-Výsledky testov sa zapisujú do logu (do súboru `tmp/log/odoo.log` v projektovom priečinku). Na ich rýchle vyhľadanie použi regex `(FAIL|ERROR|failed|error\(s\)|odoo\.tests\.result)`.
+Test results are written to the log (to the `tmp/log/odoo.log` file in the project folder). To find them quickly, use the regex `(FAIL|ERROR|failed|error\(s\)|odoo\.tests\.result)`.
 
-#### Spôsob 2: `pytest-odoo` (vhodnejší pre TDD)
+#### Method 2: `pytest-odoo` (more suitable for TDD)
 
-`pytest-odoo` je nainštalovaný v devcontaineri (cez `requirements.txt`). Oproti `--test-enable` má tieto výhody:
+`pytest-odoo` is installed in the devcontainer (via `requirements.txt`). It offers the following advantages over `--test-enable`:
 
-- výstup priamo v konzole (farebný, prehľadný)
-- filtrovanie testov cez `-k "názov_testu"` alebo `-m "marker"`
-- modul sa upgraduje len raz keď je potrebné, nie pri každom spustení testov
+- output directly in the console (colored, clear)
+- filtering tests via `-k "test_name"` or `-m "marker"`
+- the module is upgraded only once when needed, not on every test run
 
-**Postup:**
+**Procedure:**
 
-1. Najprv **upgraduj modul** (len keď sa zmenil kód modulu):
+1. First **upgrade the module** (only when the module's code has changed):
 
    ```bash
    odoo -d odoo -u my_module --stop-after-init
    ```
 
-2. Spusti **testy cez pytest**:
+2. Run **tests via pytest**:
 
    ```bash
    pytest --odoo-database=odoo --odoo-config=/etc/odoo/odoo.conf \
        extra-addons/my_module/tests/ -v
    ```
 
-   Príklady filtrovania:
+   Filtering examples:
 
    ```bash
-   # Len jeden testovací súbor
+   # Only one test file
    pytest --odoo-database=odoo --odoo-config=/etc/odoo/odoo.conf \
        extra-addons/my_module/tests/test_something.py -v
 
-   # Len testy obsahujúce v názve "avco"
+   # Only tests containing "avco" in the name
    pytest --odoo-database=odoo --odoo-config=/etc/odoo/odoo.conf \
        extra-addons/my_module/tests/ -k "avco" -v
    ```
 
-> **Poznámka:** `pytest-odoo` vždy spúšťa testy ako `post_install` — preto je potrebné mať modul pred spustením testov aktualizovaný.
+> **Note:** `pytest-odoo` always runs tests as `post_install` — therefore, the module must be updated before running the tests.
 
-### Pripojenie Ventor aplikácie
+### Connecting Ventor application
 
-[Ventor PRO](https://ventor.app/) aplikáciu pripojíš k Odoo bežiacemu na notebooku/počítači nasledovným spôsobom:
+To connect the [Ventor PRO](https://ventor.app/) application to Odoo running on your laptop/computer, do the following:
 
-- Notebook/počítač a mobil musia byť pripojené k rovnakej lokálnej sieti, t.j. najjednoduchšie k tej istej WiFi sieti.
-- Zisti adresu notebooku/počítača v sieti. Napríklad pomocou príkazu (Linux) `hostname -I` v konzole. Bude to adresa typu `192.168.x.x`.
-- V mobilnej aplikácii Ventor nastav adresu servera na `http://192.168.x.x:50030` (`x.x` nahraď podľa adresy notebooku/počítača, port je ten istý ako pri pristupe do Odoo z prehliadača na notebooku/počítači).
-- Ak by to nešlo, tak skontroluj či nie je aktivovaný firewall na notebooku/počítači:
-  - Linux (napríklad Ubuntu): `sudo ufw status` a ak je, tak ho deaktivuj príkazom `sudo ufw disable`
+- Your laptop/computer and mobile device must be connected to the same local network, i.e., most easily the same WiFi network.
+- Find your laptop/computer's IP address in the network. For example, using the command (Linux) `hostname -I` in the console. It will be an address like `192.168.x.x`.
+- In the Ventor mobile application, set the server address to `http://192.168.x.x:50030` (replace `x.x` with your laptop/computer's actual address, the port is the same as for accessing Odoo from the browser on your laptop/computer).
+- If it does not work, check if the firewall is active on your laptop/computer:
+  - Linux (e.g. Ubuntu): `sudo ufw status` and if it is, deactivate it using the command `sudo ufw disable`
 
-Ventor PRO [quickstart Guide](https://ventor.app/guides/ventor-quick-start-guide/). Testovacie čiarové kódy viď [tu](https://docs.google.com/document/d/1647nlhyQHnsKr95KXTAPdBhIgkO9sh6XzhOr-GMUIaU/edit?usp=sharing).
+Ventor PRO [quickstart Guide](https://ventor.app/guides/ventor-quick-start-guide/). For test barcodes see [here](https://docs.google.com/document/d/1647nlhyQHnsKr95KXTAPdBhIgkO9sh6XzhOr-GMUIaU/edit?usp=sharing).
 
-### Vyhľadávanie
+### Searching
 
-Keďže zdrojové súbory Odoo sú do projektu "len" nalinkované, tak VS Code v nich nevyhľadáva bez toho, aby sa v "SEARCH" paneli nešpecifikovali aj "files to include". Sú nasledovné možnosti pre hodnoty "files to include":
+Since the Odoo source files are "only" linked to the project, VS Code does not search in them unless "files to include" are specified in the "SEARCH" panel. The following options are available for "files to include":
 
-- `./*` - ak chceš vyhľadávať **aj v Odoo zdrojových súboroch**
-- `./*/**/*.py` - ak chceš vyhľadávať **len v určitom type súborov** (tu je príklad pre `.py` súbory)
-- `./odoo-sources` - ak chceš vyhľadávať **len v Odoo zdrojových súboroch**
-- `./odoo-sources/**/*.py` - ak chceš vyhľadávať **len v Odoo zdrojových súboroch** a **len v určitom type súborov** (tu je príklad pre `.py` súbory)
+- `./*` - if you want to search **also in Odoo source files**
+- `./*/**/*.py` - if you want to search **only in a specific file type** (this is an example for `.py` files)
+- `./odoo-sources` - if you want to search **only in Odoo source files**
+- `./odoo-sources/**/*.py` - if you want to search **only in Odoo source files** and **only in a specific file type** (this is an example for `.py` files)
 
-Ak chceš z vyhľadávania vylúčiť všetky súbory, ktoré sú súčasťou testov (aj v Odoo zdrojových súboroch), tak ako "files to exclude" zadaj: `./*/**/tests/`.
+If you want to exclude all files that are part of tests from the search (including Odoo source files), specify `./*/**/tests/` as "files to exclude".
 
-Na vyhľadanie modelov, ktoré dedia (rozširujú) daný model, použi regex. Napríklad pre model `res.config.settings` by to bolo: `_inherits?\s*=\s*['"]res.config.settings['"]`.
+To search for models that inherit (extend) a given model, use regex. For example, for the model `res.config.settings` it would be: `_inherits?\s*=\s*['"]res.config.settings['"]`.
 
 ### Git
 
-Vytvorenie novej vetvy: `git switch -c nova-vetva`.
+Creating a new branch: `git switch -c new-branch`.
 
-Zoznam vetiev, ktoré ešte nie sú pripojené do `main` vetvy: `git branch -r --no-merged main`.
+List of branches not yet merged into the `main` branch: `git branch -r --no-merged main`.

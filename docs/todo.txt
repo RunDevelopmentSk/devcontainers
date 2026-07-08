@@ -1,21 +1,21 @@
-- zapracuj agentické toolkity:
+- integrate agentic toolkits:
     x https://github.com/obra/superpowers
-        - pridaj ešte sekciu do docs/ai-agents.md
+        - add a section to docs/ai-agents.md
     x https://github.com/github/spec-kit
     - https://github.com/garrytan/gstack
     -? https://github.com/bmad-code-org/bmad-method
     -? https://github.com/Fission-AI/openspec
     -? https://github.com/open-gsd/gsd-core
 - docs/ai-agents.md
-    - pridaj popis ako nastaviť full permissions pre jednotlivých agentov
-- urob namespacing existujúcich agent artefaktov podľa speckit:
+    - add description of how to set full permissions for individual agents
+- namespace existing agent assets according to speckit:
     - commands: speckit.
     - skills: speckit-
 
-- oddeľ ako doplnok aj:
+- also separate as add-ons:
     - `_pre-commit`
     - `_runtools`
-- zváž nasledovný refactoring doplnkov podľa toho ako sa to robí oficiálne (feature):
+- consider the following refactoring of add-ons according to how it is done officially (feature):
     - https://chatgpt.com/c/6a27c715-9ab4-83ed-872f-6dbd508d2407
     - https://chatgpt.com/s/t_6a44bdb1257081918393efe5ce8dbecd
 
@@ -34,13 +34,13 @@
         "shutdownAction": "stopCompose"
         }
 - _agents:
-    - agent na urobenie code-review pre danú reviziu alebo pre danú vetvu. Nech je možné ho tiež spustiť v móde kedy sa spustí paralélne viacero subagentov a všetky ich pripomienky sa zvážia.
-    x agent na prepis poslednej odpovede alebo chatu do .md súboru
-        - upravho tak aby sa to dalo urobiť z iného chatu (na základe response id)
-    - agent na skomprimovanie chatu do .md súboru - pre oovzdanie chatu onému agentovi a tiež pre prípad prekročenia kontextového okna
-        - upravho tak aby sa to dalo urobiť z iného chatu (na základe response id)
-    - pridaj zapracovanie https://github.com/obra/superpowers
-    - odlaď chybu pri inštalácii v `php-8.3_mysql-5.7` devcontaineri u Vinca na iBooku:
+    - agent for running code-review for a given revision or branch. Make it possible to run it in a mode where multiple subagents run in parallel and all their comments are considered.
+    x agent to rewrite the last response or chat into a .md file
+        - adjust it so it can be done from another chat (based on response id)
+    - agent to compress chat into a .md file - for handing over the chat to another agent and also in case of exceeding the context window
+        - adjust it so it can be done from another chat (based on response id)
+    - add integration of https://github.com/obra/superpowers
+    - debug installation error in `php-8.3_mysql-5.7` devcontainer on Vinco's iBook:
         ```
         Installing Antigravity CLI...
         ⠋ Detecting system environment...
@@ -75,79 +75,79 @@
         ```
 
 ---
-Ako písať todo:
+How to write todo:
 
 *****************************************
-POZNÁMKY K HLAVNÉMU ZADANIU (~TIKETU) ABC
+NOTES ON MAIN TASK (~TICKET) ABC
 *****************************************
-x dorob toto
-- skontroluj hento
-- oprav tam chybu
-- na stránke KLM:
-    - skontroluj toto
-    x dokonči hento
-    x? ako to mám urobiť?
-        >> Klient povedal že takto...
-- prelož hentamto
--? tomuto fakt nerozumiem. Ako to mám spraviť?
--! na toto určite nezabudni!
--+ toto v pôvodnom odhade nebolo
-x+ toto v pôvodnom odhade nebolo tiež no spravil som to
+x finish this
+- check that
+- fix the bug there
+- on the KLM page:
+    - check this
+    x finish that
+    x? how should I do this?
+        >> Client said like this...
+- translate that
+-? I really don't understand this. How should I do it?
+-! definitely do not forget this!
+-+ this was not in the original estimate
+x+ this was also not in the original estimate but I did it
 
 -----------------------------------------------------------------
-Poznámky k podzadaniu (~podúlohe tiketu) alebo podsekcia poznámok
+Notes on sub-task (~sub-task of the ticket) or notes subsection
 -----------------------------------------------------------------
-- na podúlohe som nodeokončil hentamto
+- on the sub-task I have not finished that
 
 ------
-Návrhy
+Suggestions
 ------
-- toto síce zatiaľ klient nechcel ale nakodena funkcionalita by sa mohla rozšíriť takto, treba sa ho spýtať
+- the client did not want this yet but the coded functionality could be extended like this, need to ask them
 
 *****************************
-SYNTAX POZNÁMOK JE NASLEDOVNÁ
+THE SYNTAX OF NOTES IS AS FOLLOWS
 *****************************
-- úloha
-x urobená úloha
--x zrušená úloha
--! dôležitá úloha
-x! urobená dôležitá úloha
--? otázka
-x? zodpovedaná otázka
-    >> Odpoveď na otázku
--?! dôležitá otázka
-x?! zodpovedaná dôležitá otázka
-    >> Odpoveď na otázku
--+ úloha ktorá nebola v časovom odhade
--+! tutti-brutti úloha ktorá nebola v časovom odhade
-x+ úloha ktorá nebola v časovom odhade no urobila sa
-- úloha s podúlohami
-    - podúloha
-    x urobená podúloha
-    -? otázka k úlohe
-    x? zodpovedaná otázka k úlohe >> Odpoveď na otázku
-- poznámka so zoznamom, ktorého položky nie sú podúlohami:
-    -- toto nie je podúloha
-    -- ani toto nie je podúloha
+- task
+x completed task
+-x cancelled task
+-! important task
+x! completed important task
+-? question
+x? answered question
+    >> Answer to the question
+-?! important question
+x?! answered important question
+    >> Answer to the question
+-+ task that was not in the estimated time
+-+! tutti-brutti task that was not in the estimated time
+x+ task that was not in the estimated time but was done
+- task with sub-tasks
+    - sub-task
+    x completed sub-task
+    -? question regarding the task
+    x? answered question regarding the task >> Answer to the question
+- note with a list whose items are not sub-tasks:
+    -- this is not a sub-task
+    -- neither is this a sub-task
 
 ***********************
-HLAVNÉ ZADANIE (~TIKET)
+MAIN TASK (~TICKET)
 ***********************
 - ...
 
 ------------------------------------------------------
-Podzadanie (~podúloha tiketu) alebo podsekcia poznámok
+Sub-task (~sub-task of the ticket) or notes subsection
 ------------------------------------------------------
 - ...
 
 ---------------------------------------------
-Vyhľadávanie úloh pomocou regulárnych výrazov
+Searching for tasks using regular expressions
 ---------------------------------------------
-- nedokončené úlohy (aj s otázkami):    ^\s*-[^\-x]
-- dokončené úlohy (aj s otázkami):      ^\s*x\??!?
-- nedokončené úlohy (bez otázok):       ^\s*-[^\-x\?]
-- dokončené úlohy (bez otázok):         ^\s*x!?[^\?]
-- zrušené úlohy:                        ^\s*-x
-- nezodpovedané otázky:                 ^\s*-\?!?
-- zodpovedané otázky:                   ^\s*x\?!?
-- úlohy, ktoré neboli v časovom odhade: ^\s*[\-x]\+!?
+- unfinished tasks (with questions):    ^\s*-[^\-x]
+- completed tasks (with questions):      ^\s*x\??!?
+- unfinished tasks (without questions):   ^\s*-[^\-x\?]
+- completed tasks (without questions):     ^\s*x!?[^\?]
+- cancelled tasks:                        ^\s*-x
+- unanswered questions:                 ^\s*-\?!?
+- answered questions:                   ^\s*x\?!?
+- tasks that were not in the estimated time: ^\s*[\-x]\+!?

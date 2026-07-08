@@ -1,95 +1,76 @@
 ---
 name: add-agent-asset
 description: >-
-  Pridávanie a úprava agentových artefaktov (skills, rules, slash commands,
-  subagentov) v súlade s unifikovanou konfiguráciou AI agentov popísanou v
-  docs/ai-agents.md. Použi pri "vytvor/uprav skill | rule | command | subagent",
-  "pridaj agentový artefakt".
+  Adding and modifying agent artifacts (skills, rules, slash commands,
+  subagents) in accordance with the unified configuration of AI agents described in
+  docs/ai-agents.md. Use when "create/edit skill | rule | command | subagent",
+  "add agent artifact".
 ---
 
 # add-agent-asset
 
-Skill na bezpečné pridávanie nových agentových artefaktov tak, aby fungovali
-naprieč všetkými agentmi (Auggie, Claude Code, Antigravity, Codex).
-**Zdroj pravdy je `docs/ai-agents.md`** – tento skill je len procedúra a checklist;
-detaily formátov a symlinkov needuplikuj, odkazuj naň.
+Skill for safely adding new agent artifacts so that they work across all agents (Auggie, Claude Code, Antigravity, Codex).
+**The source of truth is `docs/ai-agents.md`** – this skill is only a procedure and checklist; do not duplicate symlink or format details, refer to it instead.
 
-## Kedy použiť
+## When to use
 
-- „vytvor/uprav skill", „pridaj rule", „nový slash command", „nový subagent",
-- „pridaj agentový artefakt" / „uprav konfiguráciu agentov".
+- "create/edit skill", "add rule", "new slash command", "new subagent",
+- "add agent artifact" / "modify agent configuration".
 
-## 1. Rozhodni typ artefaktu
+## 1. Determine artifact type
 
-- **rule** – vždy/často platné guardrails (`.agents/rules/*.md`),
-- **skill** – opakovateľný postup/workflow (`.agents/skills/<name>/SKILL.md`),
-- **command** – krátky vstupný bod `/name` (`.agents/commands/*.md`),
-- **subagent** – izolovaný špecialista s vlastným promptom (`.agents/agents/*`).
+- **rule** – always/frequently valid guardrails (`.agents/rules/*.md`),
+- **skill** – repeatable procedure/workflow (`.agents/skills/<name>/SKILL.md`),
+- **command** – short entry point `/name` (`.agents/commands/*.md`),
+- **subagent** – isolated specialist with its own prompt (`.agents/agents/*`).
 
-Ak nejde o nový typ artefaktu, **nové symlinky netreba** – existujúce v
-`docs/ai-agents.md` už zabezpečujú cross-tool discovery.
+If it is not a new type of artifact, **new symlinks are not needed** – existing ones in `docs/ai-agents.md` already ensure cross-tool discovery.
 
-## 2. Konvencie
+## 2. Conventions
 
-- názvy kebab-case (napr. `deploy-staging`, `review-pr`),
-- obsah aj `description` **po slovensky**,
-- `description` drž stručný a výstižný – pri `agent_requested` / `model_decision`
-  podľa neho agent rozhoduje o aktivácii.
+- kebab-case names (e.g., `deploy-staging`, `review-pr`),
+- content and `description` **in English**,
+- keep `description` brief and clear – the agent decides on activation based on it during `agent_requested` / `model_decision`.
 
-## 3. Kuchárka podľa typu
+## 3. Cookbook by type
 
 ### Rule (`.agents/rules/<name>.md`)
-- Kombinovaný frontmatter: `description` + `type:` (Auggie:
-  `always_apply|agent_requested`, `manual` CLI preskakuje – funguje len v IDE
-  rozšíreniach) + `trigger:` (Antigravity: `always_on|glob|model_decision|manual`).
-  Neznáme kľúče každý agent ignoruje.
-- Claude Code a Codex nemajú rules priečinok → ak má `always_apply|always_on` rule platiť aj pre nich,
-  pridaj `@.agents/rules/<name>.md` import do `AGENTS.md`.
+- Combined frontmatter: `description` + `type:` (Auggie: `always_apply|agent_requested`, `manual` is skipped by CLI – only works in IDE extensions) + `trigger:` (Antigravity: `always_on|glob|model_decision|manual`). Unknown keys are ignored by each agent.
+- Claude Code and Codex do not have a rules folder -> if the `always_apply|always_on` rule should apply to them as well, add a `@.agents/rules/<name>.md` import to `AGENTS.md`.
 
 ### Skill (`.agents/skills/<name>/SKILL.md`)
-- Adresár + `SKILL.md` s **povinným** frontmatterom `name` a `description`.
-- Voliteľne podadresáre `scripts/`, `references/`, `assets/`.
-- Žiadna registrácia inde netreba – agenti skills auto-objavujú.
+- Directory + `SKILL.md` with **mandatory** frontmatter `name` and `description`.
+- Optional subdirectories `scripts/`, `references/`, `assets/`.
+- No registration is needed elsewhere – agents auto-discover skills.
 
 ### Command (`.agents/commands/<name>.md`)
-- Súbor `<name>.md` → `/name`; podadresár = namespace (`frontend/component.md`
-  → `/frontend:component`).
-- Frontmatter s poľom `description` (folded scalar, napr. `description: >-`).
-- **Codex** slash commands nepodporuje – tam použi priamo zodpovedajúci skill;
-  command nech je tenký vstupný bod odkazujúci na skill.
+- File `<name>.md` -> `/name`; subdirectory = namespace (`frontend/component.md` -> `/frontend:component`).
+- Frontmatter with a `description` field (folded scalar, e.g., `description: >-`).
+- **Codex** does not support slash commands – use the corresponding skill directly there; the command should be a thin entry point referencing the skill.
 
 ### Subagent (`.agents/agents/`)
-- Pridaj **oba** formáty pre toho istého agenta:
-  - `<name>.md` (Claude Code, Auggie): YAML frontmatter `name`, `description`,
-    voliteľne `color` (Auggie), `tools`, `model` (Claude); telo = systémový prompt,
-  - `<name>.toml` (Codex): `name`, `description`, `developer_instructions`
-    (systémový prompt), voliteľne `model`, `sandbox_mode`.
-- Antigravity súborových subagentov zatiaľ nepodporuje (len `define_subagent`
-  za behu) – needituj kvôli nemu nič navyše.
+- Add **both** formats for the same agent:
+  - `<name>.md` (Claude Code, Auggie): YAML frontmatter `name`, `description`, optionally `color` (Auggie), `tools`, `model` (Claude); body = system prompt,
+  - `<name>.toml` (Codex): `name`, `description`, `developer_instructions` (system prompt), optionally `model`, `sandbox_mode`.
+- Antigravity does not support file-based subagents yet (only `define_subagent` at runtime) – do not edit anything extra for it.
 
-## 4. Synchronizácia dokumentácie a registrov (DoD)
+## 4. Documentation and Registry Sync (DoD)
 
-- nový **always-apply rule** → doplň do zoznamu „Vždy platné prierezové pravidlá"
-  v `AGENTS.md` a pridaj `@`-import,
-- **nový typ artefaktu/agenta vyžadujúci nový symlink** → doplň riadok do tabuľky
-  symlinkov **aj** do `ln -s` bloku v `docs/ai-agents.md`,
-- ak vznikol nový command/skill, ktorý je vstupným bodom k inému, prepoj ich
-  odkazom (napr. command `/<name>` ↔ skill `<name>`).
+- new **always-apply rule** -> add to the list of "Always applicable cross-cutting rules" in `AGENTS.md` and add a `@`-import,
+- **new type of artifact/agent requiring a new symlink** -> add a line to the symlink table **and** to the `ln -s` block in `docs/ai-agents.md`,
+- if a new command/skill was created that is an entry point to another, link them with a reference (e.g., command `/<name>` <-> skill `<name>`).
 
-## 5. Overovací checklist (cross-tool)
+## 5. Verification Checklist (cross-tool)
 
-Po vytvorení over, že artefakt uvidí každý relevantný agent:
+After creation, verify that the artifact is visible to each relevant agent:
 
-- **Auggie** – skills natívne z `.agents/skills`; commands/agents/rules cez
-  `.augment/*` symlinky,
-- **Claude Code** – cez `.claude/*` symlinky; rules len cez `@`-import v `AGENTS.md`,
-- **Antigravity** – `.agents/*` natívne; commands cez symlink `workflows → commands`;
-  subagentov zo súborov nečíta,
-- **Codex** – `.agents/skills` a `AGENTS.md` natívne; subagentov z `.codex/agents`
-  (`.toml`) cez symlink; commands nepodporuje; rules len odvolaním z `AGENTS.md`.
+- **Auggie** – skills natively from `.agents/skills`; commands/agents/rules via `.augment/*` symlinks,
+- **Claude Code** – via `.claude/*` symlinks; rules only via `@`-import in `AGENTS.md`,
+- **Antigravity** – `.agents/*` natively; commands via symlink `workflows -> commands`; does not read subagents from files,
+- **Codex** – `.agents/skills` and `AGENTS.md` natively; subagents from `.codex/agents` (`.toml`) via symlink; does not support commands; rules only by reference from `AGENTS.md`.
 
-## Súvisiace
+## Related
 
-- `docs/ai-agents.md` – **zdroj pravdy** o unifikovanej konfigurácii a symlinkoch.
-- `.agents/rules/secret-safety.md` – pri artefaktoch nikdy nevkladaj tajomstvá (secrets) – ani do súborov, ani do promptov.
-- `.agents/commands/add-agent-asset.md` – párový command `/add-agent-asset` (vstupný bod k tomuto skillu).
+- `docs/ai-agents.md` – **source of truth** about unified configuration and symlinks.
+- `.agents/rules/secret-safety.md` – never include secrets in artifacts – neither in files nor in prompts.
+- `.agents/commands/add-agent-asset.md` – paired command `/add-agent-asset` (entry point to this skill).

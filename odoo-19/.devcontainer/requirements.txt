@@ -2,6 +2,6 @@
 
 pytest-odoo
 pre-commit
-# lint nástroje — verzie zarovnané s .pre-commit-config.yaml (ruff rev) / editorom
+# lint tools — versions aligned with .pre-commit-config.yaml (ruff rev) / editor
 ruff==0.7.4
 pylint==3.3.*

@@ -1,48 +1,48 @@
-# Programovací AI agenti
+# Programming AI Agents
 
-V devcontaineri sú dostupní nasledovní programovací AI agenti:
+The following programming AI agents are available in the devcontainer:
 
 - `auggie` (**Augment Code** CLI)
-- **Claude Code** (VS Code rozšírenie) a/alebo `claude` (Claude Code CLI)
+- **Claude Code** (VS Code extension) and/or `claude` (Claude Code CLI)
 - `agy` (**Antigravity** CLI)
-- **Codex** (VS Code rozšírenie) a/alebo `codex` (Codex CLI)
+- **Codex** (VS Code extension) and/or `codex` (Codex CLI)
 
-Aktuálnu verziu si môžeš do daného projektu stiahnúť z [github.com/RunDevelopmentSk/devcontainers](https://github.com/RunDevelopmentSk/devcontainers) > `_agents`.
+You can download the current version for a given project from [github.com/RunDevelopmentSk/devcontainers](https://github.com/RunDevelopmentSk/devcontainers) > `_agents`.
 
-Detaily použitia jednotlivých AI agentov sú popísané tu nižšie.
+Details on how to use individual AI agents are described below.
 
-## Zjednotená konfigurácia (`.agents/` + `AGENTS.md`)
+## Unified Configuration (`.agents/` + `AGENTS.md`)
 
-Pre všetkých agentov sa používa **jeden zdroj pravdy** pre projektové inštrukcie, workspace rules a skills naprieč všetkými agentmi:
+For all agents, **one source of truth** is used for project instructions, workspace rules, and skills across all agents:
 
-- [`AGENTS.md`](../AGENTS.md) v koreňovom adresári – hlavné projektové inštrukcie v štandardnom [agents.md](https://agents.md/) formáte. Akceptujú:
+- [`AGENTS.md`](../AGENTS.md) in the root directory – main project instructions in the standard [agents.md](https://agents.md/) format. Accepted by:
     - `auggie`
     - `claude` (symlink `CLAUDE.md`)
     - `agy`
     - `codex`
-- [`.agents/rules/`](../.agents/rules/) – modulárne workspace pravidlá. Akceptujú:
+- [`.agents/rules/`](../.agents/rules/) – modular workspace rules. Accepted by:
     - `auggie` (symlink `.augment/rules`)
-    - `claude` (odkaz v `AGENTS.md`)
+    - `claude` (reference in `AGENTS.md`)
     - `agy`
-    - `codex` (odkaz v `AGENTS.md`)
-- [`.agents/skills/`](../.agents/skills/) – cross-tool skills v štandardnom [agentskills.io](https://agentskills.io/) formáte. Akceptujú:
+    - `codex` (reference in `AGENTS.md`)
+- [`.agents/skills/`](../.agents/skills/) – cross-tool skills in the standard [agentskills.io](https://agentskills.io/) format. Accepted by:
     - `auggie`
     - `claude` (symlink `.claude/skills`)
     - `agy`
     - `codex`
-- [`.agents/commands/`](../.agents/commands/) – custom slash commands zdieľané naprieč agentmi; každý súbor `<name>.md` vytvára `/name` command. Akceptujú:
+- [`.agents/commands/`](../.agents/commands/) – custom slash commands shared across agents; each `<name>.md` file creates a `/name` command. Accepted by:
     - `auggie` (symlink `.augment/commands`)
     - `claude` (symlink `.claude/commands`)
     - `agy` (symlink `.agents/workflows`)
-- [`.agents/agents/`](../.agents/agents/) – subagenti zdieľaní naprieč agentmi. Akceptujú:
-    - `auggie` (symlink `.augment/agents`), formát `.md`
-    - `claude` (symlink `.claude/agents`), formát `.md`
-    - `codex` (symlink `.codex/agents`), formát `toml`
-- [`.agents/mcp_config.json`](../.agents/mcp_config.json) – zdieľaná JSON konfigurácia MCP serverov. Akceptujú:
+- [`.agents/agents/`](../.agents/agents/) – subagents shared across agents. Accepted by:
+    - `auggie` (symlink `.augment/agents`), `.md` format
+    - `claude` (symlink `.claude/agents`), `.md` format
+    - `codex` (symlink `.codex/agents`), `toml` format
+- [`.agents/mcp_config.json`](../.agents/mcp_config.json) – shared JSON configuration of MCP servers. Accepted by:
     - `agy`
     - `claude` (symlink `.mcp.json`)
 
-Príkazy na vytvorenie symbolických linkov sú (cesta k linkovanému priečinku alebo súboru je vždy uvedená relátivne voči polohe linku):
+The commands to create symbolic links are (the path to the linked folder or file is always relative to the location of the link):
 
 ```sh
 ln -s AGENTS.md CLAUDE.md
@@ -59,140 +59,140 @@ ln -s ../.agents/agents .codex/agents
 
 ### Rules
 
-Workspace rules sú v `.agents/rules/*.md` (Markdown s voliteľným YAML frontmatterom). Discovery podľa agenta:
+Workspace rules are in `.agents/rules/*.md` (Markdown with optional YAML frontmatter). Discovery by agent:
 
 | Agent       | Discovery                                                                             |
 | ----------- | ------------------------------------------------------------------------------------- |
-| Antigravity | natívne číta `.agents/rules/*.md`                                                     |
-| Auggie  | cez symlink `.augment/rules → ../.agents/rules`                                       |
-| Claude Code | nemá rule priečinok; podľa potreby `@.agents/rules/<file>.md` import z `AGENTS.md`    |
-| Codex       | nemá rules priečinok; podľa potreby `.agents/rules/<file>.md` odvolanie z `AGENTS.md` |
+| Antigravity | natively reads `.agents/rules/*.md`                                                   |
+| Auggie      | via symlink `.augment/rules → ../.agents/rules`                                       |
+| Claude Code | has no rules folder; imports from `AGENTS.md` via `@.agents/rules/<file>.md` as needed|
+| Codex       | has no rules folder; references from `AGENTS.md` via `.agents/rules/<file>.md` as needed|
 
-Auggie a Antigravity používajú **rôzne frontmatter kľúče**, ale každý ignoruje neznáme kľúče – súbory teda fungujú v oboch z jedného umiestnenia. Auggie rozlišuje `type: always_apply|agent_requested`; Antigravity `trigger: always_on|glob (+ globs:)|model_decision|manual`. Pre `agent_requested` / `model_decision` rozhoduje agent o aktivácii podľa `description:`. Oba frontmatter bloky sa dajú kombinovať v jednom súbore.
+Auggie and Antigravity use **different frontmatter keys**, but each ignores unknown keys – thus the files work in both from a single location. Auggie distinguishes `type: always_apply|agent_requested`; Antigravity uses `trigger: always_on|glob (+ globs:)|model_decision|manual`. For `agent_requested` / `model_decision`, the agent decides on activation based on the `description:`. Both frontmatter blocks can be combined in a single file.
 
-Príklad kompatibilného súboru:
+Example of a compatible file:
 
 ```markdown
 ---
-description: Krátky popis, kedy má agent toto pravidlo zohľadniť
+description: Short description of when the agent should consider this rule
 type: agent_requested
 trigger: model_decision
 ---
 
-# Názov pravidla
+# Rule Name
 
-- Konkrétne pravidlo alebo konvencia.
+- Specific rule or convention.
 - …
 ```
 
-### Subagenti
+### Subagents
 
-Zdieľaní subagentti sú definovaní v `.agents/agents/`. Keďže Claude Code a Auggie používajú **Markdown** (`.md`) a Codex **TOML** (`.toml`), adresár obsahuje oba formáty pre každého subagenta (`<name>.md` + `<name>.toml`). Každý agent si pri discovery zoberie súbory formátu, ktorý pozná; iné ignoruje.
+Shared subagents are defined in `.agents/agents/`. Since Claude Code and Auggie use **Markdown** (`.md`) and Codex uses **TOML** (`.toml`), the directory contains both formats for each subagent (`<name>.md` + `<name>.toml`). Each agent selects files in the format it recognizes during discovery and ignores the others.
 
-**Formáty:**
+**Formats:**
 
-- **`.md` (Claude Code, Auggie):** YAML frontmatter s poliami `name` (Claude), `description` (obaja), `color` (Auggie), voliteľne `tools` a `model` (Claude). Telo súboru je systémový prompt.
-- **`.toml` (Codex):** Polia `name`, `description`, `developer_instructions` (systémový prompt), voliteľne `model`, `sandbox_mode`.
+- **`.md` (Claude Code, Auggie):** YAML frontmatter with `name` (Claude), `description` (both), `color` (Auggie) fields, optionally `tools` and `model` (Claude). The body of the file is the system prompt.
+- **`.toml` (Codex):** `name`, `description`, `developer_instructions` (system prompt) fields, optionally `model`, `sandbox_mode`.
 
-**Antigravity** v súčasnosti nepodporuje súborovo definovaných subagentov (len dynamické vytváranie cez `define_subagent` tool za behu). Ak to Google officiálne zavedie, doplníme.
+**Antigravity** currently does not support file-defined subagents (only dynamic creation via `define_subagent` tool at runtime). If Google officially introduces this, we will add it.
 
-**Auggie** podporuje subagentov cez rovnaký `.augment/agents/` adresár (dajú sa vytvoriť aj cez wizard `/agents` v interaktívnom režime).
+**Auggie** supports subagents via the same `.augment/agents/` directory (they can also be created via the `/agents` wizard in interactive mode).
 
-### Čo zostane agent-špecifické
+### What remains agent-specific
 
-Nasledujúce súbory a priečinky sa nedajú zjednotiť do `.agents/` ani symlinkovať (rôzne formáty, naming alebo discovery mechanizmy). Detaily ku každej položke sú v sekciách [Auggie](#auggie), [Claude Code](#claude-code), [Antigravity](#antigravity) a [Codex](#codex) nižšie.
+The following files and directories cannot be unified into `.agents/` or symlinked (different formats, naming, or discovery mechanisms). Details on each item are in the [Auggie](#auggie), [Claude Code](#claude-code), [Antigravity](#antigravity), and [Codex](#codex) sections below.
 
-| Agent            | Špecifické artefakty (nepokryté zjednotenou konfiguráciou)                                                                                                                                              |
+| Agent            | Specific artifacts (not covered by unified configuration)                                                                                                                                              |
 | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Auggie**   | `.augment/settings.json` (+ `.local`), `.augmentignore`; MCP cez `auggie mcp` subpríkazy alebo `--mcp-config`                                                                                          |
-| **Claude Code**  | `CLAUDE.local.md` (privátne, gitignored), `.claude/settings.json` (+ `.local`; permissions/env/hooks)                                                                                                 |
-| **Antigravity**  | `GEMINI.md` (alternatívny workspace context), `.agents/hooks.json` (lifecycle hooks)                                                                                                                  |
-| **Codex**        | `AGENTS.override.md` (per-dir override), `.codex/config.toml` (model/sandbox/MCP/hooks), `.codex/hooks.json`, `.codex/rules/*.rules` (sandbox allow/block), `.agents/plugins/` + `plugins/` (pluginy) |
+| **Auggie**       | `.augment/settings.json` (+ `.local`), `.augmentignore`; MCP via `auggie mcp` subcommands or `--mcp-config`                                                                                           |
+| **Claude Code**  | `CLAUDE.local.md` (private, gitignored), `.claude/settings.json` (+ `.local`; permissions/env/hooks)                                                                                                   |
+| **Antigravity**  | `GEMINI.md` (alternative workspace context), `.agents/hooks.json` (lifecycle hooks)                                                                                                                  |
+| **Codex**        | `AGENTS.override.md` (per-dir override), `.codex/config.toml` (model/sandbox/MCP/hooks), `.codex/hooks.json`, `.codex/rules/*.rules` (sandbox allow/block), `.agents/plugins/` + `plugins/` (plugins) |
 
-**MCP**: zdieľaná JSON konfigurácia je v `.agents/mcp_config.json` (Claude Code aj Antigravity cez symlink `.mcp.json` vyššie). Auggie konfiguruje MCP servery cez `~/.augment/settings.json` (príkazy `auggie mcp add|add-json|list|remove`) alebo ad-hoc `--mcp-config`; zdieľanie cez `.agents/mcp_config.json` nie je priamo možné (iný formát). Codex používa TOML – `[mcp_servers]` v `.codex/config.toml` – zdieľanie cez symlink nie je možné.
+**MCP**: shared JSON configuration is in `.agents/mcp_config.json` (for both Claude Code and Antigravity via the `.mcp.json` symlink above). Auggie configures MCP servers via `~/.augment/settings.json` (commands `auggie mcp add|add-json|list|remove`) or ad-hoc `--mcp-config`; sharing via `.agents/mcp_config.json` is not directly possible (different format). Codex uses TOML – `[mcp_servers]` in `.codex/config.toml` – sharing via symlink is not possible.
 
-**Hooks** (lifecycle interceptory – `PreToolUse`, `PostToolUse`, `Stop` atď.):
+**Hooks** (lifecycle interceptors – `PreToolUse`, `PostToolUse`, `Stop` etc.):
 
-| Agent           | Súbor (projekt-level)                                                 | Formát                                                              |
+| Agent           | File (project-level)                                                  | Format                                                              |
 | --------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------- |
 | **Antigravity** | `.agents/hooks.json`                                                  | `{ "hooks": { "PreToolUse": [{ "matcher": "…", "hooks": […] }] } }` |
-| **Claude Code** | `.claude/settings.json` (alebo `.claude/settings.local.json`)         | `{ "hooks": { "PreToolUse": [{ "matcher": "…", "hooks": […] }] } }` |
-| **Codex**       | `.codex/hooks.json` **alebo** inline `[hooks]` v `.codex/config.toml` | JSON (rovnaká schéma) / TOML: `[[hooks.PreToolUse]]`                |
-| **Auggie**      | `.augment/settings.json` (alebo `.augment/settings.local.json`)       | `{ "hooks": { "PreToolUse": [{ "matcher": "…", "hooks": […] }] } }` |
+| **Claude Code** | `.claude/settings.json` (or `.claude/settings.local.json`)            | `{ "hooks": { "PreToolUse": [{ "matcher": "…", "hooks": […] }] } }` |
+| **Codex**       | `.codex/hooks.json` **or** inline `[hooks]` in `.codex/config.toml`   | JSON (same schema) / TOML: `[[hooks.PreToolUse]]`                   |
+| **Auggie**      | `.augment/settings.json` (or `.augment/settings.local.json`)          | `{ "hooks": { "PreToolUse": [{ "matcher": "…", "hooks": […] }] } }` |
 
-JSON schéma hooks je takmer identická medzi Antigravity, Claude Code a Auggie – líši sa iba umiestnenie súboru. Codex navyše ponúka ekvivalentný TOML zápis; ak existuje `hooks.json` aj inline `[hooks]` v tej istej vrstve, Codex načíta oboje a upozorní – odporúča sa jedno na vrstvu.
+The JSON schema for hooks is almost identical between Antigravity, Claude Code, and Auggie – only the file location differs. Codex also offers an equivalent TOML syntax; if both `hooks.json` and inline `[hooks]` exist in the same layer, Codex loads both and issues a warning – one per layer is recommended.
 
-### Poznámky
+### Notes
 
-- **Windows**: symlinky v gite fungujú spoľahlivo na Linuxe/macOS. Devcontainer beží na Linuxe, takže problém odpadá. Pri natívnom Windows klone je potrebné mať `git config core.symlinks=true` a používateľ právo `SeCreateSymbolicLinkPrivilege`:
-  - Nastaviť `git config --global core.symlinks true` - toto stačí urobiť raz globálne, na začiatku.
-  - Zapnúť "Settings" (`Win + I`) > "System" > "Advanced" > "For developers" - toto stačí urobiť raz globálne, na začiatku.
-- **Lokálne overrides**: súbory `*.local.md`, `*.local.json`, `*.local.toml` sú v `.gitignore` – použi ich na vlastné poznámky/nastavenia, ktoré nepatria do repa.
-- **Skill formát**: každý skill je adresár `.agents/skills/<name>/SKILL.md` s YAML frontmatterom `name` a `description` (spoločná požiadavka Auggie CLI, Codexu aj Antigravity).
-- Antigravity sa občas odvoláva na súbory vytvorené v priečinku `~/.gemini/antigravity-cli/brain`. Pre zjednodušenie prístupu k týmto súborom je vytvorený symlink `tmp/antigravity → ~/.gemini/antigravity-cli/brain`.
+- **Windows**: git symlinks work reliably on Linux/macOS. The devcontainer runs on Linux, so this issue is avoided. For a native Windows clone, `git config core.symlinks=true` is required, and the user must have `SeCreateSymbolicLinkPrivilege`:
+  - Set `git config --global core.symlinks true` - this only needs to be done once globally, at the beginning.
+  - Turn on "Settings" (`Win + I`) > "System" > "Advanced" > "For developers" - this only needs to be done once globally, at the beginning.
+- **Local overrides**: files matching `*.local.md`, `*.local.json`, `*.local.toml` are in `.gitignore` – use them for your private notes/settings that do not belong in the repository.
+- **Skill format**: each skill is a `.agents/skills/<name>/SKILL.md` directory with YAML frontmatter `name` and `description` (a common requirement for Auggie CLI, Codex, and Antigravity).
+- Antigravity occasionally references files created in the `~/.gemini/antigravity-cli/brain` directory. To simplify access to these files, a symlink is created: `tmp/antigravity → ~/.gemini/antigravity-cli/brain`.
 
-Sekcie nižšie popisujú inštaláciu, prihlásenie a tiež všetky konfiguračné možnosti jednotlivých agentov.
+The sections below describe installation, logging in, as well as all configuration options for individual agents.
 
 ## Auggie
 
-### Inštalácia
+### Installation
 
-CLI (`auggie`) je v devcontaineri nainštalované **automaticky** pomocou `.devcontainer/post-create.sh` > `# install Auggie CLI (Augment Code)`.
+The CLI (`auggie`) is installed **automatically** in the devcontainer using `.devcontainer/post-create.sh` > `# install Auggie CLI (Augment Code)`.
 
-### Prihlásenie
+### Logging In
 
-Na [app.augmentcode.com](https://app.augmentcode.com/) je potrebné vytvoriť si osobný účet. V prípade súkromného použitia si zaplatiť niektorý z plánov. **V prípade pracovného použitia** požiadať o pridanie svojho osobného užívateľa medzi [firemných úžívateľov](https://app.augmentcode.com/account/team).
+You need to create a personal account on [app.augmentcode.com](https://app.augmentcode.com/). For private use, pay for one of the plans. **For work use**, request to have your personal user added to the [company users](https://app.augmentcode.com/account/team).
 
-Pri prihlásení v `auggie` použiť osobný účet vytvorený na [app.augmentcode.com](https://app.augmentcode.com/).
+When logging into `auggie`, use the personal account created on [app.augmentcode.com](https://app.augmentcode.com/).
 
-Na firemnom účte je možné sledovať [kredity spotrebované jednotlivými užívateľmi](https://app.augmentcode.com/account/analytics).
+On the corporate account, you can track [credits consumed by individual users](https://app.augmentcode.com/account/analytics).
 
-### Príkazy
+### Commands
 
-Príkazy ("slash commands") na bežnú prácu s `auggie` CLI sú:
+Commands ("slash commands") for standard work with the `auggie` CLI are:
 
-- **výber modelu:** `/model`
-- **povolenie plných práv:**
-    - `auggie` ma vo východzej konfigurácii plné práva
-    - kontrolovana verzia: `/permissions` > `A` > `Locals settings (personal)` > ...
-- **výber konverzácie:** `/sessions`, tu je možné konverzácie aj mazať
-- **nová konverzácia:** `/new`
-- **premenovanie konverzácie:** `/rename <name>`
-- **uloženie konverzácie:** ukladá automaticky
-- **kompresia konverzácie:** nemá vstavaný príkaz
-- **vytvorenie kópie konverzácie:** `/fork`
-- **kopírovanie poslednej odpovede:** `/copy`
-- **uloženie/prepis konverzácie do súboru:** nemá vstavaný príkaz, no je možné použiť pridaný príkaz `/save-chat`, pred spustením `/save-chat` je vhodné vytvoriť kópiu konverzácie pomocou `/fork`, aby história pôvodnej konverzácie ostala nedotknutá
-- **code-review:** nemá vstavaný príkaz
-- **ukončenie práce:** `/exit`
+- **select model:** `/model`
+- **allow full permissions:**
+    - `auggie` has full permissions in the default configuration
+    - controlled version: `/permissions` > `A` > `Locals settings (personal)` > ...
+- **select conversation:** `/sessions`, here conversations can also be deleted
+- **new conversation:** `/new`
+- **rename conversation:** `/rename <name>`
+- **save conversation:** saves automatically
+- **compact conversation:** has no built-in command
+- **create a copy of conversation:** `/fork`
+- **copy last response:** `/copy`
+- **save/overwrite conversation to file:** has no built-in command, but you can use the added `/save-chat` command. Before running `/save-chat`, it is recommended to create a copy of the conversation using `/fork` so that the history of the original conversation remains untouched
+- **code-review:** has no built-in command
+- **exit work:** `/exit`
 
-Pozri si tiež pridané príkazy v `.agents/commands` a zručnosti v `.agents/skills`.
+See also the added commands in `.agents/commands` and skills in `.agents/skills`.
 
-Klávesové skratky:
-- začiatok riadku: `Ctrl Shift A`
-- koniec riadku: `Ctrl Shift E`
-- posun o slovo späť: `Alt B`
-- posun o slovo dopredu: `Alt F`
-- zmazať od kurzora po začiatok riadku: `Ctrl U`
-- zmazať od kurzora po koniec riadku: `Ctrl Shift K`
-- zmazať predchádzajúce slovo: `Ctrl W`
+Keyboard shortcuts:
+- beginning of line: `Ctrl Shift A`
+- end of line: `Ctrl Shift E`
+- move back one word: `Alt B`
+- move forward one word: `Alt F`
+- delete from cursor to beginning of line: `Ctrl U`
+- delete from cursor to end of line: `Ctrl Shift K`
+- delete previous word: `Ctrl W`
 
-### Konfigurácia
+### Configuration
 
-Auggie je možné konfigurovať nasledovne:
+Auggie can be configured as follows:
 
-| Súbor / priečinok                 | Na čo slúži                                      | Poznámka                                                                                                                                                                                                           |
+| File / folder                     | Purpose                                          | Note                                                                                                                                                                                                               |
 | --------------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `.augment/rules/*.md`             | Projektové rules                                 | Rules v `.augment/rules` sú Markdown súbory; podporované typy sú **always_apply** a **agent_requested**. Workspace rules sú určené na commitovanie do repozitára. ([docs.augmentcode.com][augment-1]) |
-| `AGENTS.md`                       | Hierarchické pravidlá                            | Môže byť v roote aj podadresároch; Auggie ho pri práci so súborom hľadá v aktuálnom adresári a rodičovských adresároch. ([docs.augmentcode.com][augment-2], [agents.md](https://agents.md/))                          |
-| `CLAUDE.md`                       | Hierarchické pravidlá kompatibilné s Claude Code | Funguje podobne ako `AGENTS.md`; iba `AGENTS.md` a `CLAUDE.md` sa objavujú hierarchicky, nie `.augment/rules` v podadresároch. ([docs.augmentcode.com][augment-2])                                                     |
-| `.augment/skills/<name>/SKILL.md` | Skills                                           | Každý skill je vlastný adresár so `SKILL.md`; musí mať YAML frontmatter `name` a `description`. ([docs.augmentcode.com][augment-3])                                                                                    |
-| `.claude/skills/<name>/SKILL.md`  | Skills kompatibilné s Claude Code                | Auggie ich vie objaviť ako workspace skills. ([docs.augmentcode.com][augment-3])                                                                                                                                       |
-| `.agents/skills/<name>/SKILL.md`  | Štandardný agentskills.io formát                 | Tiež podporované ako workspace skills. ([docs.augmentcode.com][augment-3])                                                                                                                                             |
-| `.augment/commands/*.md`          | Vlastné slash commands                           | Spustia sa cez `/security-review` v interaktívnom režime alebo `auggie command security-review`; napr. `.augment/commands/security-review.md` → `/security-review`. ([docs.augmentcode.com][augment-4])              |
-| `.augment/commands/foo/bar.md`    | Namespaced commands                              | Napr. `.augment/commands/frontend/component.md` → `/frontend:component`. ([docs.augmentcode.com][augment-4])                                                                                                           |
-| `.claude/commands/*.md`           | Claude-compatible commands                       | Auggie ich automaticky rozpozná pre kompatibilitu s existujúcimi Claude Code setupmi. ([docs.augmentcode.com][augment-4])                                                                                              |
-| `.augmentignore`                  | Čo sa nemá indexovať                             | Funguje podobne ako `.gitignore`; Auggie indexuje workspace okrem súborov z `.gitignore` a `.augmentignore`. Vieš použiť aj `!` na zahrnutie gitignored súborov. ([docs.augmentcode.com][augment-5])                   |
+| `.augment/rules/*.md`             | Project rules                                    | Rules in `.augment/rules` are Markdown files; supported types are **always_apply** and **agent_requested**. Workspace rules are intended to be committed to the repository. ([docs.augmentcode.com][augment-1])   |
+| `AGENTS.md`                       | Hierarchical rules                               | Can be in root and subdirectories; Auggie searches for it in the current and parent directories when working with a file. ([docs.augmentcode.com][augment-2], [agents.md](https://agents.md/))                   |
+| `CLAUDE.md`                       | Hierarchical rules compatible with Claude Code   | Works similarly to `AGENTS.md`; only `AGENTS.md` and `CLAUDE.md` appear hierarchically, not `.augment/rules` in subdirectories. ([docs.augmentcode.com][augment-2])                                                |
+| `.augment/skills/<name>/SKILL.md` | Skills                                           | Each skill is its own directory with `SKILL.md`; must have YAML frontmatter `name` and `description`. ([docs.augmentcode.com][augment-3])                                                                           |
+| `.claude/skills/<name>/SKILL.md`  | Skills compatible with Claude Code               | Auggie can discover them as workspace skills. ([docs.augmentcode.com][augment-3])                                                                                                                                  |
+| `.agents/skills/<name>/SKILL.md`  | Standard agentskills.io format                   | Also supported as workspace skills. ([docs.augmentcode.com][augment-3])                                                                                                                                            |
+| `.augment/commands/*.md`          | Custom slash commands                            | Triggered via `/security-review` in interactive mode or `auggie command security-review`; e.g., `.augment/commands/security-review.md` → `/security-review`. ([docs.augmentcode.com][augment-4])                   |
+| `.augment/commands/foo/bar.md`    | Namespaced commands                              | E.g., `.augment/commands/frontend/component.md` → `/frontend:component`. ([docs.augmentcode.com][augment-4])                                                                                                       |
+| `.claude/commands/*.md`           | Claude-compatible commands                       | Auggie automatically recognizes them for compatibility with existing Claude Code setups. ([docs.augmentcode.com][augment-4])                                                                                       |
+| `.augmentignore`                  | Files to exclude from indexing                  | Works similarly to `.gitignore`; Auggie indexes the workspace except for files in `.gitignore` and `.augmentignore`. You can also use `!` to include gitignored files. ([docs.augmentcode.com][augment-5])         |
 
 [augment-1]: https://docs.augmentcode.com/cli/rules "Rules & Guidelines - Auggie"
 [augment-2]: https://docs.augmentcode.com/cli/rules "Rules & Guidelines - Auggie"
@@ -200,7 +200,7 @@ Auggie je možné konfigurovať nasledovne:
 [augment-4]: https://docs.augmentcode.com/cli/custom-commands "Custom Commands - Auggie"
 [augment-5]: https://docs.augmentcode.com/cli/setup-auggie/workspace-indexing "Workspace indexing - Auggie"
 
-V adresárovej štrukúre to vyzerá nasledovne:
+In the directory structure, it looks like this:
 
 ```
 repo/
@@ -219,9 +219,9 @@ repo/
       security-review.md
       frontend/
         component.md
-    settings.json          # skôr Auggie/CLI a pokročilé shared nastavenia
-    settings.local.json    # lokálne, necommitovať
-    agents/                # subagents, hlavne Auggie/CLI
+    settings.json          # mostly Auggie/CLI and advanced shared settings
+    settings.local.json    # local, do not commit
+    agents/                # subagents, mostly Auggie/CLI
       code-review.md
 
   .claude/
@@ -239,59 +239,59 @@ repo/
 
 ## Claude Code
 
-### Inštalácia
+### Installation
 
-VS Code rozšírenie je v devcontaineri nainštalované **automaticky** pomocou `.devcontainer/devcontainer.json` > `"customizations"` > `"vscode"` > `"extensions"` > `"anthropic.claude-code"`.
+The VS Code extension is installed **automatically** in the devcontainer using `.devcontainer/devcontainer.json` > `"customizations"` > `"vscode"` > `"extensions"` > `"anthropic.claude-code"`.
 
-CLI (`claude`) je v devcontaineri nainštalované **automaticky** pomocou `.devcontainer/post-create.sh` > `# install Claude Code CLI`.
+The CLI (`claude`) is installed **automatically** in the devcontainer using `.devcontainer/post-create.sh` > `# install Claude Code CLI`.
 
-### Prihlásenie
+### Logging In
 
-Na [platform.claude.com](https://platform.claude.com/) je potrebné vytvoriť si osobný účet. V prípade súkromného použitia si zaplatiť niektorý z plánov. **V prípade pracovného použitia** požiadať o pridanie svojho osobného užívateľa medzi [firemných úžívateľov](https://platform.claude.com/settings/members) (s role `Clade Code` alebo `Developer`).
+You need to create a personal account on [platform.claude.com](https://platform.claude.com/). For private use, pay for one of the plans. **For work use**, request to have your personal user added to the [company users](https://platform.claude.com/settings/members) (with the role `Claude Code` or `Developer`).
 
-Pri prihlásení v `claude` > `/login` zvoliť `2. Anthropic Console account · API usage billing`, použiť osobný účet vytvorený na [platform.claude.com](https://platform.claude.com/) a ako organizáciu vybrať "Quantea Technologies" .
+When logging into `claude` > `/login`, select `2. Anthropic Console account · API usage billing`, use the personal account created on [platform.claude.com](https://platform.claude.com/), and choose "Quantea Technologies" as the organization.
 
-Na firemnom účte je možné sledovať [kredity spotrebované jednotlivými užívateľmi](https://platform.claude.com/cost?group_by=key_id).
+On the corporate account, you can track [credits consumed by individual users](https://platform.claude.com/cost?group_by=key_id).
 
-### Príkazy
+### Commands
 
-Príkazy ("slash commands") na bežnú prácu s `claude` CLI sú:
+Commands ("slash commands") for standard work with the `claude` CLI are:
 
-- **výber modelu:** `/model`
-- **povolenie plných práv:**
-    - rýchla verzia: `claude --dangerously-skip-permissions`
-    - prepínanie za behu: `Shift Tab`
-    - kontrolovana verzia: `/permissions` > `Allow`|`Ask`|`Deny`|... > `Bash`, `Bash(npm *)`, `Edit`, `Edit(src/**)`, `Write`, `Read`, `WebFetch`, `WebSearch`, `NotebookEdit`, `Skill`, `Workflow`, `Monitor`, ...
-- **výber konverzácie:** `/resume`
-- **nová konverzácia:** `/clear`
-- **premenovanie konverzácie:** `/rename`
-- **uloženie konverzácie:** ukladá automaticky
-- **kompresia konverzácie:** `/compact`
-- **vytvorenie kópie konverzácie:** `/fork`
-- **kopírovanie poslednej odpovede:** `/copy`, `/copy [N]` na výber konkrétnej odpovede
-- **uloženie/prepis konverzácie do súboru:** `/export`
+- **select model:** `/model`
+- **allow full permissions:**
+    - fast version: `claude --dangerously-skip-permissions`
+    - toggle on the fly: `Shift Tab`
+    - controlled version: `/permissions` > `Allow`|`Ask`|`Deny`|... > `Bash`, `Bash(npm *)`, `Edit`, `Edit(src/**)`, `Write`, `Read`, `WebFetch`, `WebSearch`, `NotebookEdit`, `Skill`, `Workflow`, `Monitor`, ...
+- **select conversation:** `/resume`
+- **new conversation:** `/clear`
+- **rename conversation:** `/rename`
+- **save conversation:** saves automatically
+- **compact conversation:** `/compact`
+- **create a copy of conversation:** `/fork`
+- **copy last response:** `/copy`, `/copy [N]` to select a specific response
+- **save/overwrite conversation to file:** `/export`
 - **code-review:** `/code-review`
-- **ukončenie práce:** `/exit`
+- **exit work:** `/exit`
 
-Pozri si tiež pridané príkazy v `.agents/commands` a zručnosti v `.agents/skills`.
+See also the added commands in `.agents/commands` and skills in `.agents/skills`.
 
-### Konfigurácia
+### Configuration
 
-Claude Code je možné konfigurovať nasledovne:
+Claude Code can be configured as follows:
 
-| Súbor / priečinok                 | Na čo slúži                                                                                    | Poznámka                                                                                                                                                   |
+| File / folder                     | Purpose                                                                                        | Note                                                                                                                                                       |
 | --------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `CLAUDE.md`                       | Hlavné projektové inštrukcie: architektúra, build/test príkazy, coding conventions, workflow.  | Projektový `CLAUDE.md` môže byť v roote alebo ako `.claude/CLAUDE.md`; Claude ho načítava ako persistent instructions. ([Claude API Docs][claude-1])       |
-| `.claude/CLAUDE.md`               | Alternatívne miesto pre projektové inštrukcie.                                                 | Rovnaký účel ako root `CLAUDE.md`, len uložený v `.claude/`. ([Claude API Docs][claude-1])                                                                 |
-| `CLAUDE.local.md`                 | Tvoje súkromné projektové poznámky/preferencie.                                                | Claude ho načítava spolu s `CLAUDE.md`; má byť v `.gitignore`. ([Claude API Docs][claude-1])                                                               |
-| `.claude/rules/*.md`              | Modulárne pravidlá, napr. coding style, testing, security, API pravidlá.                       | Rules môžu byť rozdelené do podadresárov a môžu byť path-scoped. ([Claude API Docs][claude-1])                                                             |
-| `.claude/settings.json`           | Zdieľané projektové nastavenia: permissions, env, hooks, pluginy, vylúčenie citlivých súborov. | Shared project settings uložené v repozitári. ([Claude API Docs][claude-2])                                                                                |
-| `.claude/settings.local.json`     | Lokálne overrides pre konkrétny projekt.                                                       | Lokálne nastavenia, Claude Code ich pri vytvorení nastaví ako gitignored. ([Claude API Docs][claude-2])                                                    |
-| `.claude/skills/<skill>/SKILL.md` | Skills: opakovateľné postupy, checklisty, workflow a špecializované znalosti.                  | Skills sa dajú volať cez `/skill-name`; `.claude/commands/*.md` aj `.claude/skills/<name>/SKILL.md` vytvárajú slash command. ([Claude API Docs][claude-3]) |
-| `.claude/commands/*.md`           | Legacy custom slash commands.                                                                  | Stále fungujú, ale custom commands boli zlúčené so skills; nové veci je lepšie dávať do skills. ([Claude API Docs][claude-3])                              |
-| `.claude/agents/*.md`             | Custom subagents so samostatným promptom, tool access a permissions.                           | Projektové subagents žijú v `.claude/agents/`; používajú sa na špecializované úlohy a izolovaný kontext. ([Claude API Docs][claude-4])                     |
-| `.mcp.json`                       | Projektové MCP servery zdieľané s tímom.                                                       | Project-scoped MCP konfigurácia sa ukladá do `.mcp.json` v roote projektu. ([Claude API Docs][claude-5])                                                   |
-| `.gitignore`                      | Ochrana pred commitnutím lokálnych Claude súborov a citlivých dát.                             | Na blokovanie prístupu Claude Code k citlivým súborom použi aj `permissions.deny` v `.claude/settings.json`. ([Claude API Docs][claude-2])                 |
+| `CLAUDE.md`                       | Main project instructions: architecture, build/test commands, coding conventions, workflow.    | Project `CLAUDE.md` can be in the root or as `.claude/CLAUDE.md`; Claude loads it as persistent instructions. ([Claude API Docs][claude-1])                  |
+| `.claude/CLAUDE.md`               | Alternative location for project instructions.                                                 | Same purpose as root `CLAUDE.md`, just stored in `.claude/`. ([Claude API Docs][claude-1])                                                                 |
+| `CLAUDE.local.md`                 | Your private project notes/preferences.                                                        | Claude loads it together with `CLAUDE.md`; should be in `.gitignore`. ([Claude API Docs][claude-1])                                                         |
+| `.claude/rules/*.md`              | Modular rules, e.g., coding style, testing, security, API rules.                               | Rules can be split into subdirectories and can be path-scoped. ([Claude API Docs][claude-1])                                                               |
+| `.claude/settings.json`           | Shared project settings: permissions, env, hooks, plugins, exclusion of sensitive files.       | Shared project settings stored in the repository. ([Claude API Docs][claude-2])                                                                            |
+| `.claude/settings.local.json`     | Local overrides for a specific project.                                                        | Local settings, Claude Code sets them as gitignored when created. ([Claude API Docs][claude-2])                                                            |
+| `.claude/skills/<skill>/SKILL.md` | Skills: repeatable workflows, checklists, and specialized knowledge.                           | Skills can be called via `/skill-name`; both `.claude/commands/*.md` and `.claude/skills/<name>/SKILL.md` create a slash command. ([Claude API Docs][claude-3]) |
+| `.claude/commands/*.md`           | Legacy custom slash commands.                                                                  | Still supported, but custom commands have been merged with skills; new items are better placed in skills. ([Claude API Docs][claude-3])                      |
+| `.claude/agents/*.md`             | Custom subagents with independent prompt, tool access, and permissions.                        | Project subagents live in `.claude/agents/`; used for specialized tasks and isolated context. ([Claude API Docs][claude-4])                                |
+| `.mcp.json`                       | Project MCP servers shared with the team.                                                      | Project-scoped MCP configuration is saved in `.mcp.json` in the project root. ([Claude API Docs][claude-5])                                                 |
+| `.gitignore`                      | Protection against committing local Claude files and sensitive data.                            | To block Claude Code from accessing sensitive files, also use `permissions.deny` in `.claude/settings.json`. ([Claude API Docs][claude-2])                 |
 
 [claude-1]: https://docs.anthropic.com/en/docs/claude-code/memory "How Claude remembers your project - Claude Code Docs"
 [claude-2]: https://docs.anthropic.com/en/docs/claude-code/settings "Claude Code settings - Claude Code Docs"
@@ -299,18 +299,18 @@ Claude Code je možné konfigurovať nasledovne:
 [claude-4]: https://docs.anthropic.com/en/docs/claude-code/sub-agents "Create custom subagents - Claude Code Docs"
 [claude-5]: https://docs.anthropic.com/en/docs/claude-code/mcp "Connect Claude Code to tools via MCP - Claude Code Docs"
 
-V adresárovej štrukúre to vyzerá nasledovne:
+In the directory structure, it looks like this:
 
 ```
 repo/
   CLAUDE.md
-  CLAUDE.local.md          # lokálne, necommitovať
-  .mcp.json                # zdieľané MCP servery
+  CLAUDE.local.md          # local, do not commit
+  .mcp.json                # shared MCP servers
 
   .claude/
-    CLAUDE.md              # alternatíva k root CLAUDE.md
-    settings.json          # zdieľané project settings
-    settings.local.json    # lokálne project settings, necommitovať
+    CLAUDE.md              # alternative to root CLAUDE.md
+    settings.json          # shared project settings
+    settings.local.json    # local project settings, do not commit
 
     rules/
       general.md
@@ -323,7 +323,7 @@ repo/
         scripts/
         examples.md
 
-    commands/              # legacy; stále funguje
+    commands/              # legacy; still supported
       review.md
       fix-issue.md
 
@@ -335,64 +335,64 @@ repo/
 
 ## Antigravity
 
-### Inštalácia
+### Installation
 
-VS Code rozšírenie nie je nainštalované (neexistuje).
+The VS Code extension is not installed (it does not exist).
 
-CLI (`agy`) je v devcontaineri nainštalované **automaticky** pomocou `.devcontainer/post-create.sh` > `# install Antigravity CLI`.
+The CLI (`agy`) is installed **automatically** in the devcontainer using `.devcontainer/post-create.sh` > `# install Antigravity CLI`.
 
-### Prihlásenie
+### Logging In
 
-Na [accounts.google.com](https://accounts.google.com) je potrebné vytvoriť si google účet - t.j. stačí mať bežný osobný google účet. **Antigravity je možné použivať aj zadarmo** cez svoj osobný google účet, treba však rátať s limitmi, dostupnosťou podľa kapacity, prípadne si zaplatiť niektorý z [plánov](https://antigravity.google/pricing). **V prípade pracovného použitia** požiadať o pridanie svojho osobného užívateľa medzi [firemných úžívateľov](https://console.cloud.google.com/iam-admin/iam).
+You need to create a google account on [accounts.google.com](https://accounts.google.com) - i.e., having a standard personal google account is sufficient. **Antigravity can be used for free** via your personal google account, but you must expect limits and availability based on capacity, or you can pay for one of the [plans](https://antigravity.google/pricing). **For work use**, request to have your personal user added to the [company users](https://console.cloud.google.com/iam-admin/iam).
 
-Pri prihlásení v `agy` zvoliť `2. Use a Google Cloud project`, použiť osobný účet vytvorený na [accounts.google.com](https://accounts.google.com) a ako ID projektu zadať `project-605967c9-39ce-4929-b5b`.
+When logging into `agy`, select `2. Use a Google Cloud project`, use the personal account created on [accounts.google.com](https://accounts.google.com), and enter `project-605967c9-39ce-4929-b5b` as the project ID.
 
-Na firemnom účte je možné sledovať [aktuálnu cenu (spotrebu) za použité služby](https://console.cloud.google.com/billing/reports).
+On the corporate account, you can track the [current price (consumption) for services used](https://console.cloud.google.com/billing/reports).
 
-#### Uvodné nastavenie firemného účtu
+#### Initial corporate account setup
 
-Pre google účet, ktorý sa rozhodneš použiť ako firemný účet, je potrebné v [Google Cloud Console](https://console.cloud.google.com/):
+For the google account you decide to use as a corporate account, you need to do the following in the [Google Cloud Console](https://console.cloud.google.com/):
 
-- [Vytvoriť projekt](https://console.cloud.google.com/projectcreate), napr. `Run AI`.
-- [Pridať mu billing account](https://console.cloud.google.com/billing), napr. `Run billing`.
-- Povoliť `Agent platform API`: [konzola](https://console.cloud.google.com/apis/dashboard?cloudshell=true) (ikona `|>_|` vpravo hore) > `gcloud services enable aiplatform.googleapis.com`
+- [Create a project](https://console.cloud.google.com/projectcreate), e.g., `Run AI`.
+- [Link a billing account to it](https://console.cloud.google.com/billing), e.g., `Run billing`.
+- Enable `Agent platform API`: [console](https://console.cloud.google.com/apis/dashboard?cloudshell=true) (the `|>_|` icon in the top right) > `gcloud services enable aiplatform.googleapis.com`
 
-### Príkazy
+### Commands
 
-Príkazy ("slash commands") na bežnú prácu s `agy` CLI sú:
+Commands ("slash commands") for standard work with the `agy` CLI are:
 
-- **výber modelu:** `/model`
-- **povolenie plných práv:**
-    - rýchla verzia: `agy --dangerously-skip-permissions`
-    - pomalšia verzia: `/config` > `Tools Permission` > `always-proceed`
-    - kontrolovana verzia: `/permissions` > `Project` > `allowlist` > `command(*)`, `read_file(*)`, `write_file(*)`, `read_url(*)`, `mcp(*)`
-- **výber konverzácie:** `/resume`
-- **nová konverzácia:** `/clear`
-- **premenovanie konverzácie:** `/rename`
-- **uloženie konverzácie:** ukladá automaticky
-- **kompresia konverzácie:** nemá vstavaný príkaz
-- **vytvorenie kópie konverzácie:** `/fork`
-- **kopírovanie poslednej odpovede:** `/copy`
-- **uloženie/prepis konverzácie do súboru:** nemá vstavaný príkaz, no je možné použiť pridaný príkaz `/save-chat`, pred spustením `/save-chat` je vhodné vytvoriť kópiu konverzácie pomocou `/fork`, aby história pôvodnej konverzácie ostala nedotknutá
-- **code-review:** nemá vstavaný príkaz
-- **ukončenie práce:** `/exit`
+- **select model:** `/model`
+- **allow full permissions:**
+    - fast version: `agy --dangerously-skip-permissions`
+    - slower version: `/config` > `Tools Permission` > `always-proceed`
+    - controlled version: `/permissions` > `Project` > `allowlist` > `command(*)`, `read_file(*)`, `write_file(*)`, `read_url(*)`, `mcp(*)`
+- **select conversation:** `/resume`
+- **new conversation:** `/clear`
+- **rename conversation:** `/rename`
+- **save conversation:** saves automatically
+- **compact conversation:** has no built-in command
+- **create a copy of conversation:** `/fork`
+- **copy last response:** `/copy`
+- **save/overwrite conversation to file:** has no built-in command, but you can use the added `/save-chat` command. Before running `/save-chat`, it is recommended to create a copy of the conversation using `/fork` so that the history of the original conversation remains untouched
+- **code-review:** has no built-in command
+- **exit work:** `/exit`
 
-Pozri si tiež pridané príkazy v `.agents/commands` a zručnosti v `.agents/skills`.
+See also the added commands in `.agents/commands` and skills in `.agents/skills`.
 
-### Konfigurácia
+### Configuration
 
-Antigravity je možné konfigurovať nasledovne:
+Antigravity can be configured as follows:
 
-| Súbor / priečinok                 | Na čo slúži                                                                               | Poznámka                                                                                                                                                                                                                            |
+| File / folder                     | Purpose                                                                                   | Note                                                                                                                                                                                                                                |
 | --------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `GEMINI.md`                       | Workspace context / všeobecné projektové inštrukcie pre Gemini/Antigravity CLI.           | Antigravity CLI podporuje workspace context súbory `GEMINI.md` aj `AGENTS.md`. ([Google Antigravity][agy-1])                                                                                                                        |
-| `AGENTS.md`                       | Tool-agnostic projektové inštrukcie pre coding agentov.                                   | Antigravity CLI číta `AGENTS.md` z aktívneho workspace; AGENTS.md je všeobecný otvorený formát pre agent instructions. ([Google Antigravity][agy-1], [agents.md](https://agents.md/))                                               |
-| `.agents/agents.md`               | Definícia tímu/personas, napr. PM, engineer, QA, DevOps.                                  | Google codelab používa `.agents/agents.md` na centralizované definovanie špecializovaných agent personas. ([Google Codelabs][agy-2])                                                                                                |
-| `.agents/rules/*.md`              | Workspace rules: projektové pravidlá pre štýl kódu, architektúru, testovanie, bezpečnosť. | Workspace rules žijú v `.agents/rules/`; globálne rules sú v `~/.gemini/GEMINI.md`. ([Google Antigravity][agy-3])                                                                                                                   |
-| `.agents/skills/<skill>/SKILL.md` | Projektové skills: opakovateľné schopnosti/workflow balené ako adresár so `SKILL.md`.     | Antigravity dnes defaultuje na `.agents/skills`; skill je priečinok obsahujúci `SKILL.md`. ([Google Antigravity][agy-4], [medium][agy-5])                                                                                           |
-| `.agents/workflows/*.md`          | Workspace workflows / custom slash commands.                                              | Workflows sú uložené Markdown súbory a spúšťajú sa cez `/workflow-name`; workspace workflows žijú v `.agents/workflows/`. ([Google Antigravity][agy-3])                                                                             |
-| `.agents/hooks.json`              | Hooks: lokálne shell skripty spúšťané v určených bodoch agent execution cycle.            | Hooks sa konfigurujú v `hooks.json` v customization directory, napr. `.agents/` vo workspace. ([Google Antigravity][agy-6])                                                                                                         |
-| `.agents/mcp_config.json`         | Projektová MCP konfigurácia, hlavne pre Antigravity CLI / workspace setup.                | Antigravity používa samostatný `mcp_config.json`; IDE dokumentácia uvádza globálny `~/.gemini/antigravity/mcp_config.json`, zatiaľ čo CLI/workspace návody uvádzajú aj projektové MCP pod `.agents/`. ([Google Antigravity][agy-7]) |
+| `GEMINI.md`                       | Workspace context / general project instructions for Gemini/Antigravity CLI.              | Antigravity CLI supports workspace context files `GEMINI.md` as well as `AGENTS.md`. ([Google Antigravity][agy-1])                                                                                                                   |
+| `AGENTS.md`                       | Tool-agnostic project instructions for coding agents.                                     | Antigravity CLI reads `AGENTS.md` from the active workspace; AGENTS.md is a general open format for agent instructions. ([Google Antigravity][agy-1], [agents.md](https://agents.md/))                                              |
+| `.agents/agents.md`               | Definition of the team/personas, e.g., PM, engineer, QA, DevOps.                          | Google codelab uses `.agents/agents.md` to centrally define specialized agent personas. ([Google Codelabs][agy-2])                                                                                                                  |
+| `.agents/rules/*.md`              | Workspace rules: project rules for code style, architecture, testing, and security.       | Workspace rules live in `.agents/rules/`; global rules are in `~/.gemini/GEMINI.md`. ([Google Antigravity][agy-3])                                                                                                                  |
+| `.agents/skills/<skill>/SKILL.md` | Project skills: repeatable abilities/workflows packaged as a directory with `SKILL.md`.   | Antigravity currently defaults to `.agents/skills`; a skill is a folder containing `SKILL.md`. ([Google Antigravity][agy-4], [medium][agy-5])                                                                                       |
+| `.agents/workflows/*.md`          | Workspace workflows / custom slash commands.                                              | Workflows are saved Markdown files and are run via `/workflow-name`; workspace workflows live in `.agents/workflows/`. ([Google Antigravity][agy-3])                                                                                |
+| `.agents/hooks.json`              | Hooks: local shell scripts run at specified points in the agent execution cycle.          | Hooks are configured in `hooks.json` in the customization directory, e.g., `.agents/` in the workspace. ([Google Antigravity][agy-6])                                                                                               |
+| `.agents/mcp_config.json`         | Project MCP configuration, mainly for Antigravity CLI / workspace setup.                  | Antigravity uses a separate `mcp_config.json`; IDE documentation mentions global `~/.gemini/antigravity/mcp_config.json`, while CLI/workspace guides also mention project MCP under `.agents/`. ([Google Antigravity][agy-7])       |
 
 [agy-1]: https://antigravity.google/docs/gcli-migration "Migrating from Gemini CLI"
 [agy-2]: https://codelabs.developers.google.com/autonomous-ai-developer-pipelines-antigravity "Build Autonomous Developer Pipelines using agents.md and skills.md in Antigravity  |  Google Codelabs"
@@ -402,7 +402,7 @@ Antigravity je možné konfigurovať nasledovne:
 [agy-6]: https://antigravity.google/docs/hooks "Hooks"
 [agy-7]: https://antigravity.google/docs/mcp "Antigravity Editor: MCP Integration"
 
-V adresárovej štrukúre to vyzerá nasledovne:
+In the directory structure, it looks like this:
 
 ```
 repo/
@@ -430,64 +430,56 @@ repo/
       startcycle.md
 
     hooks.json
-    mcp_config.json          # hlavne Antigravity CLI / projektové MCP; IDE MCP býva často globálne
+    mcp_config.json          # mainly Antigravity CLI / project MCP; IDE MCP is often global
 ```
 
 ## Codex
 
-### Inštalácia
+### Installation
 
-VS Code rozšírenie je v devcontaineri nainštalované **automaticky** pomocou `.devcontainer/devcontainer.json` > `"customizations"` > `"vscode"` > `"extensions"` > `"openai.chatgpt"`.
+The VS Code extension is installed **automatically** in the devcontainer using `.devcontainer/devcontainer.json` > `"customizations"` > `"vscode"` > `"extensions"` > `"openai.chatgpt"`.
 
-CLI (`codex`) je v devcontaineri nainštalované **automaticky** pomocou `.devcontainer/post-create.sh` > `# install Codex CLI`.
+The CLI (`codex`) is installed **automatically** in the devcontainer using `.devcontainer/post-create.sh` > `# install Codex CLI`.
 
-### Prihlásenie
+### Logging In
 
-Na [chatgpt.com](https://chatgpt.com/) je potrebné vytvoriť si osobný účet. **Codex je možné použivať aj zadarmo** cez svoj osobný GPT účet, treba však rátať s limitmi, dostupnosťou podľa kapacity, prípadne si zaplatiť niektorý z [plánov](https://chatgpt.com/#pricing). **V prípade pracovného použitia** požiadať o pridanie svojho osobného užívateľa medzi [firemných úžívateľov](https://chatgpt.com/admin/members).
+You need to create a personal account on [chatgpt.com](https://chatgpt.com/). **Codex can also be used for free** via your personal GPT account, but you must expect limits and availability based on capacity, or you can pay for one of the [plans](https://chatgpt.com/#pricing). **For work use**, request to have your personal user added to the [company users](https://chatgpt.com/admin/members).
 
-Pri prihlásení v `codex` zvoliť `1. Sign in with ChatGPT` (pripadne `2. Sign in with Device Code` ak prvá možnosť nefunguje), použiť osobný účet vytvorený na [chatgpt.com](https://chatgpt.com/) a pri prihlásení v prehliadači vybrať `Run Development's Workspace`.
+**select model:** `/model`
+- **allow full permissions:**
+    - fast version: `codex --dangerously-bypass-approvals-and-sandbox`
+    - slower version: `/permissions` > `Full Access`
+- **select conversation:** `/resume`
+- **new conversation:** `/new`, `/clear`
+- **rename conversation:** `/rename`
+- **save conversation:** saves automatically
+- **compact conversation:** `/compact`
+- **create a copy of conversation:** `/fork`
+- **copy last response:** `/copy`
+- **save/overwrite conversation to file:** has no built-in command, but you can use the added `/save-chat` command. Before running `/save-chat`, it is recommended to create a copy of the conversation using `/fork` so that the history of the original conversation remains untouched
+- **code-review:** has no built-in command
+- **exit work:** `/exit`
 
-Na firemnom účte je možné sledovať [kredity spotrebované jednotlivými užívateľmi](https://chatgpt.com/admin/usage).
+See also the added skills in `.agents/skills`. The added commands in `.agents/commands` are not supported in the `codex` CLI.
 
-### Príkazy
+### Configuration
 
-Príkazy ("slash commands") na bežnú prácu s `codex` CLI sú:
-
-- **výber modelu:** `/model`
-- **povolenie plných práv:**
-    - rýchla verzia: `codex --dangerously-bypass-approvals-and-sandbox`
-    - pomalšia verzia: `/permissions` > `Full Access`
-- **výber konverzácie:** `/resume`
-- **nová konverzácia:** `/new`, `/clear`
-- **premenovanie konverzácie:** `/rename`
-- **uloženie konverzácie:** ukladá automaticky
-- **kompresia konverzácie:** `/compact`
-- **vytvorenie kópie konverzácie:** `/fork`
-- **kopírovanie poslednej odpovede:** `/copy`
-- **uloženie/prepis konverzácie do súboru:** nemá vstavaný príkaz, no je možné použiť pridaný príkaz `/save-chat`, pred spustením `/save-chat` je vhodné vytvoriť kópiu konverzácie pomocou `/fork`, aby história pôvodnej konverzácie ostala nedotknutá
-- **code-review:** nemá vstavaný príkaz
-- **ukončenie práce:** `/exit`
-
-Pozri si tiež pridané zručnosti v `.agents/skills`. Pridané príkazy v `.agents/commands` nie sú podporované v `codex` CLI.
-
-### Konfigurácia
-
-| Súbor / priečinok                            | Na čo slúži                                                                                                               | Poznámka                                                                                                                                                                                               |
+| File / folder                                | Purpose                                                                                                                   | Note                                                                                                                                                                                                   |
 | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `AGENTS.md`                                  | Hlavné projektové inštrukcie pre Codex: build/test príkazy, architektúra, konvencie, čo znamená “done”.                   | Codex číta `AGENTS.md` pred prácou; v projekte ho hľadá od rootu po aktuálny adresár a skladá inštrukcie hierarchicky. ([OpenAI Developers][codex-1])                                                  |
-| `AGENTS.override.md`                         | Voliteľný override pre inštrukcie v danom adresári.                                                                       | Pri discovery má prednosť pred `AGENTS.md`; Codex berie najviac jeden instruction súbor na adresár. ([OpenAI Developers][codex-1])                                                                     |
-| `*/AGENTS.md`                                | Inštrukcie pre konkrétny podadresár, modul alebo service.                                                                 | Súbory bližšie k aktuálnemu pracovisku sa pridajú neskôr, takže môžu prebiť všeobecnejšie pravidlá z rootu. ([OpenAI Developers][codex-1])                                                             |
-| `.codex/config.toml`                         | Projektové nastavenia Codexu: model, approvals, sandbox, MCP servery, hooks inline, skill overrides, subagent nastavenia. | Codex používa `~/.codex/config.toml` pre user config a `.codex/config.toml` pre projektové overrides; projektové `.codex/` vrstvy načíta iba v trusted projektoch. ([OpenAI Developers][codex-2])      |
-| `.codex/hooks.json`                          | Lifecycle hooks pre projekt, napr. validácia promptov, logovanie, kontroly po tool calle alebo pri ukončení turnu.        | Codex hľadá hooks vedľa aktívnych config vrstiev ako `hooks.json` alebo inline `[hooks]` v `config.toml`; projektové hooks sa načítajú len v trusted projektoch. ([OpenAI Developers][codex-3])        |
-| `.codex/rules/*.rules`                       | Pravidlá pre povolenie/promptovanie/blokovanie príkazov mimo sandboxu.                                                    | `.rules` sú experimentálne command rules; Codex skenuje `rules/` vedľa aktívnej config vrstvy, vrátane `<repo>/.codex/rules/`. ([OpenAI Developers][codex-4])                                          |
-| `.codex/agents/*.toml`                       | Projektové custom subagents / custom agents s vlastným modelom, sandboxom, MCP, skills a developer instructions.          | Projektové custom agents sú samostatné TOML súbory v `.codex/agents/`; povinné polia sú `name`, `description`, `developer_instructions`. ([OpenAI Developers][codex-5])                                |
-| `.agents/skills/<skill>/SKILL.md`            | Repo skills: opakovateľné workflow, runbooky, checklisty a špecializované postupy.                                        | Codex číta repo skills z `.agents/skills` od aktuálneho adresára po root repozitára; skill je adresár so `SKILL.md` a voliteľnými `scripts/`, `references/`, `assets/`. ([OpenAI Developers][codex-6]) |
-| `.agents/plugins/marketplace.json`           | Repo marketplace katalóg pluginov pre tím/projekt.                                                                        | Repo-scoped marketplace sa dá uložiť do `$REPO_ROOT/.agents/plugins/marketplace.json`; položky ukazujú na plugin priečinky, často pod `./plugins/`. ([OpenAI Developers][codex-7])                     |
-| `plugins/<plugin>/.codex-plugin/plugin.json` | Manifest Codex pluginu.                                                                                                   | Plugin má povinný manifest `.codex-plugin/plugin.json`; môže baliť skills, MCP servery, hooks, app integrácie a assets. ([OpenAI Developers][codex-7])                                                 |
-| `plugins/<plugin>/skills/<skill>/SKILL.md`   | Skills zabalené v plugine.                                                                                                | Plugin manifest môže ukazovať na `skills` priečinok a tým distribuovať jeden alebo viac skills. ([OpenAI Developers][codex-7])                                                                         |
-| `plugins/<plugin>/hooks/hooks.json`          | Hooks zabalené v plugine.                                                                                                 | Plugin môže obsahovať lifecycle hooks; pred spustením ich používateľ musí reviewnúť a trustnúť. ([OpenAI Developers][codex-7])                                                                         |
-| `plugins/<plugin>/.mcp.json`                 | MCP servery zabalené v plugine.                                                                                           | V bežnom projekte sa MCP nastavuje cez `.codex/config.toml`; plugin môže mať vlastnú `.mcp.json`, na ktorú ukazuje manifest. ([OpenAI Developers][codex-8])                                            |
-| `plugins/<plugin>/.app.json`                 | App / connector mappings pre plugin.                                                                                      | Plugin štruktúra môže obsahovať `.app.json` pre app alebo connector integrácie. ([OpenAI Developers][codex-7])                                                                                         |
+| `AGENTS.md`                                  | Main project instructions for Codex: build/test commands, architecture, conventions, what “done” means.                   | Codex reads `AGENTS.md` before starting work; it looks for it in the project from the root to the current directory and aggregates instructions hierarchically. ([OpenAI Developers][codex-1])         |
+| `AGENTS.override.md`                         | Optional override for instructions in a given directory.                                                                  | Has priority over `AGENTS.md` during discovery; Codex takes at most one instruction file per directory. ([OpenAI Developers][codex-1])                                                                 |
+| `*/AGENTS.md`                                | Instructions for a specific subdirectory, module, or service.                                                             | Files closer to the active workplace are loaded later, so they can override more general rules from the root. ([OpenAI Developers][codex-1])                                                            |
+| `.codex/config.toml`                         | Project settings for Codex: model, approvals, sandbox, MCP servers, inline hooks, skill overrides, subagent settings.     | Codex uses `~/.codex/config.toml` for user config and `.codex/config.toml` for project overrides; project `.codex/` layers are loaded only in trusted projects. ([OpenAI Developers][codex-2])          |
+| `.codex/hooks.json`                          | Lifecycle hooks for the project, e.g., prompt validation, logging, checks after a tool call, or at the end of a turn.     | Codex looks for hooks alongside active config layers as `hooks.json` or inline `[hooks]` in `config.toml`; project hooks are loaded only in trusted projects. ([OpenAI Developers][codex-3])           |
+| `.codex/rules/*.rules`                       | Rules for allowing/prompting/blocking commands outside the sandbox.                                                       | `.rules` are experimental command rules; Codex scans `rules/` alongside the active config layer, including `<repo>/.codex/rules/`. ([OpenAI Developers][codex-4])                                      |
+| `.codex/agents/*.toml`                       | Project custom subagents / custom agents with their own model, sandbox, MCP, skills, and developer instructions.          | Project custom agents are separate TOML files in `.codex/agents/`; mandatory fields are `name`, `description`, `developer_instructions`. ([OpenAI Developers][codex-5])                                |
+| `.agents/skills/<skill>/SKILL.md`            | Repo skills: repeatable workflows, runbooks, checklists, and specialized procedures.                                      | Codex reads repo skills from `.agents/skills` from the current directory to the repository root; a skill is a folder with `SKILL.md` and optional `scripts/`, `references/`, `assets/`. ([OpenAI Developers][codex-6]) |
+| `.agents/plugins/marketplace.json`           | Repo marketplace plugin catalog for the team/project.                                                                     | A repo-scoped marketplace can be saved to `$REPO_ROOT/.agents/plugins/marketplace.json`; entries point to plugin folders, often under `./plugins/`. ([OpenAI Developers][codex-7])                      |
+| `plugins/<plugin>/.codex-plugin/plugin.json` | Manifest of a Codex plugin.                                                                                               | A plugin must have a manifest `.codex-plugin/plugin.json`; it can package skills, MCP servers, hooks, app integrations, and assets. ([OpenAI Developers][codex-7])                                     |
+| `plugins/<plugin>/skills/<skill>/SKILL.md`   | Skills packaged in a plugin.                                                                                              | A plugin manifest can point to a `skills` directory and thus distribute one or more skills. ([OpenAI Developers][codex-7])                                                                             |
+| `plugins/<plugin>/hooks/hooks.json`          | Hooks packaged in a plugin.                                                                                               | A plugin can contain lifecycle hooks; the user must review and trust them before execution. ([OpenAI Developers][codex-7])                                                                             |
+| `plugins/<plugin>/.mcp.json`                 | MCP servers packaged in a plugin.                                                                                         | In a standard project, MCP is configured via `.codex/config.toml`; a plugin can have its own `.mcp.json` pointed to by the manifest. ([OpenAI Developers][codex-8])                                    |
+| `plugins/<plugin>/.app.json`                 | App / connector mappings for the plugin.                                                                                  | A plugin structure can contain `.app.json` for app or connector integrations. ([OpenAI Developers][codex-7])                                                                                           |
 
 [codex-1]: https://developers.openai.com/codex/guides/agents-md "Custom instructions with AGENTS.md – Codex | OpenAI Developers"
 [codex-2]: https://developers.openai.com/codex/config-basic "Config basics – Codex | OpenAI Developers"
@@ -498,18 +490,18 @@ Pozri si tiež pridané zručnosti v `.agents/skills`. Pridané príkazy v `.age
 [codex-7]: https://developers.openai.com/codex/plugins/build "Build plugins – Codex | OpenAI Developers"
 [codex-8]: https://developers.openai.com/codex/mcp "Model Context Protocol – Codex | OpenAI Developers"
 
-V adresárovej štrukúre to vyzerá nasledovne:
+In the directory structure, it looks like this:
 
 ```
 repo/
   AGENTS.md
-  AGENTS.override.md          # voliteľné, dočasné override
+  AGENTS.override.md          # optional, temporary override
   services/
     api/
-      AGENTS.md               # voliteľné, špecifické pre podadresár
+      AGENTS.md               # optional, subdirectory-specific
 
   .codex/
-    config.toml               # projektový Codex config; len trusted projekty
+    config.toml               # project Codex config; trusted projects only
     hooks.json
     rules/
       default.rules

@@ -1,31 +1,31 @@
 ---
 description: >-
-  Bezpečná práca s tajomstvami (API kľúče, tokeny, heslá, súkromné kľúče) –
-  nikdy ich nevypisovať do výstupu, logov, argv ani tiketov; čítať len
-  z prostredia / secret managera. Platí pre všetkých agentov a skills.
+  Safe handling of secrets (API keys, tokens, passwords, private keys) -
+  never print them in the output, logs, argv, or tickets; read only
+  from the environment / secret manager. Applies to all agents and skills.
 type: always_apply
 trigger: always_on
 ---
 
-# Pravidlo: bezpečná práca s tajomstvami
+# Rule: safe handling of secrets
 
-Platí pre všetkých agentov a všetky skills v tomto workspace.
+Applies to all agents and all skills in this workspace.
 
-## Čo je tajomstvo
+## What is a secret
 
-- API kľúče, tokeny (OAuth/bearer), cookies, heslá, súkromné kľúče, podpisové
-  tajomstvá, credential/session súbory a hodnoty zo secret managera.
-- Akékoľvek hodnoty z `.env` súborov alebo z prostredia procesu.
+- API keys, tokens (OAuth/bearer), cookies, passwords, private keys, signing
+  secrets, credential/session files, and values from the secret manager.
+- Any values from `.env` files or from the process environment.
 
-## Pravidlá
+## Rules
 
-- Tajomstvá sa **čítajú výhradne z prostredia** (napr. `.env` súbor / secret
-  manager), nikdy sa nehardkódujú do skriptov ani dokumentácie.
-- **Nikdy** nevypisuj hodnotu tajomstva do odpovede, logov, chybových hlások,
-  argumentov príkazov, URL, názvov súborov ani do tiketov.
-- Tajomstvá neodovzdávaj cez argumenty príkazového riadku (`argv`) – posielaj ich
-  cez prostredie procesu; skripty ich čítajú z env, nie z parametrov.
-- Pri hľadaní/grepe potenciálnych tajomstiev nevypisuj nájdené hodnoty – uveď len
-  názov súboru, počet výskytov alebo stav „nájdené / nenájdené".
-- Ak sa tajomstvo objaví v predchádzajúcom kontexte alebo výstupe nástroja,
-  neopakuj ho – odkáž naň ako na „redacted".
+- Secrets are **read exclusively from the environment** (e.g., `.env` file / secret
+  manager), never hardcoded into scripts or documentation.
+- **Never** print a secret value in the response, logs, error messages,
+  command arguments, URLs, filenames, or tickets.
+- Do not pass secrets via command line arguments (`argv`) – send them
+  via the process environment; scripts should read them from env, not from parameters.
+- When searching/grepping for potential secrets, do not print the found values – list only
+  the filename, match count, or status "found / not found".
+- If a secret appears in a previous context or tool output,
+  do not repeat it – refer to it as "redacted".

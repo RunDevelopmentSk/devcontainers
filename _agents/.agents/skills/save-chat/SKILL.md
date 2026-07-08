@@ -1,129 +1,103 @@
 ---
 name: save-chat
 description: >-
-  Doslovne (verbatim) ulož celú históriu chatu – všetky prompty aj odpovede
-  agenta – do .md súboru. Bez zadaného názvu sa opýta, či ho vygenerovať sám
-  alebo ho zadá používateľ; rieši priečinok (default tmp/), doplní príponu .md
-  a vždy pridá sufix s názvom agenta. Použi pri "ulož chat", "ulož celú
-  konverzáciu do .md", "save chat".
+  Literally (verbatim) save the entire chat history – all prompts and agent
+  responses – to a .md file. Without a specified name, it asks whether to auto-generate
+  it or have the user enter it; handles the directory (default tmp/), appends the .md extension,
+  and always adds a suffix with the agent's name. Use for "save chat", "save entire
+  conversation to .md".
 ---
 
 # save-chat
 
-Skill na **doslovné uloženie celej histórie chatu** – všetkých promptov a
-odpovedí agenta – do Markdown súboru. Obsah sa ukladá **verbatim** – presne
-tak, ako bol napísaný/vypísaný, bez sumarizácie, skracovania či úprav.
+Skill for **literally saving the entire chat history** – all prompts and agent responses – to a Markdown file. Content is saved **verbatim** – exactly as it was written/printed, without summarization, shortening, or modifications.
 
-## Kedy použiť
+## When to use
 
-- „ulož chat", „ulož celú konverzáciu do .md", „save chat",
-- vstupný bod je aj command `/save-chat`.
+- "save chat", "save entire conversation to .md",
+- the entry point is also the command `/save-chat`.
 
-## Vstup
+## Input
 
-- Voliteľný argument = špecifikácia cieľového súboru (názov, príp. s priečinkom).
-- Ak argument chýba, agent sa **opýta používateľa**, či má názov súboru
-  vygenerovať sám, alebo ho zadá používateľ (viď nižšie).
+- Optional argument = specification of the target file (name, potentially with a folder).
+- If the argument is missing, the agent **asks the user** whether to auto-generate the filename or have the user enter it (see below).
 
-## 1. Zisti identifikátor agenta (sufix)
+## 1. Determine agent identifier (suffix)
 
-Sufix = krátky identifikátor bežiaceho agenta/CLI:
+Suffix = short identifier of the running agent/CLI:
 
-| Agent            | Sufix    |
+| Agent            | Suffix   |
 | ---------------- | -------- |
 | Auggie           | `auggie` |
 | Claude Code      | `claude` |
 | Antigravity      | `agy`    |
 | Codex            | `codex`  |
 
-## 2. Urči cieľovú cestu (algoritmus)
+## 2. Determine target path (algorithm)
 
-Postupuj v tomto poradí:
+Follow this order:
 
-1. **Bez argumentu** → opýtaj sa používateľa, či má agent názov súboru
-   vygenerovať sám, alebo ho zadá používateľ:
-   - **Agent vygeneruje** → vytvor krátky výstižný názov (slug) z hlavnej témy
-     celej konverzácie, iba znaky `[a-zA-Z0-9\-]` (kebab-case, napr.
-     `tax-analyze`). Berie sa ako „názov bez priečinka" → cieľový priečinok
-     je `tmp/`.
-   - **Používateľ zadá** → počkaj na názov (príp. s priečinkom) a pokračuj
-     bodom 2 nižšie, akoby to bol pôvodný argument.
-2. **S argumentom** → rozdeľ ho na časť s priečinkom a názov súboru:
-   - obsahuje `/` (má priečinok) → cieľový priečinok = zadaný priečinok,
-   - neobsahuje `/` (len názov) → cieľový priečinok = `tmp/`.
-3. **Prípona**: z názvu odstráň koncové `.md`, ak tam je → dostaneš `stem`.
-   Ak názov príponu nemal, aj tak pokračuj so `stem` (rovnaký postup); `.md`
-   sa doplní až v kroku 5. (Rieši to bod „bez prípony → doplň `.md`".)
-4. **Sufix agenta**: k `stem` pridaj `-<sufix>` (napr. `-auggie`). Ak `stem`
-   už na `-<sufix>` končí, sufix nezdvojuj.
-5. **Finálna cesta** = `<cieľový priečinok>/<stem>-<sufix>.md`.
-6. Ak cieľový priečinok neexistuje, vytvor ho.
+1. **Without argument** -> ask the user whether the agent should auto-generate the filename or if the user wants to enter it:
+   - **Agent generates** -> create a short descriptive name (slug) from the main topic of the conversation, using only characters `[a-zA-Z0-9\-]` (kebab-case, e.g., `tax-analyze`). This is treated as "name without folder" -> target folder is `tmp/`.
+   - **User enters** -> wait for the name (potentially with a folder) and proceed with step 2 below as if it were the original argument.
+2. **With argument** -> split it into folder part and filename:
+   - contains `/` (has a folder) -> target folder = specified folder,
+   - does not contain `/` (only name) -> target folder = `tmp/`.
+3. **Extension**: remove the trailing `.md` from the name if present -> you get the `stem`. If the name did not have an extension, still proceed with the `stem` (same procedure); `.md` will be appended in step 5. (This resolves "without extension -> append `.md`".)
+4. **Agent suffix**: add `-<suffix>` (e.g., `-auggie`) to the `stem`. If `stem` already ends with `-<suffix>`, do not double it.
+5. **Final path** = `<target folder>/<stem>-<suffix>.md`.
+6. If the target folder does not exist, create it.
 
-### Príklady
+### Examples
 
-| Argument                                  | Sufix    | Výsledná cesta                                       |
+| Argument                                  | Suffix   | Resulting path                                       |
 | ----------------------------------------- | -------- | ---------------------------------------------------- |
-| *(žiadny)*                                | `auggie` | `tmp/tax-analyze-auggie.md` (slug vygenerovaný)      |
+| *(none)*                                  | `auggie` | `tmp/tax-analyze-auggie.md` (slug auto-generated)    |
 | `my-chat.md`                              | `auggie` | `tmp/my-chat-auggie.md`                              |
 | `my-chat`                                 | `auggie` | `tmp/my-chat-auggie.md`                              |
 | `.agents/user-prompts/my-chat.md`         | `auggie` | `.agents/user-prompts/my-chat-auggie.md`             |
 | `.agents/user-prompts/my-chat`            | `claude` | `.agents/user-prompts/my-chat-claude.md`             |
 
-## 3. Ulož všetky prompty aj odpovede
+## 3. Save all prompts and responses
 
-Do finálnej cesty zapíš **doslovný** (verbatim) obsah celej konverzácie v
-chronologickom poradí. **Pre každý ťah** (prompt používateľa a naň nadväzujúcu
-odpoveď agenta) zopakuj rovnaký formát ako nižšie – teda toľko blokov
-`**Prompt:**` / `**Odpoveď:**`, koľko bolo v chate ťahov. Prvý riadok súboru je
-prázdny, hlavičky sú tučné a **každý neprázdny riadok promptu aj odpovede je
-odsadený 4 medzery doprava**:
+Write the **literal** (verbatim) content of the entire conversation in chronological order to the final path. **For each turn** (user prompt and the subsequent agent response), repeat the same format as below – i.e., as many `**Prompt:**` / `**Response:**` blocks as there were turns in the chat. The first line of the file is empty, headers are bold, and **each non-empty line of the prompt and response is indented by 4 spaces to the right**:
 
 ```
+**Prompt:**
+
+    <literal text of 1st prompt – each line indented by 4 spaces>
+
+**Response:**
+
+    <literal text of 1st response – each line indented by 4 spaces>
 
 **Prompt:**
 
-    <doslovný text 1. promptu – každý riadok odsadený 4 medzery>
+    <literal text of 2nd prompt – each line indented by 4 spaces>
 
-**Odpoveď:**
+**Response:**
 
-    <doslovný text 1. odpovede – každý riadok odsadený 4 medzery>
-
-**Prompt:**
-
-    <doslovný text 2. promptu – každý riadok odsadený 4 medzery>
-
-**Odpoveď:**
-
-    <doslovný text 2. odpovede – každý riadok odsadený 4 medzery>
+    <literal text of 2nd response – each line indented by 4 spaces>
 ```
 
-- **Uloží sa celá história chatu** – všetky prompty aj odpovede od začiatku
-  konverzácie po posledný ťah, v poradí, v akom prebehli.
-- Prompty aj odpovede sa zapisujú **doslovne** (Markdown as-is), bez
-  sumarizácie, skracovania či úprav – len s pridaným 4-medzerovým odsadením
-  na začiatku každého ich neprázdneho riadka (prázdne riadky ostávajú prázdne).
-- 4-medzerové odsadenie sa aplikuje na **všetky** riadky obsahu vrátane
-  nadpisov, zoznamov, tabuliek a code blokov – aby sa dali vizuálne odlíšiť od
-  orientačných hlavičiek `**Prompt:**` a `**Odpoveď:**`.
-- Okrem hlavičiek `**Prompt:**` a `**Odpoveď:**` (a prázdnych oddeľovacích
-  riadkov) nič iné nepridávaj (žiadny ďalší nadpis, metadáta, komentár).
-- Vzor formátu jedného bloku: `.agents/user-prompts/ai-namespacing-auggie.md`.
-- Ak súbor už existuje, upozorni používateľa a spýtaj sa, či prepísať.
-- Po uložení oznám používateľovi výslednú cestu.
+- **The entire chat history is saved** – all prompts and responses from the beginning of the conversation to the last turn, in the order they occurred.
+- Prompts and responses are written **verbatim** (Markdown as-is), without summarization, shortening, or modification – only with a 4-space indentation added at the beginning of each non-empty line (empty lines remain empty).
+- The 4-space indentation applies to **all** lines of content, including headings, lists, tables, and code blocks – so that they can be visually distinguished from the structural headers `**Prompt:**` and `**Response:**` (and the empty separator lines).
+- Do not add anything else (no additional heading, metadata, or comment) besides the `**Prompt:**` and `**Response:**` headers (and the empty separator lines).
+- Template of a single block format: `.agents/user-prompts/ai-namespacing-auggie.md`.
+- If the file already exists, warn the user and ask whether to overwrite.
+- After saving, notify the user of the resulting path.
 
-## Tvrdé pravidlá
+## Hard Rules
 
-- Prompty aj odpovede sú **verbatim** – žiadne parafrázovanie ani doplnky
-  (jediná povolená úprava je 4-medzerové odsadenie riadkov).
-- Uloží sa **celá** história chatu, nie iba posledný ťah.
-- Sufix agenta sa pridáva **vždy**.
-- Nikdy neukladaj tajomstvá (secrets) do súboru (`.agents/rules/secret-safety.md`).
+- Prompts and responses are **verbatim** – no paraphrasing or additions (the only allowed modification is the 4-space line indentation).
+- The **entire** chat history is saved, not just the last turn.
+- The agent suffix is **always** added.
+- Never save secrets to the file (`.agents/rules/secret-safety.md`).
 
-## Súvisiace
+## Related
 
-- `.agents/commands/save-chat.md` – párový command `/save-chat`
-  (vstupný bod k tomuto skillu).
-- `.agents/skills/save-response/SKILL.md` – obdoba pre uloženie iba posledného
-  promptu a odpovede.
-- `docs/ai-agents.md` – zdroj pravdy o unifikovanej konfigurácii agentov.
-- `.agents/rules/secret-safety.md` – žiadne tajomstvá do súborov ani promptov.
+- `.agents/commands/save-chat.md` – paired command `/save-chat` (entry point to this skill).
+- `.agents/skills/save-response/SKILL.md` – equivalent for saving only the last prompt and response.
+- `docs/ai-agents.md` – source of truth on unified agent configuration.
+- `.agents/rules/secret-safety.md` – no secrets in files or prompts.

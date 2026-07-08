@@ -1,43 +1,43 @@
 ---
 name: psql-inspect
-description: Skúmanie štruktúry a obsahu Odoo PostgreSQL databázy cez `psql` v devcontaineri. Použi keď potrebuješ overiť existenciu tabuľky, stĺpcov, alebo načítať skutočné dáta zo živej databázy.
+description: Inspect the structure and content of the Odoo PostgreSQL database via `psql` in the devcontainer. Use when you need to verify the existence of a table or columns, or to load actual data from a live database.
 ---
 
 # psql-inspect
 
-Devcontainer má PostgreSQL prístup na hoste `db`, používateľ `odoo`, heslo `odoo`,
-databáza `odoo`. Skratka cez `Makefile`: `make db-cli` (otvorí interaktívny `psql`).
+The devcontainer has PostgreSQL access on host `db`, user `odoo`, password `odoo`,
+database `odoo`. Shortcut via `Makefile`: `make db-cli` (opens interactive `psql`).
 
-## Bežné dopyty
+## Common Queries
 
 ```bash
-# Zoznam všetkých tabuliek
+# List all tables
 PGPASSWORD=odoo psql -h db -U odoo -d odoo -c "\dt"
 
-# Štruktúra konkrétnej tabuľky
+# Structure of a specific table
 PGPASSWORD=odoo psql -h db -U odoo -d odoo -c "\d res_users"
 
-# Obsah tabuľky
+# Table content
 PGPASSWORD=odoo psql -h db -U odoo -d odoo -c "SELECT id, login FROM res_users LIMIT 20"
 
-# Hľadanie tabuliek podľa vzoru (napr. modul `stock`)
+# Find tables matching a pattern (e.g., `stock` module)
 PGPASSWORD=odoo psql -h db -U odoo -d odoo -c "\dt stock_*"
 
-# Zoznam stĺpcov tabuľky filtrovaný
+# Filtered list of table columns
 PGPASSWORD=odoo psql -h db -U odoo -d odoo \
   -c "SELECT column_name, data_type FROM information_schema.columns WHERE table_name='res_partner'"
 ```
 
-## Konvencie
+## Conventions
 
-- **Nikdy** nepíš `UPDATE`/`DELETE`/`INSERT` priamo cez `psql`. Modifikuj dáta cez Odoo ORM
-  (modul, demo data, `odoo shell`), nie cez surové SQL – aby sa zachovala konzistencia
-  computed polí, ACL pravidiel a audit logu.
-- Ak potrebuješ migráciu schémy, použi Odoo migračný framework v `<module>/migrations/<version>/`,
-  nie ručné `ALTER TABLE`.
-- Citlivé dáta (heslá, tokeny) nevypisuj do logov ani chat výstupu.
+- **Never** write `UPDATE`/`DELETE`/`INSERT` statements directly via `psql`. Modify data through the Odoo ORM
+  (module, demo data, `odoo shell`), not through raw SQL – to maintain the consistency of
+  computed fields, ACL rules, and the audit log.
+- If you need a schema migration, use the Odoo migration framework in `<module>/migrations/<version>/`,
+  not manual `ALTER TABLE` statements.
+- Do not print sensitive data (passwords, tokens) to the logs or chat output.
 
-## Súvisiace
+## Related
 
-- Odoo shell: `make odoo-shell` (Python REPL s `env`)
-- Makefile cieľ: `make db-cli`
+- Odoo shell: `make odoo-shell` (Python REPL with `env`)
+- Makefile target: `make db-cli`

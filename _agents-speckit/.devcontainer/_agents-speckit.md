@@ -1,21 +1,21 @@
-# Speckit nástroje pre AI agentov
+# Speckit tools for AI agents
 
-Devcontainer doplnok [`_agents-speckit`](https://github.com/RunDevelopmentSk/devcontainers). Pridáva [speckit nástroje](https://github.com/github/spec-kit) pre AI agentov.
+Devcontainer feature [`_agents-speckit`](https://github.com/RunDevelopmentSk/devcontainers). Adds [speckit tools](https://github.com/github/spec-kit) for AI agents.
 
-Tento doplnok má zmysel pridávať, len ak je už pridaný doplnok `_agents`.
+It only makes sense to add this feature if the `_agents` feature is already added.
 
-## Pridanie
+## Installation
 
-Skopíruj obsah priečinka `_agents-speckit` do projektového priečiku.
+Copy the contents of the `_agents-speckit` folder into the project folder.
 
-Na koniec súboru `.devcontainer/post-create-agents.sh` pridaj:
+Add the following to the end of the `.devcontainer/post-create-agents.sh` file:
 
 ```sh
 # install spec-kit (Spec-Driven Development toolkit)
 bash "$(dirname "${BASH_SOURCE[0]}")/post-create-speckit.sh"
 ```
 
-Do súboru `.gitignore` pridaj:
+Add the following to the `.gitignore` file:
 
 ```sh
 #
@@ -29,14 +29,14 @@ Do súboru `.gitignore` pridaj:
 .specify/
 ```
 
-Urob rebuild devcontainera.
+Rebuild the devcontainer.
 
-## Zmazanie
+## Removal
 
-Zmaž, čo bolo pridané.
+Delete everything that was added.
 
-Po začistení `.gitignore` bude `git` reportovať nové súbory, ktoré nie sú pridané do repozitára. Všetky zmaž.
+After cleaning up `.gitignore`, `git` will report new files that are not added to the repository. Delete all of them.
 
-Spusti príkaz `ln -s ../.agents/skills .claude/skills`.
+Run the command `ln -s ../.agents/skills .claude/skills`.
 
-Urob rebuild devcontainera.
+Rebuild the devcontainer.

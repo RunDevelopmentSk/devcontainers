@@ -1,114 +1,92 @@
 ---
 name: save-response
 description: >-
-  Doslovne (verbatim) ulož posledný prompt aj odpoveď agenta do .md súboru.
-  Bez zadaného názvu sa opýta, či ho vygenerovať sám alebo ho zadá používateľ;
-  rieši priečinok (default tmp/), doplní príponu .md a vždy pridá sufix
-  s názvom agenta. Použi pri "ulož odpoveď", "prepíš poslednú odpoveď do .md",
+  Literally (verbatim) save the last prompt and agent response to a .md file.
+  Without a specified name, it asks whether to auto-generate it or have the user enter it;
+  handles the directory (default tmp/), appends the .md extension, and always adds a suffix
+  with the agent's name. Use for "save response", "rewrite last response to .md",
   "save response".
 ---
 
 # save-response
 
-Skill na **doslovné uloženie posledného promptu a odpovede agenta** do
-Markdown súboru. Obsah sa ukladá **verbatim** – presne tak, ako bol napísaný/
-vypísaný, bez sumarizácie, skracovania či úprav.
+Skill for **literally saving the last prompt and agent response** to a Markdown file. Content is saved **verbatim** – exactly as it was written/printed, without summarization, shortening, or modifications.
 
-## Kedy použiť
+## When to use
 
-- „ulož poslednú odpoveď", „prepíš odpoveď do .md", „save response",
-- vstupný bod je aj command `/save-response`.
+- "save last response", "rewrite response to .md", "save response",
+- the entry point is also the command `/save-response`.
 
-## Vstup
+## Input
 
-- Voliteľný argument = špecifikácia cieľového súboru (názov, príp. s priečinkom).
-- Ak argument chýba, agent sa **opýta používateľa**, či má názov súboru
-  vygenerovať sám, alebo ho zadá používateľ (viď nižšie).
+- Optional argument = specification of the target file (name, potentially with a folder).
+- If the argument is missing, the agent **asks the user** whether to auto-generate the filename or have the user enter it (see below).
 
-## 1. Zisti identifikátor agenta (sufix)
+## 1. Determine agent identifier (suffix)
 
-Sufix = krátky identifikátor bežiaceho agenta/CLI:
+Suffix = short identifier of the running agent/CLI:
 
-| Agent            | Sufix    |
+| Agent            | Suffix   |
 | ---------------- | -------- |
 | Auggie           | `auggie` |
 | Claude Code      | `claude` |
 | Antigravity      | `agy`    |
 | Codex            | `codex`  |
 
-## 2. Urči cieľovú cestu (algoritmus)
+## 2. Determine target path (algorithm)
 
-Postupuj v tomto poradí:
+Follow this order:
 
-1. **Bez argumentu** → opýtaj sa používateľa, či má agent názov súboru
-   vygenerovať sám, alebo ho zadá používateľ:
-   - **Agent vygeneruje** → vytvor krátky výstižný názov (slug) z témy
-     poslednej odpovede, iba znaky `[a-zA-Z0-9\-]` (kebab-case, napr.
-     `tax-analyze`). Berie sa ako „názov bez priečinka" → cieľový priečinok
-     je `tmp/`.
-   - **Používateľ zadá** → počkaj na názov (príp. s priečinkom) a pokračuj
-     bodom 2 nižšie, akoby to bol pôvodný argument.
-2. **S argumentom** → rozdeľ ho na časť s priečinkom a názov súboru:
-   - obsahuje `/` (má priečinok) → cieľový priečinok = zadaný priečinok,
-   - neobsahuje `/` (len názov) → cieľový priečinok = `tmp/`.
-3. **Prípona**: z názvu odstráň koncové `.md`, ak tam je → dostaneš `stem`.
-   Ak názov príponu nemal, aj tak pokračuj so `stem` (rovnaký postup); `.md`
-   sa doplní až v kroku 5. (Rieši to bod „bez prípony → doplň `.md`".)
-4. **Sufix agenta**: k `stem` pridaj `-<sufix>` (napr. `-auggie`). Ak `stem`
-   už na `-<sufix>` končí, sufix nezdvojuj.
-5. **Finálna cesta** = `<cieľový priečinok>/<stem>-<sufix>.md`.
-6. Ak cieľový priečinok neexistuje, vytvor ho.
+1. **Without argument** -> ask the user whether the agent should auto-generate the filename or if the user wants to enter it:
+   - **Agent generates** -> create a short descriptive name (slug) from the topic of the last response, using only characters `[a-zA-Z0-9\-]` (kebab-case, e.g., `tax-analyze`). This is treated as "name without folder" -> target folder is `tmp/`.
+   - **User enters** -> wait for the name (potentially with a folder) and proceed with step 2 below as if it were the original argument.
+2. **With argument** -> split it into folder part and filename:
+   - contains `/` (has a folder) -> target folder = specified folder,
+   - does not contain `/` (only name) -> target folder = `tmp/`.
+3. **Extension**: remove the trailing `.md` from the name if present -> you get the `stem`. If the name did not have an extension, still proceed with the `stem` (same procedure); `.md` will be appended in step 5. (This resolves "without extension -> append `.md`".)
+4. **Agent suffix**: add `-<suffix>` (e.g., `-auggie`) to the `stem`. If `stem` already ends with `-<suffix>`, do not double it.
+5. **Final path** = `<target folder>/<stem>-<suffix>.md`.
+6. If the target folder does not exist, create it.
 
-### Príklady
+### Examples
 
-| Argument                                  | Sufix    | Výsledná cesta                                       |
+| Argument                                  | Suffix   | Resulting path                                       |
 | ----------------------------------------- | -------- | ---------------------------------------------------- |
-| *(žiadny)*                                | `auggie` | `tmp/tax-analyze-auggie.md` (slug vygenerovaný)      |
+| *(none)*                                  | `auggie` | `tmp/tax-analyze-auggie.md` (slug auto-generated)    |
 | `my-tax-analyze.md`                       | `auggie` | `tmp/my-tax-analyze-auggie.md`                       |
 | `my-tax-analyze`                          | `auggie` | `tmp/my-tax-analyze-auggie.md`                       |
 | `.agents/user-prompts/my-tax-analyze.md`  | `auggie` | `.agents/user-prompts/my-tax-analyze-auggie.md`      |
 | `.agents/user-prompts/my-tax-analyze`     | `claude` | `.agents/user-prompts/my-tax-analyze-claude.md`      |
 
-## 3. Ulož prompt aj odpoveď
+## 3. Save prompt and response
 
-Do finálnej cesty zapíš **doslovný** (verbatim) obsah v presne tomto formáte
-(prvý riadok súboru je prázdny, hlavičky sú tučné a **každý neprázdny riadok
-promptu aj odpovede je odsadený 4 medzery doprava**):
+Write the **literal** (verbatim) content in exactly this format to the final path (the first line of the file is empty, headers are bold, and **each non-empty line of the prompt and response is indented by 4 spaces to the right**):
 
 ```
-
 **Prompt:**
 
-    <doslovný text posledného promptu – každý riadok odsadený 4 medzery>
+    <literal text of last prompt – each line indented by 4 spaces>
 
-**Odpoveď:**
+**Response:**
 
-    <doslovný text poslednej odpovede – každý riadok odsadený 4 medzery>
+    <literal text of last response – each line indented by 4 spaces>
 ```
 
-- Prompt aj odpoveď sa zapisujú **doslovne** (Markdown as-is), bez
-  sumarizácie, skracovania či úprav – len s pridaným 4-medzerovým odsadením
-  na začiatku každého ich neprázdneho riadka (prázdne riadky ostávajú prázdne).
-- 4-medzerové odsadenie sa aplikuje na **všetky** riadky obsahu vrátane
-  nadpisov, zoznamov, tabuliek a code blokov – aby sa dali vizuálne odlíšiť od
-  orientačných hlavičiek `**Prompt:**` a `**Odpoveď:**`.
-- Okrem hlavičiek `**Prompt:**` a `**Odpoveď:**` (a prázdnych oddeľovacích
-  riadkov) nič iné nepridávaj (žiadny ďalší nadpis, metadáta, komentár).
-- Vzor správne naformátovaného výstupu:
-  `.agents/user-prompts/ai-namespacing-auggie.md`.
-- Ak súbor už existuje, upozorni používateľa a spýtaj sa, či prepísať.
-- Po uložení oznám používateľovi výslednú cestu.
+- Both the prompt and response are written **verbatim** (Markdown as-is), without summarization, shortening, or modification – only with a 4-space indentation added at the beginning of each non-empty line (empty lines remain empty).
+- The 4-space indentation applies to **all** lines of content, including headings, lists, tables, and code blocks – so that they can be visually distinguished from the structural headers `**Prompt:**` and `**Response:**` (and the empty separator lines).
+- Do not add anything else (no additional heading, metadata, or comment) besides the `**Prompt:**` and `**Response:**` headers (and the empty separator lines).
+- Template of correctly formatted output: `.agents/user-prompts/ai-namespacing-auggie.md`.
+- If the file already exists, warn the user and ask whether to overwrite.
+- After saving, notify the user of the resulting path.
 
-## Tvrdé pravidlá
+## Hard Rules
 
-- Prompt aj odpoveď sú **verbatim** – žiadne parafrázovanie ani doplnky
-  (jediná povolená úprava je 4-medzerové odsadenie riadkov).
-- Sufix agenta sa pridáva **vždy**.
-- Nikdy neukladaj tajomstvá (secrets) do súboru (`.agents/rules/secret-safety.md`).
+- The prompt and response are **verbatim** – no paraphrasing or additions (the only allowed modification is the 4-space line indentation).
+- The agent suffix is **always** added.
+- Never save secrets to the file (`.agents/rules/secret-safety.md`).
 
-## Súvisiace
+## Related
 
-- `.agents/commands/save-response.md` – párový command `/save-response`
-  (vstupný bod k tomuto skillu).
-- `docs/ai-agents.md` – zdroj pravdy o unifikovanej konfigurácii agentov.
-- `.agents/rules/secret-safety.md` – žiadne tajomstvá do súborov ani promptov.
+- `.agents/commands/save-response.md` – paired command `/save-response` (entry point to this skill).
+- `docs/ai-agents.md` – source of truth on unified agent configuration.
+- `.agents/rules/secret-safety.md` – no secrets in files or prompts.

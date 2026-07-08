@@ -1,14 +1,14 @@
-# Superpowers nástroje pre AI agentov
+# Superpowers tools for AI agents
 
-Devcontainer doplnok [`_agents-superpowers`](https://github.com/RunDevelopmentSk/devcontainers). Pridáva [superpowers nástroje](https://github.com/obra/superpowers) pre AI agentov.
+Devcontainer feature [`_agents-superpowers`](https://github.com/RunDevelopmentSk/devcontainers). Adds [superpowers tools](https://github.com/obra/superpowers) for AI agents.
 
-Tento doplnok má zmysel pridávať, len ak je už pridaný doplnok `_agents`.
+It only makes sense to add this feature if the `_agents` feature is already added.
 
-## Pridanie
+## Installation
 
-Skopíruj obsah priečinka `_agents-superpowers` do projektového priečiku.
+Copy the contents of the `_agents-superpowers` folder into the project folder.
 
-Na koniec súboru `.devcontainer/post-create-agents.sh` pridaj:
+Add the following to the end of the `.devcontainer/post-create-agents.sh` file:
 
 ```sh
 # install Superpowers skills
@@ -16,27 +16,26 @@ SUPERPOWERS_INSTALL="original" # "original"|"vendor"
 bash "$(dirname "${BASH_SOURCE[0]}")/post-create-superpowers.sh"
 ```
 
-Premenná `SUPERPOWERS_INSTALL` môže mať nasledové hodonoty:
+The `SUPERPOWERS_INSTALL` variable can have the following values:
 
-- `original` - originálna inštalácia `superpowers`, tak ako je popísaná v dokumentácii (t.j. formou pluginu). Týmto spôsobom nie je pokryté `auggie` CLI.
-- `vendor` - prekopírovanie nástrojov z github repozitára do `.agents` priečinka v projekte. Takto je pokryté aj `auggie` CLI, je však zas otázne či to je rovnako funkčné ako pri `original` inštalácii.
+- `original` - the original installation of `superpowers`, as described in the documentation (i.e. as a plugin). This method does not cover the `auggie` CLI.
+- `vendor` - copying the tools from the GitHub repository into the `.agents` folder in the project. This also covers the `auggie` CLI, but it is questionable whether it is as functional as the `original` installation.
 
-V prípade `vendor` inštalácie pridaj súbor `.GEMINI.md` s obsahom:
+For the `vendor` installation, add a `.GEMINI.md` file with the following content:
 
 ```markdown
 @.agents/skills/using-superpowers/SKILL.md
 ```
 
-Ide o náhradu chýbajúceho session start hooku pre `agy`.
+This acts as a replacement for the missing session start hook for `agy`.
 
-Urob rebuild devcontainera.
+Rebuild the devcontainer.
 
-## Zmazanie
+## Removal
 
-Zmaž, čo bolo pridané.
+Delete everything that was added.
 
-V prípade `vendor` inštalácie zmaž aj súbory, ktoré boli automaticky stiahnuté z https://github.com/obra/superpowers.
-V prípade `original` inštalácie zmaž aj docker volumes, ktoré uchovávajú data jednotlivých AI agentov - pluginy sú totiž uložené tam.
+In case of `vendor` installation, also delete the files that were automatically downloaded from https://github.com/obra/superpowers.
+In case of `original` installation, also delete the docker volumes that store data for individual AI agents - since plugins are stored there.
 
-
-Urob rebuild devcontainera.
+Rebuild the devcontainer.
