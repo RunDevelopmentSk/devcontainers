@@ -11,4 +11,4 @@ a Codex ho čítajú natívne.
 
 ## Všeobecný popis
 
-Aktuálny projekt obsahuje devcontainer-y, ktoré používame v iných projektoch ako vývojové prostredia pre danú technológiu. Jednotlivé devcontainer-y sú nezávislé, hoci niekedy dosť podobné, keďže len aktualizujú  danú technológiu pre jej novšiu verziu.
+Aktuálny projekt obsahuje devcontainer-y, ktoré môžu byť použité v iných projektoch ako vývojové prostredia pre danú technológiu. Jednotlivé devcontainer-y sú nezávislé, hoci niekedy dosť podobné, keďže len aktualizujú  danú technológiu pre jej novšiu verziu.
