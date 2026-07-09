@@ -57,6 +57,15 @@ ln -s ../.agents/agents .augment/agents
 ln -s ../.agents/agents .codex/agents
 ```
 
+### Naming convention
+
+Local/shared/project-owned rules, commands, skills, and subagents are namespaced with a `run.` / `run-` prefix so they are clearly distinguishable from third-party or vendor-provided artifacts (e.g. `speckit-*`), which stay unprefixed and must never be renamed:
+
+- **rules** (`.agents/rules/run.<name>.md`), **commands** (`.agents/commands/run.<name>.md`), **subagents** (`.agents/agents/run.<name>.md` / `.toml`) use a dot-separated `run.<name>` file name,
+- **skills** (`.agents/skills/run-<name>/SKILL.md`) use a hyphen-separated `run-<name>` directory name; the skill's frontmatter `name:` matches the directory name.
+
+Avoid double-prefixing (`run.run.<name>`, `run-run-<name>`). A command that is a thin entry point to a skill shares the same base name across both prefix styles (e.g. command `/run.add-agent-asset` <-> skill `run-add-agent-asset`).
+
 ### Rules
 
 Workspace rules are in `.agents/rules/*.md` (Markdown with optional YAML frontmatter). Discovery by agent:
@@ -129,7 +138,7 @@ The JSON schema for hooks is almost identical between Antigravity, Claude Code, 
   - Turn on "Settings" (`Win + I`) > "System" > "Advanced" > "For developers" - this only needs to be done once globally, at the beginning.
 - **Local overrides**: files matching `*.local.md`, `*.local.json`, `*.local.toml` are in `.gitignore` – use them for your private notes/settings that do not belong in the repository.
 - **Skill format**: each skill is a `.agents/skills/<name>/SKILL.md` directory with YAML frontmatter `name` and `description` (a common requirement for Auggie CLI, Codex, and Antigravity).
-- Antigravity occasionally references files created in the `~/.gemini/antigravity-cli/brain` directory. To simplify access to these files, a symlink is created: `tmp/antigravity → ~/.gemini/antigravity-cli/brain`.
+- **Antigravity tmp files**: Antigravity occasionally references files created in the `~/.gemini/antigravity-cli/brain` directory. To simplify access to these files, a symlink is created: `tmp/antigravity → ~/.gemini/antigravity-cli/brain`.
 
 The sections below describe installation, logging in, as well as all configuration options for individual agents.
 
