@@ -1,6 +1,6 @@
 # Coding AI Agents
 
-The following coding AI agents are available in the devcontainer:
+The following coding AI agents are available in this devcontainer:
 
 - `auggie` (**Augment Code** CLI)
 - **Claude Code** (VS Code extension) and/or `claude` (Claude Code CLI)
