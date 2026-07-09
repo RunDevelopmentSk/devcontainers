@@ -16,6 +16,11 @@ Before working, check:
 
 - `.agents/rules/*.md` – modular workspace rules
 
+## Always applicable cross-cutting rules
+
+- @.agents/rules/run.language-policy.md
+- @.agents/rules/run.secret-safety.md
+
 ## General description
 
 The current project is built on  <@todo>. Functional code is located in the directories <@todo>.

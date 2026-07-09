@@ -16,6 +16,11 @@ Before working, check:
 
 - `.agents/rules/*.md` – modular workspace rules
 
+## Always applicable cross-cutting rules
+
+- @.agents/rules/run.language-policy.md
+- @.agents/rules/run.secret-safety.md
+
 ## General description
 
 The current project contains devcontainers that can be used in other projects as development environments for a given technology. Individual devcontainers are independent, although sometimes quite similar, as they only update a given technology for its newer version.
