@@ -15,8 +15,8 @@ In short (details in the sub-agent):
 2. Propose an agent × model matrix (**default `claude` and `auggie`**), warn about credit multiplication, and **wait for user confirmation**.
 3. Prepare the prompt in a file with the **Output Contract** (exact text in the sub-agent) and run the orchestration script (`--check` before fan-out cheaply verifies auth/flags):
    ```bash
-   .agents/agents/scripts/compare-solutions-fanout.sh \
-     --prompt-file tmp/compare-solutions/prompt.md  claude auggie
+   .agents/agents/scripts/run.compare-solutions-fanout.sh \
+     --prompt-file tmp/run.compare-solutions/prompt.md  claude auggie
    ```
 4. Compare and analyze outputs; present a **recommended solution** (a proposal, not execution of changes) and provide the path to the `tmp/` folder containing the individual solutions.
 
