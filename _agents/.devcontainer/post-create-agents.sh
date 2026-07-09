@@ -41,8 +41,11 @@ fi
 echo "" && echo "Installing Codex CLI..."
 # - fix ownership of volume-mounted dir (docker-compose.yml creates it as root if not pre-existing in image)
 sudo chown "$CURRENT_USER:$CURRENT_USER" "$HOME/.codex"
-# - install
-curl -fsSL https://chatgpt.com/codex/install.sh | CODEX_NON_INTERACTIVE=1 bash
+# - install (official installer first; falls back to npm if it fails)
+if ! curl -fsSL https://chatgpt.com/codex/install.sh | CODEX_NON_INTERACTIVE=1 bash; then
+  echo "Official Codex installer failed, falling back to npm install..."
+  npm install -g @openai/codex
+fi
 echo "Codex CLI (codex): $(codex --version || true) installed"
 
 # install Auggie CLI (Augment Code)
