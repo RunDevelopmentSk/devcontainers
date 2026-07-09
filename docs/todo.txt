@@ -6,14 +6,6 @@
     -? https://github.com/bmad-code-org/bmad-method
     -? https://github.com/Fission-AI/openspec
     -? https://github.com/open-gsd/gsd-core
-- docs/ai-agents.md
-    - add description of how to set full permissions for individual agents
-x namespace existing agent assets (prefix `run.`/`run-` was used instead of `speckit.`/`speckit-`, to distinguish project-owned assets from third-party ones):
-    x commands: run.
-    x skills: run-
-    x rules: run.
-    x subagents: run.
-
 - also separate as add-ons:
     - `_pre-commit`
     - `_runtools`
@@ -36,45 +28,9 @@ x namespace existing agent assets (prefix `run.`/`run-` was used instead of `spe
         "shutdownAction": "stopCompose"
         }
 - _agents:
-    - agent for running code-review for a given revision or branch. Make it possible to run it in a mode where multiple subagents run in parallel and all their comments are considered.
-    x agent to rewrite the last response or chat into a .md file
-        - adjust it so it can be done from another chat (based on response id)
     - agent to compress chat into a .md file - for handing over the chat to another agent and also in case of exceeding the context window
         - adjust it so it can be done from another chat (based on response id)
-    - add integration of https://github.com/obra/superpowers
-    - debug installation error in `php-8.3_mysql-5.7` devcontainer on Vinco's iBook:
-        ```
-        Installing Antigravity CLI...
-        ⠋ Detecting system environment...
-        ✓ Platform detected: linux_amd64
-        ⠋ Querying release repository...
-        ✓ Latest available version: 1.0.16
-        ⠋ Downloading release package...
-        ✓ Download complete and checksum verified.
-        ⠋ Extracting binary from archive...
-        ⠋ Configuring shell environment...
-        [percpu.cc : 345] RAW: rseq syscall failed with errno 38 after membarrier syscall succeeded.
-        I0703 10:24:52.676641  1710 installer.go:27] Running Antigravity CLI setup...
-        I0703 10:24:52.677759  1710 installer.go:147] Appending PATH export to profile /home/developer/.bashrc: export PATH="/home/developer/.local/bin:$PATH"
-        I0703 10:24:52.678267  1710 installer.go:184] Successfully updated shell profile: /home/developer/.bashrc
-        I0703 10:24:52.678314  1710 installer.go:147] Appending PATH export to profile /home/developer/.profile: export PATH="/home/developer/.local/bin:$PATH"
-        I0703 10:24:52.678369  1710 installer.go:184] Successfully updated shell profile: /home/developer/.profile
-        I0703 10:24:52.678459  1710 installer_unix.go:40] PATH verification: ~/.local/bin is correctly configured in active PATH environment.
-
-        ✅ Antigravity CLI installed successfully at /home/developer/.local/bin/agy
-        Run 'agy' to start the CLI
-        [percpu.cc : 345] RAW: rseq syscall failed with errno 38 after membarrier syscall succeeded.
-        Antigravity CLI (agy): 1.0.16 installed
-
-        Installing Auggie CLI...
-
-        added 3 packages in 3s
-        npm warn allow-scripts 1 package has install scripts not yet covered by allowScripts:
-        npm warn allow-scripts   node-pty@1.2.0-beta.14 (install: node scripts/prebuild.js || node-gyp rebuild; postinstall: node scripts/post-install.js)
-        npm warn allow-scripts
-        npm warn allow-scripts Run `npm approve-scripts --allow-scripts-pending` to review, or `npm approve-scripts <pkg>` to allow.
-        Auggie CLI (auggie): 0.32.0 (commit eb99b871) installed
-        ```
+    - skill and command to add
 
 ---
 How to write todo:

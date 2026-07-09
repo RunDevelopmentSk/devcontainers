@@ -1,15 +1,16 @@
 ---
 name: run-review-changes
 description: >-
-  Review changes made by an AI agent - either currently staged files or specific
-  commit(s) - and report remarks only (read-only, no edits/commits). For source
-  code, reviews against architectural and language/framework-specific quality
-  criteria for the identified type (proper code review); for non-code changes
-  (docs, config, data, prompts, ...), evaluates correctness and completeness
-  against the original user request/prompt. Asks for the change source (staged
-  vs commit hash(es)) and the original request if not already given. Use for
-  "review changes", "changes review", "revise AI agent changes", "review staged
-  files", "review commit <hash>".
+  Review changes made by an AI agent - either currently staged files, specific
+  commit(s), or branch changes against main - and report remarks only (read-only,
+  no edits/commits). For source code, reviews against architectural and
+  language/framework-specific quality criteria for the identified type (proper
+  code review); for non-code changes (docs, config, data, prompts, ...), evaluates
+  correctness and completeness against the original user request/prompt. Asks for
+  the change source (staged vs commit hash(es) vs branch) and the original request
+  if not already given. Use for "review changes", "changes review", "revise AI agent
+  changes", "review staged files", "review commit <hash>", "review branch changes",
+  "review branch", "PR review".
 ---
 
 # run-review-changes
@@ -20,7 +21,7 @@ anything.
 
 ## When to use
 
-- "review changes", "changes review", "revise the changes", "review staged files", "review commit `<hash>`",
+- "review changes", "changes review", "revise the changes", "review staged files", "review commit `<hash>`", "review branch changes against main", "review branch", "PR review", "review PR",
 - the entry point is also the command `/run.review-changes`.
 
 ## Input
@@ -29,8 +30,9 @@ Two things must be known before the review starts. If the user already specified
 request, do not ask again - otherwise ask now (can be combined into a single question):
 
 1. **Source of changes** - one of:
-   - **staged files** (`git diff --cached`), or
-   - **commit hash(es)** to review (single hash, a range, or a list of discrete hashes).
+   - **staged files** (`git diff --cached`),
+   - **commit hash(es)** to review (single hash, a range, or a list of discrete hashes), or
+   - **branch changes** against another branch (usually `main`, using `git diff main...` or `git diff main...HEAD`).
 2. **Original request/prompt** that led to the changes (the instruction that was given to the
    AI agent whose output is being reviewed) - needed to judge correctness of non-code changes
    and the completeness of the whole change set.
@@ -46,10 +48,12 @@ request, do not ask again - otherwise ask now (can be combined into a single que
   - discrete/non-contiguous list -> review each commit separately with `git show <hash>` and
     report findings per commit,
   - if it is unclear whether the given hashes form a range or a discrete list, ask the user.
+- **Branch changes** (Pull Request code review):
+  - branch changes against `main` (or another target branch if specified) -> `git diff main...HEAD` (or `git diff main...` or specifying another base like `git diff target_branch...HEAD`) to view all changes introduced in the current branch since it branched from `main`.
+  - `git log main..HEAD --oneline` to see the commits included in the review.
 - Never modify the working tree/index while inspecting the diff (no `git add`, `git checkout`,
   `git commit`, `git reset`, `git restore`, etc.).
-- **Nothing to review**: if staged mode has no staged files or commit mode has an invalid or
-  unreachable hash, report it and stop - do not fall back to an unrelated diff.
+- **Nothing to review**: if staged mode has no staged files, commit mode has an invalid/unreachable hash, or branch mode has no differences from `main`, report it and stop - do not fall back to an unrelated diff.
 
 ## 2. Classify each changed file
 
