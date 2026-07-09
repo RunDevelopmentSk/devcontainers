@@ -11,6 +11,56 @@ You can download the current version for a given project from [github.com/RunDev
 
 Details on how to use individual AI agents are described below.
 
+## Plans
+
+Every agent is used through a personal account (your individual login with the provider, see
+"Logging In" sestions below). Which **plan** pays for that usage is a separate choice:
+
+- **Individual plan** – an individually paid, capped tier tied to your personal account (private
+  use).
+- **Company plan** – a shared, company-paid tier your personal account is added to as a member
+  (work use); either metered API billing (pay per use) or a flat seat-based subscription (with
+  pay-as-you-go overflow once included credits are exhausted).
+
+The following notes summarize subscription options and their relative value, as of July 2026:
+
+- `agy`
+  - [Individual plan](accounts.google.com):
+    - 1 seat
+    - a small amount of free credits, with a weekly reset window
+    - an API requests limit
+  - [Company plan](https://console.cloud.google.com/) (metered API billing; personal account + project + billing + API enabled):
+    - unlimited seats for shared credits
+    - $300 of initial free credits included, then pay as you go
+    - the most cost-effective setup is often to keep each user on a separate, individually-owned Company plan to multiply the $300 free credits and also reduce the API requests.
+- `auggie`
+  - [Company plan](https://app.augmentcode.com/) (seat-based subscription; $100/month plan):
+    - 50 seats for shared credits
+    - when purchased credits are exhausted, pay as you go
+- `claude`
+  - [Individual plan](https://claude.ai/):
+    - 1 seat
+    - free credits based on subscription plan, with 5-hour and weekly reset window
+  - [Company plan](platform.claude.com) (metered API billing):
+    - unlimited seats for shared credits
+    - pay as you go
+- `codex`
+  - [Individual plan](https://chatgpt.com/) (Personal plan):
+    - 1 seat
+    - free credits based on subscription plan, with 5-hour and weekly reset window
+  - [Company plan](https://chatgpt.com/) (seat-based subscription; Business plan):
+    - unlimited seats for shared credits
+    - pay as you go
+
+Approximate value ranking, depending on the models in use (July 2026):
+
+- `agy` > individually-owned Company plan > until the initial $300 is used up
+- `codex` > Individual plan
+- `claude` > Individual plan
+- `auggie` > Company plan
+- `claude` > Company plan
+- `codex` > Company plan
+
 ## Unified Configuration (`.agents/` + `AGENTS.md`)
 
 For all agents, **one source of truth** is used for project instructions, workspace rules, and skills across all agents:
@@ -139,6 +189,7 @@ The JSON schema for hooks is almost identical between Antigravity, Claude Code, 
 - **Local overrides**: files matching `*.local.md`, `*.local.json`, `*.local.toml` are in `.gitignore` – use them for your private notes/settings that do not belong in the repository.
 - **Skill format**: each skill is a `.agents/skills/<name>/SKILL.md` directory with YAML frontmatter `name` and `description` (a common requirement for Auggie CLI, Codex, and Antigravity).
 - **Antigravity tmp files**: Antigravity occasionally references files created in the `~/.gemini/antigravity-cli/brain` directory. To simplify access to these files, a symlink is created: `tmp/antigravity → ~/.gemini/antigravity-cli/brain`.
+- **AI agent terminal label**: If you run multiple agents in separate VS Code terminals, rename each terminal (`F2`) to the agent's name so you can tell them apart at a glance.
 
 The sections below describe installation, logging in, as well as all configuration options for individual agents.
 
@@ -150,17 +201,18 @@ The CLI (`auggie`) is installed **automatically** in the devcontainer using `.de
 
 ### Logging In
 
-You need to create a personal account on [app.augmentcode.com](https://app.augmentcode.com/). For private use, pay for one of the plans. **For work use**, request to have your personal user added to the [company users](https://app.augmentcode.com/account/team).
+You need to create a personal account on [app.augmentcode.com](https://app.augmentcode.com/). For private use, pay for one of the plans (Individual plan). **For work use**, request to have your personal user added to the [company users](https://app.augmentcode.com/account/team) (Company plan).
 
 When logging into `auggie`, use the personal account created on [app.augmentcode.com](https://app.augmentcode.com/).
 
-On the corporate account, you can track [credits consumed by individual users](https://app.augmentcode.com/account/analytics).
+On the Company plan, you can track [credits consumed by individual users](https://app.augmentcode.com/account/analytics).
 
 ### Commands
 
 Commands ("slash commands") for standard work with the `auggie` CLI are:
 
 - **select model:** `/model`
+- **set default model:** `/config` > `Default Model` > `Claude Sonnet ...`
 - **allow full permissions:**
     - `auggie` has full permissions in the default configuration
     - controlled version: `/permissions` > `A` > `Locals settings (personal)` > ...
@@ -174,6 +226,7 @@ Commands ("slash commands") for standard work with the `auggie` CLI are:
 - **save conversation to file:** has no built-in command, but you can use the added `/run.save-chat` command. Before running `/run.save-chat`, it is recommended to create a copy of the conversation using `/fork` so that the history of the original conversation remains untouched
 - **code-review:** has no built-in command, but you can use the added `/run.review-changes` command or `/run-review-changes` skill
 - **list and select skill:** `/skills`
+- **show usage/credits:** no built-in command; view consumption on the [web dashboard](https://app.augmentcode.com/account/analytics)
 - **exit work:** `/exit`
 
 See also other added commands in `.agents/commands` and skills in `.agents/skills`.
@@ -257,20 +310,21 @@ The CLI (`claude`) is installed **automatically** in the devcontainer using `.de
 
 ### Logging In
 
-You need to create a personal account on [platform.claude.com](https://platform.claude.com/). For private use, pay for one of the plans. **For work use**, request to have your personal user added to the [company users](https://platform.claude.com/settings/members) (with the role `Claude Code` or `Developer`).
+You need to create a personal account on [platform.claude.com](https://platform.claude.com/). For private use, pay for one of the plans (Individual plan). **For work use**, request to have your personal user added to the [company users](https://platform.claude.com/settings/members) (Company plan; with the role `Claude Code` or `Developer`).
 
 When logging into `claude` > `/login`, select `2. Anthropic Console account · API usage billing`, use the personal account created on [platform.claude.com](https://platform.claude.com/), and choose "Quantea Technologies" as the organization.
 
-On the corporate account, you can track [credits consumed by individual users](https://platform.claude.com/cost?group_by=key_id).
+On the Company plan, you can track [credits consumed by individual users](https://platform.claude.com/cost?group_by=key_id).
 
 ### Commands
 
 Commands ("slash commands") for standard work with the `claude` CLI are:
 
 - **select model:** `/model`
+- **set default model:** no separate action needed — the model selected via `/model` persists across sessions
 - **allow full permissions:**
     - fast version: `claude --dangerously-skip-permissions`
-    - toggle on the fly: `Shift Tab`
+    - slower version: `/config` > `Default permission mode` > `Auto`, or toggle on the fly using `Shift Tab`
     - controlled version: `/permissions` > `Allow`|`Ask`|`Deny`|... > `Bash`, `Bash(npm *)`, `Edit`, `Edit(src/**)`, `Write`, `Read`, `WebFetch`, `WebSearch`, `NotebookEdit`, `Skill`, `Workflow`, `Monitor`, ...
 - **select conversation:** `/resume`
 - **new conversation:** `/clear`
@@ -282,6 +336,9 @@ Commands ("slash commands") for standard work with the `claude` CLI are:
 - **save conversation to file:** `/export`
 - **code-review:** `/code-review` or you can use the added `/run.review-changes` command or `/run-review-changes` skill
 - **list and select skill:** `/skills`
+- **show usage/credits:**
+    - `/usage` – current 5h and week window token usage
+    - web: [claude.ai](https://claude.ai/) → profile → Settings → Usage
 - **exit work:** `/exit`
 
 See also other added commands in `.agents/commands` and skills in `.agents/skills`.
@@ -354,15 +411,15 @@ The CLI (`agy`) is installed **automatically** in the devcontainer using `.devco
 
 ### Logging In
 
-You need to create a google account on [accounts.google.com](https://accounts.google.com) - i.e., having a standard personal google account is sufficient. **Antigravity can be used for free** via your personal google account, but you must expect limits and availability based on capacity, or you can pay for one of the [plans](https://antigravity.google/pricing). **For work use**, request to have your personal user added to the [company users](https://console.cloud.google.com/iam-admin/iam).
+You need to create a google account on [accounts.google.com](https://accounts.google.com) - i.e., having a standard personal google account is sufficient. **Antigravity can be used for free** via your personal google account (Individual plan), but you must expect limits and availability based on capacity, or you can pay for one of the [plans](https://antigravity.google/pricing). **For work use**, request to have your personal user added to the [company users](https://console.cloud.google.com/iam-admin/iam) (Company plan).
 
 When logging into `agy`, select `2. Use a Google Cloud project`, use the personal account created on [accounts.google.com](https://accounts.google.com), and enter `project-605967c9-39ce-4929-b5b` as the project ID.
 
-On the corporate account, you can track the [current price (consumption) for services used](https://console.cloud.google.com/billing/reports).
+On the Company plan, you can track the [current price (consumption) for services used](https://console.cloud.google.com/billing/reports).
 
-#### Initial corporate account setup
+#### Initial Company plan setup
 
-For the google account you decide to use as a corporate account, you need to do the following in the [Google Cloud Console](https://console.cloud.google.com/):
+For the google account you decide to use for the Company plan, you need to do the following in the [Google Cloud Console](https://console.cloud.google.com/):
 
 - [Create a project](https://console.cloud.google.com/projectcreate), e.g., `Run AI`.
 - [Link a billing account to it](https://console.cloud.google.com/billing), e.g., `Run billing`.
@@ -373,6 +430,7 @@ For the google account you decide to use as a corporate account, you need to do 
 Commands ("slash commands") for standard work with the `agy` CLI are:
 
 - **select model:** `/model`
+- **set default model:** no separate action needed — the model selected via `/model` persists across sessions
 - **allow full permissions:**
     - fast version: `agy --dangerously-skip-permissions`
     - slower version: `/config` > `Tools Permission` > `always-proceed`
@@ -387,6 +445,7 @@ Commands ("slash commands") for standard work with the `agy` CLI are:
 - **save conversation to file:** has no built-in command, but you can use the added `/run-save-chat` skill. Before running `/run-save-chat`, it is recommended to create a copy of the conversation using `/fork` so that the history of the original conversation remains untouched
 - **code-review:** has no built-in command, but you can use the added `/run-review-changes` skill
 - **list and select skill:** `/skills`
+- **show usage/credits:** `/usage` – current session's token usage and remaining credits
 - **exit work:** `/exit`
 
 See also other added commands in `.agents/commands` and skills in `.agents/skills`.
@@ -455,17 +514,18 @@ The CLI (`codex`) is installed **automatically** in the devcontainer using `.dev
 
 ### Logging In
 
-You need to create a personal account on [chatgpt.com](https://chatgpt.com/). **Codex can also be used for free** via your personal GPT account, but you must expect limits and availability based on capacity, or you can pay for one of the [plans](https://chatgpt.com/#pricing). **For work use**, request to have your personal user added to the [company users](https://chatgpt.com/admin/members).
+You need to create a personal account on [chatgpt.com](https://chatgpt.com/). **Codex can also be used for free** via your personal GPT account (Individual plan), but you must expect limits and availability based on capacity, or you can pay for one of the [plans](https://chatgpt.com/#pricing). **For work use**, request to have your personal user added to the [company users](https://chatgpt.com/admin/members) (Company plan).
 
 When logging into `codex`, select `1. Sign in with ChatGPT` (or `2. Sign in with Device Code` if the first option does not work), use the personal account created on [chatgpt.com](https://chatgpt.com/), and select `Run Development's Workspace` when logging in via the browser.
 
-On the corporate account, you can track [credits consumed by individual users](https://chatgpt.com/admin/usage).
+On the Company plan, you can track [credits consumed by individual users](https://chatgpt.com/admin/usage).
 
 ### Commands
 
 Commands ("slash commands") for standard work with the `codex` CLI are:
 
 - **select model:** `/model`
+- **set default model:** no separate action needed — the model selected via `/model` persists across sessions
 - **allow full permissions:**
     - fast version: `codex --dangerously-bypass-approvals-and-sandbox`
     - slower version: `/permissions` > `Full Access`
@@ -479,6 +539,9 @@ Commands ("slash commands") for standard work with the `codex` CLI are:
 - **save conversation to file:** has no built-in command, but you can use the added `$run-save-chat` skill. Before running `$run-save-chat`, it is recommended to create a copy of the conversation using `/fork` so that the history of the original conversation remains untouched
 - **code-review:** has no built-in command, but you can use the added `$run-review-changes` skill
 - **list and select skill:** `/skills` or start typing by `$`
+- **show usage/credits:**
+    - `/status` – current 5h and week window token usage
+    - `/statusline` – customization of a persistent status line showing live usage in the terminal
 - **exit work:** `/exit`
 
 See also other added skills in `.agents/skills`. The added commands in `.agents/commands` are not supported in the `codex` CLI.
