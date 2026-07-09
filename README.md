@@ -12,15 +12,15 @@ To add a devcontainer to a given project, simply copy the contents of the folder
 
 ## Add-ons
 
-The project also includes add-ons that can be added to devcontainers. These are contained in directories starting with an underscore. Currently, these are the following add-ons:
+The project also includes add-ons that can be added to devcontainers. These are contained in directories starting with an underscore. Currently, the following add-ons are available:
 
 - `_agents` - adds `claude`, `codex`, `agy`, and `auggie` CLI AI agents via a [unified configuration](../docs/ai-agents.md).
 - `_agents-specskit` - adds [speckit tools](https://github.com/github/spec-kit) for AI agents.
 - `_agents-superpowers` - adds [superpowers tools](https://github.com/obra/superpowers) for AI agents.
 
-To add an add-on to a devcontainer in a given project, it is necessary to:
+To add an add-on to a devcontainer in a given project:
 
 - Copy the contents of the add-on folder into the project folder.
-- According to the instructions in `.devcontainers/<add-on-name>.md` > `## Adding`, integrate into the existing files of the devcontainer/project.
+- Following the instructions in `.devcontainers/<add-on-name>.md` > `## Adding`, integrate it into the existing files of the devcontainer/project.
 
-If the add-on contains a folder named after one of the devcontainers but starting with an underscore (e.g., `_odoo-19`), then if you are applying the add-on to the corresponding devcontainer (i.e., to `odoo-19`), also copy this technology-specific add-on content (i.e., the content of the `_odoo-19` folder) into the project folder. Afterwards, you can delete new-added toplevel folders starting with an underscore.
+If the add-on contains a folder named after one of the devcontainers but starting with an underscore (e.g., `_odoo-19`), and you are applying the add-on to the corresponding devcontainer (i.e., to `odoo-19`), also copy this technology-specific add-on content (i.e., the content of the `_odoo-19` folder) into the project folder. Afterwards, you can delete the newly added top-level folders starting with an underscore.
