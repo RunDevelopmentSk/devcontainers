@@ -28,9 +28,10 @@
         "shutdownAction": "stopCompose"
         }
 - _agents:
-    - agent to compress chat into a .md file - for handing over the chat to another agent and also in case of exceeding the context window
+    - skill to compress chat into a .md file - for handing over the chat to another agent and also in case of exceeding the context window
         - adjust it so it can be done from another chat (based on response id)
-    - skill and command to add
+    - Pravidlo: A agent nech upozorní užívateľa ak je zvolená model príliš/zbytočne nákladný na vykonanie zadanej požiadavky/promptu a danú požiadavku by bolo možné vykonať aj lacnejším modelom. Takisot nech upozorní užívateľa ak je to naopak - na komplexnú požiadavku sa použije príliš slabý model.
+    - skill and command to add/remove the add-on to/from linked project
 
 ---
 How to write todo:
