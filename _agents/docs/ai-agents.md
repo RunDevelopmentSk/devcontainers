@@ -171,7 +171,7 @@ Commands ("slash commands") for standard work with the `auggie` CLI are:
 - **compact conversation:** has no built-in command
 - **create a copy of conversation:** `/fork`
 - **copy last response:** `/copy`
-- **save/overwrite conversation to file:** has no built-in command, but you can use the added `/run.save-chat` command. Before running `/run.save-chat`, it is recommended to create a copy of the conversation using `/fork` so that the history of the original conversation remains untouched
+- **save conversation to file:** has no built-in command, but you can use the added `/run.save-chat` command. Before running `/run.save-chat`, it is recommended to create a copy of the conversation using `/fork` so that the history of the original conversation remains untouched
 - **code-review:** has no built-in command, but you can use the added `/run.review-changes` command or `/run-review-changes` skill
 - **list and select skill:** `/skills`
 - **exit work:** `/exit`
@@ -279,7 +279,7 @@ Commands ("slash commands") for standard work with the `claude` CLI are:
 - **compact conversation:** `/compact`
 - **create a copy of conversation:** `/fork`
 - **copy last response:** `/copy`, `/copy [N]` to select a specific response
-- **save/overwrite conversation to file:** `/export`
+- **save conversation to file:** `/export`
 - **code-review:** `/code-review` or you can use the added `/run.review-changes` command or `/run-review-changes` skill
 - **list and select skill:** `/skills`
 - **exit work:** `/exit`
@@ -384,7 +384,7 @@ Commands ("slash commands") for standard work with the `agy` CLI are:
 - **compact conversation:** has no built-in command
 - **create a copy of conversation:** `/fork`
 - **copy last response:** `/copy`
-- **save/overwrite conversation to file:** has no built-in command, but you can use the added `/run-save-chat` skill. Before running `/run-save-chat`, it is recommended to create a copy of the conversation using `/fork` so that the history of the original conversation remains untouched
+- **save conversation to file:** has no built-in command, but you can use the added `/run-save-chat` skill. Before running `/run-save-chat`, it is recommended to create a copy of the conversation using `/fork` so that the history of the original conversation remains untouched
 - **code-review:** has no built-in command, but you can use the added `/run-review-changes` skill
 - **list and select skill:** `/skills`
 - **exit work:** `/exit`
@@ -476,7 +476,7 @@ Commands ("slash commands") for standard work with the `codex` CLI are:
 - **compact conversation:** `/compact`
 - **create a copy of conversation:** `/fork`
 - **copy last response:** `/copy`
-- **save/overwrite conversation to file:** has no built-in command, but you can use the added `$run-save-chat` skill. Before running `$run-save-chat`, it is recommended to create a copy of the conversation using `/fork` so that the history of the original conversation remains untouched
+- **save conversation to file:** has no built-in command, but you can use the added `$run-save-chat` skill. Before running `$run-save-chat`, it is recommended to create a copy of the conversation using `/fork` so that the history of the original conversation remains untouched
 - **code-review:** has no built-in command, but you can use the added `$run-review-changes` skill
 - **list and select skill:** `/skills` or start typing by `$`
 - **exit work:** `/exit`
