@@ -8,11 +8,9 @@
     -? https://github.com/open-gsd/gsd-core
 - docs/ai-agents.md
     - add description of how to set full permissions for individual agents
-x namespace existing agent assets (prefix `run.`/`run-` was used instead of `speckit.`/`speckit-`, to distinguish project-owned assets from third-party ones):
-    x commands: run.
-    x skills: run-
-    x rules: run.
-    x subagents: run.
+- namespace existing agent assets according to speckit:
+    - commands: speckit.
+    - skills: speckit-
 
 - also separate as add-ons:
     - `_pre-commit`

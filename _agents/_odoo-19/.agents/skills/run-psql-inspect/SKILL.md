@@ -1,9 +1,9 @@
 ---
-name: psql-inspect
+name: run-psql-inspect
 description: Inspect the structure and content of the Odoo PostgreSQL database via `psql` in the devcontainer. Use when you need to verify the existence of a table or columns, or to load actual data from a live database.
 ---
 
-# psql-inspect
+# run-psql-inspect
 
 The devcontainer has PostgreSQL access on host `db`, user `odoo`, password `odoo`,
 database `odoo`. Shortcut via `Makefile`: `make db-cli` (opens interactive `psql`).

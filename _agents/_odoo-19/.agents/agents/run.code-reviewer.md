@@ -1,5 +1,5 @@
 ---
-name: code-reviewer
+name: run.code-reviewer
 description: >
   Performs a code review of the changed code in the project. Checks for correctness,
   security, compliance with Odoo conventions, and suggests improvements. Run it

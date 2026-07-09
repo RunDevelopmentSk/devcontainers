@@ -1,9 +1,9 @@
 ---
-name: odoo-restart-reminder
+name: run-odoo-restart-reminder
 description: Reminder on how (and when) to restart or update Odoo after code changes. Always use when you have made changes to modules, manifests, models, views, or data files. NEVER start or update Odoo automatically – only notify the user.
 ---
 
-# odoo-restart-reminder
+# run-odoo-restart-reminder
 
 After changing source files, it is necessary for the user to manually restart/update Odoo.
 **The agent must not do this automatically** (so the user has control over the restart and logs, and to avoid interrupting ongoing work).
