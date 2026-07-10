@@ -136,3 +136,14 @@ fabric.properties
 __pycache__/
 *.py[cod]
 *$py.class
+
+# Packaging / build artefacts
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Virtual environment
+.venv/
+venv/
+env/

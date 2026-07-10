@@ -120,6 +120,14 @@ disable = [
     "too-many-branches",
     "too-many-statements",
     "too-many-arguments",
+    "too-many-positional-arguments",
+    "too-many-return-statements",
+    # Controllers or modules with multiple endpoints tend to be long—monitor them via code reviews, not Pylint.
+    "too-many-lines",
+    # Odoo: Methods prefixed with `_` follow the "private" convention (e.g., `bus._sendone`), not the Python "protected" convention.
+    "protected-access",
+    # Odoo controllers commonly use lazy imports within methods (markupsafe, reportlab…).
+    "import-outside-toplevel",
     # Odoo sometimes uses broad exceptions (e.g., during integrations)
     "broad-exception-caught",
     # Some pylint versions are hyper-strict with f-string and logging
