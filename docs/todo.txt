@@ -32,6 +32,9 @@
         - adjust it so it can be done from another chat (based on response id)
     - Pravidlo: A agent nech upozorní užívateľa ak je zvolená model príliš/zbytočne nákladný na vykonanie zadanej požiadavky/promptu a danú požiadavku by bolo možné vykonať aj lacnejším modelom. Takisot nech upozorní užívateľa ak je to naopak - na komplexnú požiadavku sa použije príliš slabý model.
     - skill and command to add/remove the add-on to/from linked project
+    - skills and commands for project management
+    - skill for translation to english: Vyhľadaj v projekte všetky súbory napísané po slovensky alebo obsahujúce slovenské texty a prelož všetku nájdenú slovenčinu do angličtiny. Obsah, rozsah aj štruktúru nájdených slovenských textov zachovaj také aké sú, nič neuberaj ani nepridávaj len to prelož zo slovečiny do štylisticky správnej angličtiny. Na vyhľadanie slovenčiny použi regex `[áäčďéíĺľňóôŕšťúýžÁÄČĎÉÍĹĽŇÓÔŔŠŤÚÝŽ]`
+    - zisti či `_agents/.agents/commands/run.review-changes.md` a `_agents/_odoo-19/.agents/agents/run.code-reviewer.md` nie sú nejako v rozpore a či by nebolo vhodné ich zjednotitť (aspoň názvom)
 
 ---
 How to write todo:
