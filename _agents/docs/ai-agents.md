@@ -30,32 +30,37 @@ The following notes summarize subscription options and their relative value, as 
     - a small amount of free credits, with a weekly reset window
     - an API requests limit
   - [Company plan](https://console.cloud.google.com/) (metered API billing; personal account + project + billing + API enabled):
-    - unlimited seats for shared credits
-    - $300 of initial free credits included, then pay as you go
+    - unlimited seats
+    - $300 of initial free credits included, then "pay as you go"
     - the most cost-effective setup is often to keep each user on a separate, individually-owned Company plan to multiply the $300 free credits and also reduce the API requests.
 - `auggie`
   - [Company plan](https://app.augmentcode.com/) (seat-based subscription; $100/month plan):
-    - 50 seats for shared credits
-    - when purchased credits are exhausted, pay as you go
+    - up to 50 seats for purchased shared credits
+    - when purchased credits are exhausted then "pay as you go"
 - `claude`
   - [Individual plan](https://claude.ai/):
     - 1 seat
     - free credits based on subscription plan, with 5-hour and weekly reset window
-  - [Company plan](platform.claude.com) (metered API billing):
-    - unlimited seats for shared credits
-    - pay as you go
+  - [API Company plan](platform.claude.com) (metered API billing):
+    - unlimited seats
+    - "pay as you go"
+  - [Subscription Company plan](https://claude.com/pricing#team-&-enterprise)
+    - from 5 to 150 seats
+    - when plan credits are exhausted then "pay as you go"
+      - free plan account has no free credits
 - `codex`
   - [Individual plan](https://chatgpt.com/) (Personal plan):
     - 1 seat
     - free credits based on subscription plan, with 5-hour and weekly reset window
+      - even **free plan account has available free credits**
   - [Company plan](https://chatgpt.com/) (seat-based subscription; Business plan):
-    - unlimited seats for shared credits
-    - pay as you go
+    - unlimited seats
+    - "pay as you go" ("Codex" seats) or "subscripion" falling back to "pay as you go" ("ChatGPT" seats)
 
 Approximate value ranking, depending on the models in use (July 2026):
 
 - `agy` > individually-owned Company plan > until the initial $300 is used up
-- `codex` > Individual plan
+- `codex` > "Individual plan" or "Company plan" + "ChatGPT" seats
 - `claude` > Individual plan
 - `auggie` > Company plan
 - `claude` > Company plan
