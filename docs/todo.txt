@@ -35,6 +35,19 @@
     - skills and commands for project management
     - skill for translation to english: Vyhľadaj v projekte všetky súbory napísané po slovensky alebo obsahujúce slovenské texty a prelož všetku nájdenú slovenčinu do angličtiny. Obsah, rozsah aj štruktúru nájdených slovenských textov zachovaj také aké sú, nič neuberaj ani nepridávaj len to prelož zo slovečiny do štylisticky správnej angličtiny. Na vyhľadanie slovenčiny použi regex `[áäčďéíĺľňóôŕšťúýžÁÄČĎÉÍĹĽŇÓÔŔŠŤÚÝŽ]`
     - zisti či `_agents/.agents/commands/run.review-changes.md` a `_agents/_odoo-19/.agents/agents/run.code-reviewer.md` nie sú nejako v rozpore a či by nebolo vhodné ich zjednotitť (aspoň názvom)
+    - vytvor handoff skill:
+
+            Create a HANDOFF.md for another developer. Include:
+            - the original goal,
+            - key decisions and their rationale,
+            - files changed,
+            - commands and tests already run,
+            - known problems,
+            - remaining tasks,
+            - exact recommended next step.
+            Do not include secrets or credentials.
+
+        je to podobné
 
 ---
 How to write todo:
