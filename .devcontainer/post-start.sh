@@ -9,3 +9,6 @@ if [ ! -f "${SCRATCHPAD_FILE}" ]; then
     mkdir -p "${SCRATCHPAD_DIR}"
     echo "This is your scratchpad..." > "${SCRATCHPAD_FILE}"
 fi
+
+# AI agents: materialize symlinked rules/workflows dirs that some agents can't read as symlinks
+bash "$(dirname "${BASH_SOURCE[0]}")/post-start-agents.sh"

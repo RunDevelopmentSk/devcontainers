@@ -76,7 +76,7 @@ For all agents, **one source of truth** is used for project instructions, worksp
     - `agy`
     - `codex`
 - [`.agents/rules/`](../.agents/rules/) – modular workspace rules. Accepted by:
-    - `auggie` (symlink `.augment/rules`)
+    - `auggie` (via `.augment/rules`, see [temporary workaround](#temporary-workaround-materialized-rules-and-workflows) below)
     - `claude` (reference in `AGENTS.md`)
     - `agy`
     - `codex` (reference in `AGENTS.md`)
@@ -86,11 +86,11 @@ For all agents, **one source of truth** is used for project instructions, worksp
     - `agy`
     - `codex`
 - [`.agents/commands/`](../.agents/commands/) – custom slash commands shared across agents; each `<name>.md` file creates a `/name` command. Accepted by:
-    - `auggie` (symlink `.augment/commands`)
+    - `auggie`
     - `claude` (symlink `.claude/commands`)
-    - `agy` (symlink `.agents/workflows`)
+    - `agy` (via `.agents/workflows`, see [temporary workaround](#temporary-workaround-materialized-rules-and-workflows) below)
 - [`.agents/agents/`](../.agents/agents/) – subagents shared across agents. Accepted by:
-    - `auggie` (symlink `.augment/agents`), `.md` format
+    - `auggie`,`.md` format
     - `claude` (symlink `.claude/agents`), `.md` format
     - `codex` (symlink `.codex/agents`), `toml` format
 - [`.agents/mcp_config.json`](../.agents/mcp_config.json) – shared JSON configuration of MCP servers. Accepted by:
@@ -104,13 +104,21 @@ ln -s AGENTS.md CLAUDE.md
 ln -s ../.agents/skills .claude/skills
 ln -s ../.agents/rules .augment/rules
 ln -s .agents/mcp_config.json .mcp.json
-ln -s ../.agents/commands .augment/commands
 ln -s ../.agents/commands .claude/commands
 ln -s commands .agents/workflows
 ln -s ../.agents/agents .claude/agents
-ln -s ../.agents/agents .augment/agents
 ln -s ../.agents/agents .codex/agents
 ```
+
+### Temporary workaround: materialized rules and workflows
+
+`auggie` (via `.augment/rules`) and `agy` (via `.agents/workflows`) each fail to read any files through a **symlinked directory** — both silently report zero rules/workflows, with no error. Real (non-symlinked) directories in the same location are read correctly. This looks like both tools resolving directory entries by their raw, non-dereferenced type, under which a symlinked directory is reported as neither a file nor a directory and gets silently skipped.
+
+Until this is fixed upstream, [`.devcontainer/post-start-agents.sh`](../.devcontainer/post-start-agents.sh) (wired into `.devcontainer/post-start.sh`) replaces both symlinks with real directories containing a fresh copy of the source `.md` files (`.gitkeep` excluded) on every container start. `.augment/rules` and `.agents/workflows` are therefore plain, gitignored directories in this repo, not symlinks — the `ln -s ../.agents/rules .augment/rules` and `ln -s commands .agents/workflows` commands above only apply once the workaround is dropped.
+
+Each of the two `materialize_dir` calls in `post-start-agents.sh` takes its own `true`/`false` (`1`/`0`) flag, so either directory can independently be switched back to a plain symlink (`false`) without touching the other — useful for re-testing whether the underlying bug is fixed.
+
+**After editing `.agents/rules/` or `.agents/commands/`, reopen the devcontainer** (so `postStartCommand` re-runs) to get the changes copied into `.augment/rules` / `.agents/workflows` — editing the materialized copies directly has no effect, they get overwritten on the next container start.
 
 ### Naming convention
 
@@ -128,7 +136,7 @@ Workspace rules are in `.agents/rules/*.md` (Markdown with optional YAML frontma
 | Agent       | Discovery                                                                             |
 | ----------- | ------------------------------------------------------------------------------------- |
 | Antigravity | natively reads `.agents/rules/*.md`                                                   |
-| Auggie      | via symlink `.augment/rules → ../.agents/rules`                                       |
+| Auggie      | reads `.augment/rules`, materialized as a real directory ([temporary workaround](#temporary-workaround-materialized-rules-and-workflows)) |
 | Claude Code | has no rules folder; imports from `AGENTS.md` via `@.agents/rules/<file>.md` as needed|
 | Codex       | has no rules folder; references from `AGENTS.md` via `.agents/rules/<file>.md` as needed|
 
@@ -160,7 +168,7 @@ Shared subagents are defined in `.agents/agents/`. Since Claude Code and Auggie 
 
 **Antigravity** currently does not support file-defined subagents (only dynamic creation via `define_subagent` tool at runtime). If Google officially introduces this, we will add it.
 
-**Auggie** supports subagents via the same `.augment/agents/` directory (they can also be created via the `/agents` wizard in interactive mode).
+**Auggie** reads subagents directly from `.agents/agents/`. They can also be created via the `/agents` wizard in interactive mode.
 
 ### What remains agent-specific
 
@@ -221,6 +229,7 @@ Commands ("slash commands") for standard work with the `auggie` CLI are:
 - **allow full permissions:**
     - `auggie` has full permissions in the default configuration
     - controlled version: `/permissions` > `A` > `Locals settings (personal)` > ...
+- **new line in prompt:** `Alt Enter`
 - **select conversation:** `/sessions`, here conversations can also be deleted
 - **new conversation:** `/new`
 - **rename conversation:** `/rename <name>`
@@ -245,13 +254,15 @@ Keyboard shortcuts:
 - delete from cursor to end of line: `Ctrl Shift K`
 - delete previous word: `Ctrl W`
 
+See also [official docs](https://docs.augmentcode.com/cli/interactive).
+
 ### Configuration
 
 Auggie can be configured as follows:
 
 | File / folder                     | Purpose                                          | Note                                                                                                                                                                                                               |
 | --------------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `.augment/rules/*.md`             | Project rules                                    | Rules in `.augment/rules` are Markdown files; supported types are **always_apply** and **agent_requested**. Workspace rules are intended to be committed to the repository. ([docs.augmentcode.com][augment-1])   |
+| `.augment/rules/*.md`             | Project rules                                    | Rules in `.augment/rules` are Markdown files; supported types are **always_apply** and **agent_requested**. Workspace rules are intended to be committed to the repository. In this project, `.augment/rules` is materialized as a real directory rather than symlinked, see the [temporary workaround](#temporary-workaround-materialized-rules-and-workflows). ([docs.augmentcode.com][augment-1])   |
 | `AGENTS.md`                       | Hierarchical rules                               | Can be in root and subdirectories; Auggie searches for it in the current and parent directories when working with a file. ([docs.augmentcode.com][augment-2], [agents.md](https://agents.md/))                   |
 | `CLAUDE.md`                       | Hierarchical rules compatible with Claude Code   | Works similarly to `AGENTS.md`; only `AGENTS.md` and `CLAUDE.md` appear hierarchically, not `.augment/rules` in subdirectories. ([docs.augmentcode.com][augment-2])                                                |
 | `.augment/skills/<name>/SKILL.md` | Skills                                           | Each skill is its own directory with `SKILL.md`; must have YAML frontmatter `name` and `description`. ([docs.augmentcode.com][augment-3])                                                                           |
@@ -331,6 +342,7 @@ Commands ("slash commands") for standard work with the `claude` CLI are:
     - fast version: `claude --dangerously-skip-permissions`
     - slower version: `/config` > `Default permission mode` > `Auto`, or toggle on the fly using `Shift Tab`
     - controlled version: `/permissions` > `Allow`|`Ask`|`Deny`|... > `Bash`, `Bash(npm *)`, `Edit`, `Edit(src/**)`, `Write`, `Read`, `WebFetch`, `WebSearch`, `NotebookEdit`, `Skill`, `Workflow`, `Monitor`, ...
+- **new line in prompt:** `Alt Enter`
 - **select conversation:** `/resume`
 - **new conversation:** `/clear`
 - **rename conversation:** `/rename`
@@ -347,6 +359,8 @@ Commands ("slash commands") for standard work with the `claude` CLI are:
 - **exit work:** `/exit`
 
 See also other added commands in `.agents/commands` and skills in `.agents/skills`.
+
+For keyboard shortcuts [see](https://code.claude.com/docs/en/interactive-mode).
 
 ### Configuration
 
@@ -440,6 +454,7 @@ Commands ("slash commands") for standard work with the `agy` CLI are:
     - fast version: `agy --dangerously-skip-permissions`
     - slower version: `/config` > `Tools Permission` > `always-proceed`
     - controlled version: `/permissions` > `Project` > `allowlist` > `command(*)`, `read_file(*)`, `write_file(*)`, `read_url(*)`, `mcp(*)`
+- **new line in prompt:** `Alt Enter`
 - **select conversation:** `/resume`
 - **new conversation:** `/clear`
 - **rename conversation:** `/rename`
@@ -466,7 +481,7 @@ Antigravity can be configured as follows:
 | `.agents/agents.md`               | Definition of the team/personas, e.g., PM, engineer, QA, DevOps.                          | Google codelab uses `.agents/agents.md` to centrally define specialized agent personas. ([Google Codelabs][agy-2])                                                                                                                  |
 | `.agents/rules/*.md`              | Workspace rules: project rules for code style, architecture, testing, and security.       | Workspace rules live in `.agents/rules/`; global rules are in `~/.gemini/GEMINI.md`. ([Google Antigravity][agy-3])                                                                                                                  |
 | `.agents/skills/<skill>/SKILL.md` | Project skills: repeatable abilities/workflows packaged as a directory with `SKILL.md`.   | Antigravity currently defaults to `.agents/skills`; a skill is a folder containing `SKILL.md`. ([Google Antigravity][agy-4], [medium][agy-5])                                                                                       |
-| `.agents/workflows/*.md`          | Workspace workflows / custom slash commands.                                              | Workflows are saved Markdown files and are run via `/workflow-name`; workspace workflows live in `.agents/workflows/`. ([Google Antigravity][agy-3])                                                                                |
+| `.agents/workflows/*.md`          | Workspace workflows / custom slash commands.                                              | Workflows are saved Markdown files and are run via `/workflow-name`; workspace workflows live in `.agents/workflows/`, materialized as a real directory ([temporary workaround](#temporary-workaround-materialized-rules-and-workflows)). ([Google Antigravity][agy-3])                                                                                |
 | `.agents/hooks.json`              | Hooks: local shell scripts run at specified points in the agent execution cycle.          | Hooks are configured in `hooks.json` in the customization directory, e.g., `.agents/` in the workspace. ([Google Antigravity][agy-6])                                                                                               |
 | `.agents/mcp_config.json`         | Project MCP configuration, mainly for Antigravity CLI / workspace setup.                  | Antigravity uses a separate `mcp_config.json`; IDE documentation mentions global `~/.gemini/antigravity/mcp_config.json`, while CLI/workspace guides also mention project MCP under `.agents/`. ([Google Antigravity][agy-7])       |
 
@@ -534,6 +549,7 @@ Commands ("slash commands") for standard work with the `codex` CLI are:
 - **allow full permissions:**
     - fast version: `codex --dangerously-bypass-approvals-and-sandbox`
     - slower version: `/permissions` > `Full Access`
+- **new line in prompt:** `Alt Enter`
 - **select conversation:** `/resume`
 - **new conversation:** `/new`, `/clear`
 - **rename conversation:** `/rename`
@@ -547,9 +563,12 @@ Commands ("slash commands") for standard work with the `codex` CLI are:
 - **show usage/credits:**
     - `/status` – current 5h and week window token usage
     - `/statusline` – customization of a persistent status line showing live usage in the terminal
+- **update:** `codex update`
 - **exit work:** `/exit`
 
 See also other added skills in `.agents/skills`. The added commands in `.agents/commands` are not supported in the `codex` CLI.
+
+See also [official docs](https://learn.chatgpt.com/docs/developer-commands?surface=cli).
 
 ### Configuration
 
