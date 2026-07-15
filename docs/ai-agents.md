@@ -11,61 +11,6 @@ You can download the current version for a given project from [github.com/RunDev
 
 Details on how to use individual AI agents are described below.
 
-## Plans
-
-Every agent is used through a personal account (your individual login with the provider, see
-"Logging In" sestions below). Which **plan** pays for that usage is a separate choice:
-
-- **Individual plan** – an individually paid, capped tier tied to your personal account (private
-  use).
-- **Company plan** – a shared, company-paid tier your personal account is added to as a member
-  (work use); either metered API billing (pay per use) or a flat seat-based subscription (with
-  pay-as-you-go overflow once included credits are exhausted).
-
-The following notes summarize subscription options and their relative value, as of July 2026:
-
-- `agy`
-  - [Individual plan](accounts.google.com):
-    - 1 seat
-    - a small amount of free credits, with a weekly reset window
-    - an API requests limit
-  - [Company plan](https://console.cloud.google.com/) (metered API billing; personal account + project + billing + API enabled):
-    - unlimited seats
-    - $300 of initial free credits included, then "pay as you go"
-    - the most cost-effective setup is often to keep each user on a separate, individually-owned Company plan to multiply the $300 free credits and also reduce the API requests.
-- `auggie`
-  - [Company plan](https://app.augmentcode.com/) (seat-based subscription; $100/month plan):
-    - up to 50 seats for purchased shared credits
-    - when purchased credits are exhausted then "pay as you go"
-- `claude`
-  - [Individual plan](https://claude.ai/):
-    - 1 seat
-    - free credits based on subscription plan, with 5-hour and weekly reset window
-  - [API Company plan](platform.claude.com) (metered API billing):
-    - unlimited seats
-    - "pay as you go"
-  - [Subscription Company plan](https://claude.com/pricing#team-&-enterprise)
-    - from 5 to 150 seats
-    - when plan credits are exhausted then "pay as you go"
-      - free plan account has no free credits
-- `codex`
-  - [Individual plan](https://chatgpt.com/) (Personal plan):
-    - 1 seat
-    - free credits based on subscription plan, with 5-hour and weekly reset window
-      - even **free plan account has available free credits**
-  - [Company plan](https://chatgpt.com/) (seat-based subscription; Business plan):
-    - unlimited seats
-    - "pay as you go" ("Codex" seats) or "subscripion" falling back to "pay as you go" ("ChatGPT" seats)
-
-Approximate value ranking, depending on the models in use (July 2026):
-
-- `agy` > individually-owned Company plan > until the initial $300 is used up
-- `codex` > "Individual plan" or "Company plan" + "ChatGPT" seats
-- `claude` > Individual plan
-- `auggie` > Company plan
-- `claude` > Company plan
-- `codex` > Company plan
-
 ## Unified Configuration (`.agents/` + `AGENTS.md`)
 
 For all agents, **one source of truth** is used for project instructions, workspace rules, and skills across all agents:
@@ -205,6 +150,61 @@ The JSON schema for hooks is almost identical between Antigravity, Claude Code, 
 - **AI agent terminal label**: If you run multiple agents in separate VS Code terminals, rename each terminal (`F2`) to the agent's name so you can tell them apart at a glance.
 
 The sections below describe installation, logging in, as well as all configuration options for individual agents.
+
+## Plans
+
+Every agent is used through a personal account (your individual login with the provider, see
+"Logging In" sestions below). Which **plan** pays for that usage is a separate choice:
+
+- **Individual plan** – an individually paid, capped tier tied to your personal account (private
+  use).
+- **Company plan** – a shared, company-paid tier your personal account is added to as a member
+  (work use); either metered API billing (pay per use) or a flat seat-based subscription (with
+  pay-as-you-go overflow once included credits are exhausted).
+
+The following notes summarize subscription options and their relative value, as of July 2026:
+
+- `agy`
+  - [Individual plan](accounts.google.com):
+    - 1 seat
+    - a small amount of free credits, with a weekly reset window
+    - an API requests limit
+  - [Company plan](https://console.cloud.google.com/) (metered API billing; personal account + project + billing + API enabled):
+    - unlimited seats
+    - $300 of initial free credits included, then "pay as you go"
+    - the most cost-effective setup is often to keep each user on a separate, individually-owned Company plan to multiply the $300 free credits and also reduce the API requests.
+- `auggie`
+  - [Company plan](https://app.augmentcode.com/) (seat-based subscription; $100/month plan):
+    - up to 50 seats for purchased shared credits
+    - when purchased credits are exhausted then "pay as you go"
+- `claude`
+  - [Individual plan](https://claude.ai/):
+    - 1 seat
+    - free credits based on subscription plan, with 5-hour and weekly reset window
+  - [Company API plan](platform.claude.com) (metered API billing):
+    - unlimited seats
+    - "pay as you go"
+  - [Company subscription plan](https://claude.com/pricing#team-&-enterprise)
+    - from 5 to 150 seats
+    - when plan credits are exhausted then "pay as you go"
+      - free plan account has no free credits
+- `codex`
+  - [Individual plan](https://chatgpt.com/) (Personal plan):
+    - 1 seat
+    - free credits based on subscription plan, with 5-hour and weekly reset window
+      - even **free plan account has available free credits**
+  - [Company plan](https://chatgpt.com/) (seat-based subscription; Business plan):
+    - unlimited seats
+    - "pay as you go" ("Codex" seats) or "subscripion" falling back to "pay as you go" ("ChatGPT" seats)
+
+Approximate value ranking, depending on the models in use (July 2026):
+
+- `agy` > individually-owned Company plan > until the initial $300 is used up
+- `codex` > "Individual plan" or "Company plan" + "ChatGPT" seats
+- `claude` > Individual plan
+- `auggie` > Company plan
+- `claude` > Company plan
+- `codex` > Company plan
 
 ## Auggie
 
@@ -469,6 +469,8 @@ Commands ("slash commands") for standard work with the `agy` CLI are:
 - **exit work:** `/exit`
 
 See also other added commands in `.agents/commands` and skills in `.agents/skills`.
+
+See also [officia docs](https://antigravity.google/docs/cli/using)
 
 ### Configuration
 

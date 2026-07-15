@@ -47,7 +47,8 @@
             - exact recommended next step.
             Do not include secrets or credentials.
 
-        je to podobné
+        je to podobné ako run.save-chat - zvaž či by sa to dalo nejak spojiť. Možno by sa run.save-chat mohli spýtať či má isť o doslovný prepis konverzácie alebo o vytvorenie handoff
+    -! agy - stále nečíta .agents/workflows - aj keď to už nie je symlink ale adresár
 
 ---
 How to write todo:
