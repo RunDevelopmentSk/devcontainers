@@ -1,3 +1,4 @@
+-! check if https://github.com/augmentcode/auggie/issues/154 is resolved and if yes then restore symlink .augment/rules back
 - integrate agentic toolkits:
     x https://github.com/obra/superpowers
         - add a section to docs/ai-agents.md
@@ -30,11 +31,6 @@
 - _agents:
     - skill to compress chat into a .md file - for handing over the chat to another agent and also in case of exceeding the context window
         - adjust it so it can be done from another chat (based on response id)
-    - Pravidlo: A agent nech upozorní užívateľa ak je zvolená model príliš/zbytočne nákladný na vykonanie zadanej požiadavky/promptu a danú požiadavku by bolo možné vykonať aj lacnejším modelom. Takisot nech upozorní užívateľa ak je to naopak - na komplexnú požiadavku sa použije príliš slabý model.
-    - skill and command to add/remove the add-on to/from linked project
-    - skills and commands for project management
-    - skill for translation to english: Vyhľadaj v projekte všetky súbory napísané po slovensky alebo obsahujúce slovenské texty a prelož všetku nájdenú slovenčinu do angličtiny. Obsah, rozsah aj štruktúru nájdených slovenských textov zachovaj také aké sú, nič neuberaj ani nepridávaj len to prelož zo slovečiny do štylisticky správnej angličtiny. Na vyhľadanie slovenčiny použi regex `[áäčďéíĺľňóôŕšťúýžÁÄČĎÉÍĹĽŇÓÔŔŠŤÚÝŽ]`
-    - zisti či `_agents/.agents/commands/run.review-changes.md` a `_agents/_odoo-19/.agents/agents/run.code-reviewer.md` nie sú nejako v rozpore a či by nebolo vhodné ich zjednotitť (aspoň názvom)
     - vytvor handoff skill:
 
             Create a HANDOFF.md for another developer. Include:
@@ -47,7 +43,12 @@
             - exact recommended next step.
             Do not include secrets or credentials.
 
-        je to podobné ako run.save-chat - zvaž či by sa to dalo nejak spojiť. Možno by sa run.save-chat mohli spýtať či má isť o doslovný prepis konverzácie alebo o vytvorenie handoff
+        je to podobné ako run.save-chat a "skill to compress chat" (viď vyššie)  - zvaž či by sa to dalo nejak spojiť. Možno by sa run.save-chat mohli spýtať či má isť o doslovný prepis konverzácie alebo o vytvorenie handoff
+    - Pravidlo: A agent nech upozorní užívateľa ak je zvolená model príliš/zbytočne nákladný na vykonanie zadanej požiadavky/promptu a danú požiadavku by bolo možné vykonať aj lacnejším modelom. Takisot nech upozorní užívateľa ak je to naopak - na komplexnú požiadavku sa použije príliš slabý model.
+    - skill and command to add/remove the add-on to/from linked project
+    - skills and commands for project management
+    - skill for translation to english: Vyhľadaj v projekte všetky súbory napísané po slovensky alebo obsahujúce slovenské texty a prelož všetku nájdenú slovenčinu do angličtiny. Obsah, rozsah aj štruktúru nájdených slovenských textov zachovaj také aké sú, nič neuberaj ani nepridávaj len to prelož zo slovečiny do štylisticky správnej angličtiny. Na vyhľadanie slovenčiny použi regex `[áäčďéíĺľňóôŕšťúýžÁÄČĎÉÍĹĽŇÓÔŔŠŤÚÝŽ]`
+    - zisti či `_agents/.agents/commands/run.review-changes.md` a `_agents/_odoo-19/.agents/agents/run.code-reviewer.md` nie sú nejako v rozpore a či by nebolo vhodné ich zjednotitť (aspoň názvom)
 
 ---
 How to write todo:
