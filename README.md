@@ -14,7 +14,7 @@ To add a devcontainer to a given project, simply copy the contents of the folder
 
 The project also includes add-ons that can be added to devcontainers. These are contained in directories starting with an underscore. Currently, the following add-ons are available:
 
-- `_agents` - adds `claude`, `codex`, `agy`, and `auggie` CLI AI agents via a [unified configuration](../docs/ai-agents.md).
+- `_agents` - adds `claude`, `codex`, `agy`, and `auggie` CLI AI agents via a [unified configuration](docs/ai-agents.md).
 - `_agents-specskit` - adds [speckit tools](https://github.com/github/spec-kit) for AI agents.
 - `_agents-superpowers` - adds [superpowers tools](https://github.com/obra/superpowers) for AI agents.
 
