@@ -41,7 +41,8 @@ materialize_dir() {
   mkdir -p "$target_dir"
   find "$target_dir" -mindepth 1 -delete
   find "$source_dir" -mindepth 1 -maxdepth 1 ! -name ".gitkeep" -exec cp -a {} "$target_dir/" \;
-  echo "*" > "$target_dir/.gitignore"
+  command -v git >/dev/null 2>&1 && echo "*" > "$target_dir/.gitignore"
+  command -v hg >/dev/null 2>&1 && echo "*" > "$target_dir/.hgignore"
 }
 
 echo "" && echo "Materializing .augment/rules (auggie symlinked-rules workaround)..."
