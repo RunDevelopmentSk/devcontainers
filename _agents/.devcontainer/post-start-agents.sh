@@ -3,16 +3,13 @@
 #
 # WORKAROUND (temporary, see docs/ai-agents.md and .devcontainer/_agents.md):
 # `auggie` (Auggie CLI) silently finds zero rules through the symlink `.augment/rules ->
-# ../.agents/rules`, and `agy` (Antigravity CLI) silently finds zero workflows through the
-# symlink `.agents/workflows -> commands` - both tools appear to resolve directory entries by
-# their raw (non-dereferenced) type, under which a symlinked directory looks like neither a file
-# nor a directory, so it gets silently skipped. Real, non-symlinked directories are read
-# correctly.
+# ../.agents/rules` - it appears to resolve directory entries by their raw (non-dereferenced)
+# type, under which a symlinked directory looks like neither a file nor a directory, so it gets
+# silently skipped. A real, non-symlinked directory in the same location is read correctly.
 #
-# Until this is fixed upstream, materialize each affected symlink into a real directory
-# containing a fresh copy of the source `.md` files on every container start. Each call below
-# has its own materialize flag (true/1 to materialize, false/0 to keep/restore the plain
-# symlink instead), so the two cases can be toggled independently.
+# Until this is fixed upstream, materialize the symlink into a real directory containing a fresh
+# copy of the source `.md` files on every container start. The materialize flag below (true/1 to
+# materialize, false/0 to keep/restore the plain symlink instead) makes this easy to toggle.
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$REPO_ROOT" || exit 1
@@ -49,6 +46,3 @@ materialize_dir() {
 
 echo "" && echo "Materializing .augment/rules (auggie symlinked-rules workaround)..."
 materialize_dir ".augment/rules" ".agents/rules" "../.agents/rules" true
-
-echo "" && echo "Materializing .agents/workflows (agy symlinked-workflows workaround)..."
-materialize_dir ".agents/workflows" ".agents/commands" "commands" true
