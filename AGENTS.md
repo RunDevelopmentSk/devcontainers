@@ -23,4 +23,7 @@ Before working, check:
 
 ## General description
 
-The current project contains devcontainers that can be used in other projects as development environments for a given technology. Individual devcontainers are independent, although sometimes quite similar, as they only update a given technology for its newer version.
+The current project contains devcontainers that can be used in other projects as development environments for a given technology. It has two top-level categories:
+
+- `templates/` – complete, standalone devcontainer bases (e.g. `templates/odoo-19`, `templates/php-7.3_mysql-5.7`). Individual templates are independent, although sometimes quite similar, as they only update a given technology for its newer version.
+- `features/` – add-ons merged into an existing devcontainer (e.g. `features/agents`, `features/agents-speckit`, `features/agents-superpowers`).
