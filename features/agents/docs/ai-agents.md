@@ -11,7 +11,7 @@ You can download the current version for a given project from [github.com/RunDev
 
 Details on how to use individual AI agents are described below.
 
-## Unified Configuration
+## Unified configuration
 
 **File `AGENTS.md` and contents of `.agents/` folder is used as one source of truth** for project instructions, rules, commands, skills and subagents across all agents:
 
