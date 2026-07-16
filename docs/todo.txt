@@ -1,3 +1,4 @@
+- `docker-compose.yml` súbory - odstáň odtiaľ pomenované volumes vytvárané pre jednotlivých AI agentov a prenestoto do `features/agents/.devcontainer/agents.md`
 -! check if https://github.com/augmentcode/auggie/issues/154 is resolved and if yes then restore symlink .augment/rules back
 -! templates: add installation and removal details in `.devcontainer/<template>.md` files (e.g. regarding unique ports setting in docker-compose.yml)
 - ubuntu-noble: change so that `~/workspaces/` folder is mounted directly to local project folder.
