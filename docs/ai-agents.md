@@ -202,7 +202,7 @@ The following notes summarize subscription options and their relative value, as 
     - 1 seat
     - free credits based on subscription plan, with 5-hour and weekly reset window
       - even **free plan account has available free credits**
-  - [Company plan](https://chatgpt.com/) (seat-based subscription; Business plan):
+  - [Company subscription plan](https://chatgpt.com/) (seat-based subscription; Business plan):
     - unlimited seats
     - "pay as you go" ("Codex" seats) or "subscripion" falling back to "pay as you go" ("ChatGPT" seats)
 
@@ -223,11 +223,11 @@ The CLI (`auggie`) is installed **automatically** in the devcontainer using `.de
 
 ### Logging In
 
-You need to create a personal account on [app.augmentcode.com](https://app.augmentcode.com/). For private use, pay for one of the plans (Individual plan). **For work use**, request to have your personal user added to the [company users](https://app.augmentcode.com/account/team) (Company plan).
+You need to create a personal account on [app.augmentcode.com](https://app.augmentcode.com/). For private use, pay for one of the plans (Individual plan). **For work use**, request to have your personal user added to the [company users](https://cosmos.augmentcode.com/account/team) (Company plan).
 
 When logging into `auggie`, use the personal account created on [app.augmentcode.com](https://app.augmentcode.com/).
 
-On the Company plan, you can track [credits consumed by individual users](https://app.augmentcode.com/account/analytics).
+On the Company plan, you can track [credits consumed by individual users](https://app.augmentcode.com/organization-dashboard).
 
 ### Commands
 
@@ -335,9 +335,30 @@ The CLI (`claude`) is installed **automatically** in the devcontainer using `.de
 
 ### Logging In
 
-You need to create a personal account on [platform.claude.com](https://platform.claude.com/). For private use, pay for one of the plans (Individual plan). **For work use**, request to have your personal user added to the [company users](https://platform.claude.com/settings/members) (Company plan; with the role `Claude Code` or `Developer`).
+#### Company subscrition plan
 
-When logging into `claude` > `/login`, select `2. Anthropic Console account · API usage billing`, use the personal account created on [platform.claude.com](https://platform.claude.com/), and choose "Quantea Technologies" as the organization.
+In this plan you use prepaid credits (constrained to 5 hours / 1 weeks windows) with a fallback to pay as you go.
+
+You need to create a personal account on [claude.ai](https://claude.ai) (Individual plan). For private use, pay for one of [individual plans](https://claude.com/pricing). **For work use**, request to have your personal user added to the [company users](https://claude.ai/admin-settings/members) (Company plan).
+
+When logging into `claude` > `/login`, select `1. Claude account with subscription · Pro, Max, Team, or Enterprise`, use the personal account created on [claude.ai](https://claude.ai), and choose the right organization.
+
+On the Company plan, you can track [credits consumed by individual users](https://claude.ai/admin-settings/usage).
+
+##### Initial Company plan setup
+
+You need to create an account on [claude.ai](https://claude.ai) and pay for [team plan](https://claude.com/pricing#team-&-enterprise):
+- [Turn on usage credits](https://claude.ai/admin-settings/usage) to allow "pay as you go" fallback.
+- [Set email domains associated with your organization](https://claude.ai/admin-settings/organization) > "Domains"
+- [Invite members](https://claude.ai/admin-settings/members) or [send invitation link](https://claude.ai/admin-settings/organization) > "Invite link"
+
+#### Company API plan
+
+In this plan you pay as you go. API key are generated automatically on each Claude Code login. But there is also possibility to create API key manually if needed.
+
+You need to create a personal account on [platform.claude.com](https://platform.claude.com/) (Individual plan). For private use, pay for one of the plans. **For work use**, request to have your personal user added to the [company users](https://platform.claude.com/settings/members) (Company plan; with the role `Claude Code` or `Developer`).
+
+When logging into `claude` > `/login`, select `2. Anthropic Console account · API usage billing`, use the personal account created on [platform.claude.com](https://platform.claude.com/), and choose the organization.
 
 On the Company plan, you can track [credits consumed by individual users](https://platform.claude.com/cost?group_by=key_id).
 
@@ -539,11 +560,28 @@ The CLI (`codex`) is installed **automatically** in the devcontainer using `.dev
 
 ### Logging In
 
-You need to create a personal account on [chatgpt.com](https://chatgpt.com/). **Codex can also be used for free** via your personal GPT account (Individual plan), but you must expect limits and availability based on capacity, or you can pay for one of the [plans](https://chatgpt.com/#pricing). **For work use**, request to have your personal user added to the [company users](https://chatgpt.com/admin/members) (Company plan).
+#### Company subscription plan
 
-When logging into `codex`, select `1. Sign in with ChatGPT` (or `2. Sign in with Device Code` if the first option does not work), use the personal account created on [chatgpt.com](https://chatgpt.com/), and select `Run Development's Workspace` when logging in via the browser.
+In this plan you use prepaid credits (constrained to 5 hours / 1 weeks windows) with a fallback to pay as you go.
+
+You need to create a personal account on [chatgpt.com](https://chatgpt.com/) (Individual plan). **Codex can also be used for free** via your free personal GPT account, but you must expect limits and availability based on capacity, or you can pay for one of the [plans](https://chatgpt.com/pricing/). **For work use**, request to have your personal user added to the [company users](https://chatgpt.com/admin/members) (Company plan).
+
+When logging into `codex`, select `1. Sign in with ChatGPT` (or `2. Sign in with Device Code` if the first option does not work), use the personal account created on [chatgpt.com](https://chatgpt.com/), and select company/organization when logging in via the browser.
 
 On the Company plan, you can track [credits consumed by individual users](https://chatgpt.com/admin/usage).
+
+##### Initial Company plan setup
+
+You need to create an account on [chatgpt.com](https://chatgpt.com/) and pay for [business plan](https://chatgpt.com/pricing/?type=team):
+- [Invite members](https://chatgpt.com/admin/members), seat type must be "ChatGPT".
+- [Allow automatic reload of credits](https://chatgpt.com/admin/billing?tab=plan) > "Credits balance" > "Automatic reload"
+
+#### Company API plan
+
+In this plan you pay as you go. There are two possible way of "pay as you go":
+
+1. The same as "Company subscription plan" but the invited members seats are set to "Codex". No API keys are generated, the company pays for spent credits (there are no prepaid).
+2. You need to create an account on [platform.openai.com](https://platform.openai.com) (Campany plan). you generate API key manually and provide them to team members
 
 ### Commands
 
