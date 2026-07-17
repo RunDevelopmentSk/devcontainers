@@ -10,6 +10,8 @@ This project serves as a shared specification for devcontainers (VS Code) used i
 
 To add a devcontainer to a given project, simply copy the contents of the template folder (corresponding to the project's technology) into the project folder.
 
+Docker images used by these devcontainers are maintained in repo https://github.com/RunDevelopmentSk/dockerfiles.
+
 ## Features
 
 The project also includes features that can be added to templates. These are contained in `features/`. Currently, the following features are available:
