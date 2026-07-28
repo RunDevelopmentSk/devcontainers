@@ -292,6 +292,7 @@ Commands ("slash commands") for standard work with the `claude` CLI are:
 - **show usage/credits:**
     - `/usage` – current 5h and week window token usage
     - web: [claude.ai](https://claude.ai/) → profile → Settings → Usage
+- **update:** `claude update`
 - **exit work:** `/exit`
 
 See also other added commands in `.agents/commands` and skills in `.agents/skills`.
@@ -391,6 +392,7 @@ Commands ("slash commands") for standard work with the `auggie` CLI are:
 - **code-review:** has no built-in command, but you can use the added `/run.review-changes` command or `/run-review-changes` skill
 - **list and select skill:** `/skills`
 - **show usage/credits:** no built-in command; view consumption on the [web dashboard](https://app.augmentcode.com/account/analytics)
+- **update:** `auggie update`
 - **exit work:** `/exit`
 
 See also other added commands in `.agents/commands` and skills in `.agents/skills`.
@@ -648,6 +650,7 @@ Commands ("slash commands") for standard work with the `agy` CLI are:
 - **code-review:** has no built-in command, but you can use the added `/run-review-changes` skill
 - **list and select skill:** `/skills`
 - **show usage/credits:** `/usage` – current session's token usage and remaining credits
+- **update:** `agy update`
 - **exit work:** `/exit`
 
 See also other added skills in `.agents/skills`. The added commands in `.agents/commands` are not supported in the `agy` CLI (Antigravity workflows, the closest equivalent, only work in the Antigravity IDE, not the CLI).
