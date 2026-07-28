@@ -20,6 +20,7 @@ Before working, check:
 
 - @.agents/rules/run.language-policy.md
 - @.agents/rules/run.secret-safety.md
+- @.agents/rules/run.dry-and-brief.md
 
 ## General description
 
