@@ -293,6 +293,7 @@ Commands ("slash commands") for standard work with the `claude` CLI are:
     - `/usage` – current 5h and week window token usage
     - web: [claude.ai](https://claude.ai/) → profile → Settings → Usage
 - **update:** `claude update`
+- **debugging:** `claude --debug-file ./claude-debug.log`
 - **exit work:** `/exit`
 
 See also other added commands in `.agents/commands` and skills in `.agents/skills`.
@@ -393,6 +394,7 @@ Commands ("slash commands") for standard work with the `auggie` CLI are:
 - **list and select skill:** `/skills`
 - **show usage/credits:** no built-in command; view consumption on the [web dashboard](https://app.augmentcode.com/account/analytics)
 - **update:** `auggie update`
+- **debugging:** `auggie --log-level debug --log-file ./auggie-debug.log` ([docs](https://docs.augmentcode.com/cli/reference#diagnostics)). Useful e.g. to debug indexing failure (to identify problematic files)
 - **exit work:** `/exit`
 
 See also other added commands in `.agents/commands` and skills in `.agents/skills`.
@@ -525,6 +527,7 @@ Commands ("slash commands") for standard work with the `codex` CLI are:
     - `/status` – current 5h and week window token usage
     - `/statusline` – customization of a persistent status line showing live usage in the terminal
 - **update:** `codex update`
+- **debugging:** `RUST_LOG=debug codex -c log_dir=./.codex-log`
 - **exit work:** `/exit`
 
 See also other added skills in `.agents/skills`. The added commands in `.agents/commands` are not supported in the `codex` CLI.
@@ -651,6 +654,7 @@ Commands ("slash commands") for standard work with the `agy` CLI are:
 - **list and select skill:** `/skills`
 - **show usage/credits:** `/usage` – current session's token usage and remaining credits
 - **update:** `agy update`
+- **debugging:** has no built-in way, but as a fallback you can use `script -q -f ./agy-session.log -c agy` and in `.gemini/antigravity-cli/settings.json` set `{"altScreenMode": "never", "verbosity": "high"}`
 - **exit work:** `/exit`
 
 See also other added skills in `.agents/skills`. The added commands in `.agents/commands` are not supported in the `agy` CLI (Antigravity workflows, the closest equivalent, only work in the Antigravity IDE, not the CLI).
