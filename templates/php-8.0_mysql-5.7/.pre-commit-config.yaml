@@ -1,9 +1,50 @@
+# Pre-commit hooks — automatic lint and formatting on every commit.
+#
+# Installation (once after clone; if using a devcontainer, it installs automatically - see devcontainer.json > "postCreateCommand"):
+#   pip install pre-commit
+#   pre-commit install
+#
+# Manual run for staged files:
+#   pre-commit run
+#
+# Manual run for staged files, only the hook with a given id or alias:
+#   pre-commit run prettier
+#
+# Manual run for specified files:
+#   pre-commit run --files foo.xml bar.py
+#
+# Manual run for all modified (staged + unstaged) files:
+#   pre-commit run --files $(git diff HEAD --name-only)
+#
+# Manual run for all files:
+#   pre-commit run --all-files
+#
+# Emergency bypass of hooks during commit (not recommended for regular use):
+#   git commit --no-verify
+#
+# Manual update of hooks to the latest versions:
+#   pre-commit autoupdate
+
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
       - id: trailing-whitespace
+        exclude: '\.md$'
       - id: end-of-file-fixer
       - id: check-yaml
       - id: check-merge-conflict
       - id: check-added-large-files
+
+  # Prettier (local) — formats markdown docs; pre-commit downloads its own Node
+  # runtime, so no system Node install is required.
+  - repo: local
+    hooks:
+      - id: prettier
+        name: prettier markdown docs
+        entry: prettier
+        args: [--write, --list-different, --ignore-unknown]
+        language: node
+        additional_dependencies:
+          - "prettier@3.1.0"
+        files: \.md$
