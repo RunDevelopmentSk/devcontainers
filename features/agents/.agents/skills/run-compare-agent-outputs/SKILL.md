@@ -37,11 +37,11 @@ If a directory is given, look for a fan-out output in it: the proposals are `<ag
 
 Derive the label from the file name and **show the mapping to the user** at the start of the comparison so they can correct it:
 
-| File name pattern                          | Source                             | Label                       |
-| ------------------------------------------ | ---------------------------------- | --------------------------- |
-| `<agent>.md`, `<agent>_<model>.md`         | fan-out                            | agent + model               |
-| `<slug>-<suffix>.md` (`claude`, `auggie`, `codex`, `agy`) | `run-save-response` / `run-save-chat` | agent per the suffix |
-| anything else                              | unknown                            | file name; ask for the agent if it matters |
+| File name pattern                                         | Source                                | Label                                      |
+| --------------------------------------------------------- | ------------------------------------- | ------------------------------------------ |
+| `<agent>.md`, `<agent>_<model>.md`                        | fan-out                               | agent + model                              |
+| `<slug>-<suffix>.md` (`claude`, `auggie`, `codex`, `agy`) | `run-save-response` / `run-save-chat` | agent per the suffix                       |
+| anything else                                             | unknown                               | file name; ask for the agent if it matters |
 
 An explicit assignment from the user always wins over the file name.
 

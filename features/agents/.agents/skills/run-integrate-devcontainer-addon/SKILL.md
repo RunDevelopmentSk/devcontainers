@@ -39,7 +39,7 @@ devcontainer base (e.g. `templates/odoo-19`, `templates/php-7.3_mysql-5.7`) - an
 `features/<name>` - an add-on merged into an existing devcontainer (e.g. `features/agents`,
 `features/agents-speckit`, `features/agents-superpowers`); excluding dotfiles and `docs`/`tmp`.
 Each such folder (one level under `templates/` or `features/`) is one add-on. Consumers
-integrate it by copying the folder's *contents* into their project root, which lands a
+integrate it by copying the folder's _contents_ into their project root, which lands a
 `.devcontainer/<add-on>.md` descriptor at the project's `.devcontainer/` path alongside
 whatever other files the add-on ships.
 
@@ -48,7 +48,7 @@ A descriptor with real integration instructions has an `## Installation` section
 "add the following to the end of `<script>`" / "add the following to `.gitignore`" snippets,
 then "rebuild the devcontainer"; often followed by a `## Removal` section. A plain one-line
 `.devcontainer/<name>.md` with no headings (e.g. `ubuntu-noble.md`) is a devcontainer
-*identification* stub, not an add-on descriptor - ignore those.
+_identification_ stub, not an add-on descriptor - ignore those.
 
 A feature folder may also ship a **nested technology-specific folder** named after one of the
 templates (e.g. `features/agents/odoo-19`) - extra content for that feature that only applies
@@ -72,7 +72,7 @@ Run `git status --porcelain` (repo root).
    their category prefix, e.g. `templates/odoo-19` or `features/agents`).
 2. Clone the source repo shallowly into a temporary directory outside the project (e.g.
    `git clone --depth 1 https://github.com/RunDevelopmentSk/devcontainers <tmp-dir>`).
-3. Copy the chosen add-on folder's *contents* (not the folder itself) into the project root,
+3. Copy the chosen add-on folder's _contents_ (not the folder itself) into the project root,
    exactly like a manual copy would (this reproduces the overwrite the add-on's own
    `## Installation` section describes).
 4. Remove the temporary clone.

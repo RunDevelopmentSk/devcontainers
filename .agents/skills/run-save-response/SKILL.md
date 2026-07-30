@@ -26,12 +26,12 @@ Skill for **literally saving the last prompt and agent response** to a Markdown 
 
 Suffix = short identifier of the running agent/CLI:
 
-| Agent            | Suffix   |
-| ---------------- | -------- |
-| Auggie           | `auggie` |
-| Claude Code      | `claude` |
-| Antigravity      | `agy`    |
-| Codex            | `codex`  |
+| Agent       | Suffix   |
+| ----------- | -------- |
+| Auggie      | `auggie` |
+| Claude Code | `claude` |
+| Antigravity | `agy`    |
+| Codex       | `codex`  |
 
 ## 2. Determine target path (algorithm)
 
@@ -50,13 +50,13 @@ Follow this order:
 
 ### Examples
 
-| Argument                                  | Suffix   | Resulting path                                       |
-| ----------------------------------------- | -------- | ---------------------------------------------------- |
-| *(none)*                                  | `auggie` | `tmp/tax-analyze-auggie.md` (slug auto-generated)    |
-| `my-tax-analyze.md`                       | `auggie` | `tmp/my-tax-analyze-auggie.md`                       |
-| `my-tax-analyze`                          | `auggie` | `tmp/my-tax-analyze-auggie.md`                       |
-| `.agents/user-prompts/my-tax-analyze.md`  | `auggie` | `.agents/user-prompts/my-tax-analyze-auggie.md`      |
-| `.agents/user-prompts/my-tax-analyze`     | `claude` | `.agents/user-prompts/my-tax-analyze-claude.md`      |
+| Argument                                 | Suffix   | Resulting path                                    |
+| ---------------------------------------- | -------- | ------------------------------------------------- |
+| _(none)_                                 | `auggie` | `tmp/tax-analyze-auggie.md` (slug auto-generated) |
+| `my-tax-analyze.md`                      | `auggie` | `tmp/my-tax-analyze-auggie.md`                    |
+| `my-tax-analyze`                         | `auggie` | `tmp/my-tax-analyze-auggie.md`                    |
+| `.agents/user-prompts/my-tax-analyze.md` | `auggie` | `.agents/user-prompts/my-tax-analyze-auggie.md`   |
+| `.agents/user-prompts/my-tax-analyze`    | `claude` | `.agents/user-prompts/my-tax-analyze-claude.md`   |
 
 ## 3. Save prompt and response
 

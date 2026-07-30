@@ -37,20 +37,24 @@ If it is not a new type of artifact, **new symlinks are not needed** – existin
 ## 3. Cookbook by type
 
 ### Rule (`.agents/rules/run.<name>.md`)
+
 - Combined frontmatter: `description` + `type:` (Auggie: `always_apply|agent_requested`, `manual` is skipped by CLI – only works in IDE extensions) + `trigger:` (Antigravity: `always_on|glob|model_decision|manual`). Unknown keys are ignored by each agent.
 - Claude Code and Codex do not have a rules folder -> if the `always_apply|always_on` rule should apply to them as well, add a `@.agents/rules/run.<name>.md` import to `AGENTS.md`.
 
 ### Skill (`.agents/skills/run-<name>/SKILL.md`)
+
 - Directory + `SKILL.md` with **mandatory** frontmatter `name` (= `run-<name>`) and `description`.
 - Optional subdirectories `scripts/`, `references/`, `assets/`.
 - No registration is needed elsewhere – agents auto-discover skills.
 
 ### Command (`.agents/commands/run.<name>.md`)
+
 - File `run.<name>.md` -> `/run.<name>`; an additional subdirectory adds a further namespace (`frontend/run.component.md` -> `/frontend:run.component`).
 - Frontmatter with a `description` field (folded scalar, e.g., `description: >-`).
 - **Codex** does not support slash commands – use the corresponding skill directly there; the command should be a thin entry point referencing the skill.
 
 ### Subagent (`.agents/agents/`)
+
 - Add **both** formats for the same agent, sharing the `run.<name>` base name:
   - `run.<name>.md` (Claude Code, Auggie): YAML frontmatter `name`, `description`, optionally `color` (Auggie), `tools`, `model` (Claude); body = system prompt,
   - `run.<name>.toml` (Codex): `name`, `description`, `developer_instructions` (system prompt), optionally `model`, `sandbox_mode`.

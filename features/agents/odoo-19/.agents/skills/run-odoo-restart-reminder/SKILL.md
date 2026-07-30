@@ -10,13 +10,13 @@ After changing source files, it is necessary for the user to manually restart/up
 
 ## When to warn and what to suggest
 
-| Type of Change | Recommended Command | Note |
-|---|---|---|
-| Python code (`*.py`) | `make odoo` or `odoo --dev reload` | `--dev reload` captures changes without restarting |
-| Manifest (`__manifest__.py`), models with new fields, security, data, views | `odoo -u <module>` | Triggers module upgrade (DB migration + view reload) |
-| Multiple modules | `odoo -u module_a,module_b` | Comma-separated list |
-| Specific DB | `odoo -d <db> -u <module>` | The default DB is `odoo` |
-| New module (first installation) | Apps → Update Apps List → Install | Via UI; or `odoo -i <module>` |
+| Type of Change                                                              | Recommended Command                | Note                                                 |
+| --------------------------------------------------------------------------- | ---------------------------------- | ---------------------------------------------------- |
+| Python code (`*.py`)                                                        | `make odoo` or `odoo --dev reload` | `--dev reload` captures changes without restarting   |
+| Manifest (`__manifest__.py`), models with new fields, security, data, views | `odoo -u <module>`                 | Triggers module upgrade (DB migration + view reload) |
+| Multiple modules                                                            | `odoo -u module_a,module_b`        | Comma-separated list                                 |
+| Specific DB                                                                 | `odoo -d <db> -u <module>`         | The default DB is `odoo`                             |
+| New module (first installation)                                             | Apps → Update Apps List → Install  | Via UI; or `odoo -i <module>`                        |
 
 ## Wording of the warning
 

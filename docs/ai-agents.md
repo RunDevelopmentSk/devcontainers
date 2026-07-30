@@ -16,30 +16,30 @@ Details on how to use individual AI agents are described below.
 **File `AGENTS.md` and contents of `.agents/` folder is used as one source of truth** for project instructions, rules, commands, skills and subagents across all agents:
 
 - [`AGENTS.md`](../AGENTS.md) in the root directory – main project instructions in the standard [agents.md](https://agents.md/) format. Accepted by:
-    - `claude` (symlink `CLAUDE.md`)
-    - `auggie`
-    - `codex`
-    - `agy`
+  - `claude` (symlink `CLAUDE.md`)
+  - `auggie`
+  - `codex`
+  - `agy`
 - [`.agents/rules/`](../.agents/rules/) – modular workspace rules. Accepted by:
-    - `claude` (reference in `AGENTS.md`)
-    - `auggie` (via `.augment/rules`, see [temporary workaround](#temporary-workaround-materialized-rules) below)
-    - `codex` (reference in `AGENTS.md`)
-    - `agy`
+  - `claude` (reference in `AGENTS.md`)
+  - `auggie` (via `.augment/rules`, see [temporary workaround](#temporary-workaround-materialized-rules) below)
+  - `codex` (reference in `AGENTS.md`)
+  - `agy`
 - [`.agents/commands/`](../.agents/commands/) – custom slash commands shared across agents; each `<name>.md` file creates a `/name` command. Accepted by:
-    - `claude` (symlink `.claude/commands`)
-    - `auggie`
+  - `claude` (symlink `.claude/commands`)
+  - `auggie`
 - [`.agents/skills/`](../.agents/skills/) – cross-tool skills in the standard [agentskills.io](https://agentskills.io/) format. Accepted by:
-    - `claude` (symlink `.claude/skills`)
-    - `auggie`
-    - `codex`
-    - `agy`
+  - `claude` (symlink `.claude/skills`)
+  - `auggie`
+  - `codex`
+  - `agy`
 - [`.agents/agents/`](../.agents/agents/) – subagents shared across agents. Accepted by:
-    - `claude` (symlink `.claude/agents`), `.md` format
-    - `auggie`,`.md` format
-    - `codex` (symlink `.codex/agents`), `toml` format
+  - `claude` (symlink `.claude/agents`), `.md` format
+  - `auggie`,`.md` format
+  - `codex` (symlink `.codex/agents`), `toml` format
 - [`.agents/mcp_config.json`](../.agents/mcp_config.json) – shared JSON configuration of MCP servers. Accepted by:
-    - `claude` (symlink `.mcp.json`)
-    - `agy`
+  - `claude` (symlink `.mcp.json`)
+  - `agy`
 
 The commands to create symbolic links are (the path to the linked folder or file is always relative to the location of the link):
 
@@ -76,12 +76,12 @@ Avoid double-prefixing (`run.run.<name>`, `run-run-<name>`). A command that is a
 
 Workspace rules are in `.agents/rules/*.md` (Markdown with optional YAML frontmatter). Discovery by agent:
 
-| Agent       | Discovery                                                                             |
-| ----------- | ------------------------------------------------------------------------------------- |
-| Antigravity | natively reads `.agents/rules/*.md`                                                   |
+| Agent       | Discovery                                                                                                                   |
+| ----------- | --------------------------------------------------------------------------------------------------------------------------- |
+| Antigravity | natively reads `.agents/rules/*.md`                                                                                         |
 | Auggie      | reads `.augment/rules`, materialized as a real directory ([temporary workaround](#temporary-workaround-materialized-rules)) |
-| Claude Code | has no rules folder; imports from `AGENTS.md` via `@.agents/rules/<file>.md` as needed|
-| Codex       | has no rules folder; references from `AGENTS.md` via `.agents/rules/<file>.md` as needed|
+| Claude Code | has no rules folder; imports from `AGENTS.md` via `@.agents/rules/<file>.md` as needed                                      |
+| Codex       | has no rules folder; references from `AGENTS.md` via `.agents/rules/<file>.md` as needed                                    |
 
 Auggie and Antigravity use **different frontmatter keys**, but each ignores unknown keys – thus the files work in both from a single location. Auggie distinguishes `type: always_apply|agent_requested`; Antigravity uses `trigger: always_on|glob (+ globs:)|model_decision|manual`. For `agent_requested` / `model_decision`, the agent decides on activation based on the `description:`. Both frontmatter blocks can be combined in a single file.
 
@@ -104,10 +104,10 @@ trigger: model_decision
 
 Custom slash commands are in `.agents/commands/*.md` (Markdown; each file creates a `/<name>` command). Discovery by agent:
 
-| Agent       | Discovery                                                                                             |
-| ----------- | ------------------------------------------------------------------------------------------------------ |
-| Auggie      | via the `.claude/commands` compatibility fallback (no dedicated `.augment/commands` symlink needed)   |
-| Claude Code | via symlink `.claude/commands → ../.agents/commands`                                                   |
+| Agent       | Discovery                                                                                               |
+| ----------- | ------------------------------------------------------------------------------------------------------- |
+| Auggie      | via the `.claude/commands` compatibility fallback (no dedicated `.augment/commands` symlink needed)     |
+| Claude Code | via symlink `.claude/commands → ../.agents/commands`                                                    |
 | Antigravity | **not supported** by the `agy` CLI; workflows, its closest equivalent, only work in the Antigravity IDE |
 | Codex       | **not supported**                                                                                       |
 
@@ -128,23 +128,23 @@ Shared subagents are defined in `.agents/agents/`. Since Claude Code and Auggie 
 
 The following files and directories cannot be unified into `.agents/` or symlinked (different formats, naming, or discovery mechanisms). Details on each item are in the [Auggie](#auggie), [Claude Code](#claude-code), [Antigravity](#antigravity), and [Codex](#codex) sections below.
 
-| Agent            | Specific artifacts (not covered by unified configuration)                                                                                                                                              |
-| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Auggie**       | `.augment/settings.json` (+ `.local`), `.augmentignore`; MCP via `auggie mcp` subcommands or `--mcp-config`                                                                                           |
-| **Claude Code**  | `CLAUDE.local.md` (private, gitignored), `.claude/settings.json` (+ `.local`; permissions/env/hooks)                                                                                                   |
-| **Antigravity**  | `GEMINI.md` (alternative workspace context), `.agents/hooks.json` (lifecycle hooks)                                                                                                                  |
-| **Codex**        | `AGENTS.override.md` (per-dir override), `.codex/config.toml` (model/sandbox/MCP/hooks), `.codex/hooks.json`, `.codex/rules/*.rules` (sandbox allow/block), `.agents/plugins/` + `plugins/` (plugins) |
+| Agent           | Specific artifacts (not covered by unified configuration)                                                                                                                                             |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Auggie**      | `.augment/settings.json` (+ `.local`), `.augmentignore`; MCP via `auggie mcp` subcommands or `--mcp-config`                                                                                           |
+| **Claude Code** | `CLAUDE.local.md` (private, gitignored), `.claude/settings.json` (+ `.local`; permissions/env/hooks)                                                                                                  |
+| **Antigravity** | `GEMINI.md` (alternative workspace context), `.agents/hooks.json` (lifecycle hooks)                                                                                                                   |
+| **Codex**       | `AGENTS.override.md` (per-dir override), `.codex/config.toml` (model/sandbox/MCP/hooks), `.codex/hooks.json`, `.codex/rules/*.rules` (sandbox allow/block), `.agents/plugins/` + `plugins/` (plugins) |
 
 **MCP**: shared JSON configuration is in `.agents/mcp_config.json` (for both Claude Code and Antigravity via the `.mcp.json` symlink above). Auggie configures MCP servers via `~/.augment/settings.json` (commands `auggie mcp add|add-json|list|remove`) or ad-hoc `--mcp-config`; sharing via `.agents/mcp_config.json` is not directly possible (different format). Codex uses TOML – `[mcp_servers]` in `.codex/config.toml` – sharing via symlink is not possible.
 
 **Hooks** (lifecycle interceptors – `PreToolUse`, `PostToolUse`, `Stop` etc.):
 
-| Agent           | File (project-level)                                                  | Format                                                              |
-| --------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| **Antigravity** | `.agents/hooks.json`                                                  | `{ "hooks": { "PreToolUse": [{ "matcher": "…", "hooks": […] }] } }` |
-| **Claude Code** | `.claude/settings.json` (or `.claude/settings.local.json`)            | `{ "hooks": { "PreToolUse": [{ "matcher": "…", "hooks": […] }] } }` |
-| **Codex**       | `.codex/hooks.json` **or** inline `[hooks]` in `.codex/config.toml`   | JSON (same schema) / TOML: `[[hooks.PreToolUse]]`                   |
-| **Auggie**      | `.augment/settings.json` (or `.augment/settings.local.json`)          | `{ "hooks": { "PreToolUse": [{ "matcher": "…", "hooks": […] }] } }` |
+| Agent           | File (project-level)                                                | Format                                                              |
+| --------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| **Antigravity** | `.agents/hooks.json`                                                | `{ "hooks": { "PreToolUse": [{ "matcher": "…", "hooks": […] }] } }` |
+| **Claude Code** | `.claude/settings.json` (or `.claude/settings.local.json`)          | `{ "hooks": { "PreToolUse": [{ "matcher": "…", "hooks": […] }] } }` |
+| **Codex**       | `.codex/hooks.json` **or** inline `[hooks]` in `.codex/config.toml` | JSON (same schema) / TOML: `[[hooks.PreToolUse]]`                   |
+| **Auggie**      | `.augment/settings.json` (or `.augment/settings.local.json`)        | `{ "hooks": { "PreToolUse": [{ "matcher": "…", "hooks": […] }] } }` |
 
 The JSON schema for hooks is almost identical between Antigravity, Claude Code, and Auggie – only the file location differs. Codex also offers an equivalent TOML syntax; if both `hooks.json` and inline `[hooks]` exist in the same layer, Codex loads both and issues a warning – one per layer is recommended.
 
@@ -254,6 +254,7 @@ On the Company plan, you can track [credits consumed by individual users](https:
 ##### Initial Company plan setup
 
 You need to create an account on [claude.ai](https://claude.ai) and pay for [team plan](https://claude.com/pricing#team-&-enterprise):
+
 - [Turn on usage credits](https://claude.ai/admin-settings/usage) to allow "pay as you go" fallback.
 - [Set email domains associated with your organization](https://claude.ai/admin-settings/organization) > "Domains"
 - [Invite members](https://claude.ai/admin-settings/members) or [send invitation link](https://claude.ai/admin-settings/organization) > "Invite link"
@@ -275,9 +276,9 @@ Commands ("slash commands") for standard work with the `claude` CLI are:
 - **select model:** `/model`
 - **set default model:** no separate action needed — the model selected via `/model` persists across sessions
 - **allow full permissions:**
-    - fast version: `claude --dangerously-skip-permissions`
-    - slower version: `/config` > `Default permission mode` > `Auto`, or toggle on the fly using `Shift Tab`
-    - controlled version: `/permissions` > `Allow`|`Ask`|`Deny`|... > `Bash`, `Bash(npm *)`, `Edit`, `Edit(src/**)`, `Write`, `Read`, `WebFetch`, `WebSearch`, `NotebookEdit`, `Skill`, `Workflow`, `Monitor`, ...
+  - fast version: `claude --dangerously-skip-permissions`
+  - slower version: `/config` > `Default permission mode` > `Auto`, or toggle on the fly using `Shift Tab`
+  - controlled version: `/permissions` > `Allow`|`Ask`|`Deny`|... > `Bash`, `Bash(npm *)`, `Edit`, `Edit(src/**)`, `Write`, `Read`, `WebFetch`, `WebSearch`, `NotebookEdit`, `Skill`, `Workflow`, `Monitor`, ...
 - **new line in prompt:** `Alt Enter`
 - **select conversation:** `/resume`
 - **new conversation:** `/clear`
@@ -291,8 +292,8 @@ Commands ("slash commands") for standard work with the `claude` CLI are:
 - **code-review:** `/code-review` or you can use the added `/run.review-changes` command or `/run-review-changes` skill
 - **list and select skill:** `/skills`
 - **show usage/credits:**
-    - `/usage` – current 5h and week window token usage
-    - web: [claude.ai](https://claude.ai/) → profile → Settings → Usage
+  - `/usage` – current 5h and week window token usage
+  - web: [claude.ai](https://claude.ai/) → profile → Settings → Usage
 - **update:** `claude update`
 - **debugging:** `claude --debug-file ./claude-debug.log`
 - **exit work:** `/exit`
@@ -305,19 +306,19 @@ For keyboard shortcuts [see](https://code.claude.com/docs/en/interactive-mode).
 
 Claude Code can be configured as follows:
 
-| File / folder                     | Purpose                                                                                        | Note                                                                                                                                                       |
-| --------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `CLAUDE.md`                       | Main project instructions: architecture, build/test commands, coding conventions, workflow.    | Project `CLAUDE.md` can be in the root or as `.claude/CLAUDE.md`; Claude loads it as persistent instructions. ([Claude API Docs][claude-1])                  |
-| `.claude/CLAUDE.md`               | Alternative location for project instructions.                                                 | Same purpose as root `CLAUDE.md`, just stored in `.claude/`. ([Claude API Docs][claude-1])                                                                 |
-| `CLAUDE.local.md`                 | Your private project notes/preferences.                                                        | Claude loads it together with `CLAUDE.md`; should be in `.gitignore`. ([Claude API Docs][claude-1])                                                         |
-| `.claude/rules/*.md`              | Modular rules, e.g., coding style, testing, security, API rules.                               | Rules can be split into subdirectories and can be path-scoped. ([Claude API Docs][claude-1])                                                               |
-| `.claude/settings.json`           | Shared project settings: permissions, env, hooks, plugins, exclusion of sensitive files.       | Shared project settings stored in the repository. ([Claude API Docs][claude-2])                                                                            |
-| `.claude/settings.local.json`     | Local overrides for a specific project.                                                        | Local settings, Claude Code sets them as gitignored when created. ([Claude API Docs][claude-2])                                                            |
-| `.claude/skills/<skill>/SKILL.md` | Skills: repeatable workflows, checklists, and specialized knowledge.                           | Skills can be called via `/skill-name`; both `.claude/commands/*.md` and `.claude/skills/<name>/SKILL.md` create a slash command. ([Claude API Docs][claude-3]) |
-| `.claude/commands/*.md`           | Legacy custom slash commands.                                                                  | Still supported, but custom commands have been merged with skills; new items are better placed in skills. ([Claude API Docs][claude-3])                      |
-| `.claude/agents/*.md`             | Custom subagents with independent prompt, tool access, and permissions.                        | Project subagents live in `.claude/agents/`; used for specialized tasks and isolated context. ([Claude API Docs][claude-4])                                |
-| `.mcp.json`                       | Project MCP servers shared with the team.                                                      | Project-scoped MCP configuration is saved in `.mcp.json` in the project root. ([Claude API Docs][claude-5])                                                 |
-| `.gitignore`                      | Protection against committing local Claude files and sensitive data.                            | To block Claude Code from accessing sensitive files, also use `permissions.deny` in `.claude/settings.json`. ([Claude API Docs][claude-2])                 |
+| File / folder                     | Purpose                                                                                     | Note                                                                                                                                                            |
+| --------------------------------- | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `CLAUDE.md`                       | Main project instructions: architecture, build/test commands, coding conventions, workflow. | Project `CLAUDE.md` can be in the root or as `.claude/CLAUDE.md`; Claude loads it as persistent instructions. ([Claude API Docs][claude-1])                     |
+| `.claude/CLAUDE.md`               | Alternative location for project instructions.                                              | Same purpose as root `CLAUDE.md`, just stored in `.claude/`. ([Claude API Docs][claude-1])                                                                      |
+| `CLAUDE.local.md`                 | Your private project notes/preferences.                                                     | Claude loads it together with `CLAUDE.md`; should be in `.gitignore`. ([Claude API Docs][claude-1])                                                             |
+| `.claude/rules/*.md`              | Modular rules, e.g., coding style, testing, security, API rules.                            | Rules can be split into subdirectories and can be path-scoped. ([Claude API Docs][claude-1])                                                                    |
+| `.claude/settings.json`           | Shared project settings: permissions, env, hooks, plugins, exclusion of sensitive files.    | Shared project settings stored in the repository. ([Claude API Docs][claude-2])                                                                                 |
+| `.claude/settings.local.json`     | Local overrides for a specific project.                                                     | Local settings, Claude Code sets them as gitignored when created. ([Claude API Docs][claude-2])                                                                 |
+| `.claude/skills/<skill>/SKILL.md` | Skills: repeatable workflows, checklists, and specialized knowledge.                        | Skills can be called via `/skill-name`; both `.claude/commands/*.md` and `.claude/skills/<name>/SKILL.md` create a slash command. ([Claude API Docs][claude-3]) |
+| `.claude/commands/*.md`           | Legacy custom slash commands.                                                               | Still supported, but custom commands have been merged with skills; new items are better placed in skills. ([Claude API Docs][claude-3])                         |
+| `.claude/agents/*.md`             | Custom subagents with independent prompt, tool access, and permissions.                     | Project subagents live in `.claude/agents/`; used for specialized tasks and isolated context. ([Claude API Docs][claude-4])                                     |
+| `.mcp.json`                       | Project MCP servers shared with the team.                                                   | Project-scoped MCP configuration is saved in `.mcp.json` in the project root. ([Claude API Docs][claude-5])                                                     |
+| `.gitignore`                      | Protection against committing local Claude files and sensitive data.                        | To block Claude Code from accessing sensitive files, also use `permissions.deny` in `.claude/settings.json`. ([Claude API Docs][claude-2])                      |
 
 [claude-1]: https://docs.anthropic.com/en/docs/claude-code/memory "How Claude remembers your project - Claude Code Docs"
 [claude-2]: https://docs.anthropic.com/en/docs/claude-code/settings "Claude Code settings - Claude Code Docs"
@@ -380,8 +381,8 @@ Commands ("slash commands") for standard work with the `auggie` CLI are:
 - **select model:** `/model`
 - **set default model:** `/config` > `Default Model` > `Claude Sonnet ...`
 - **allow full permissions:**
-    - `auggie` has full permissions in the default configuration
-    - controlled version: `/permissions` > `A` > `Locals settings (personal)` > ...
+  - `auggie` has full permissions in the default configuration
+  - controlled version: `/permissions` > `A` > `Locals settings (personal)` > ...
 - **new line in prompt:** `Alt Enter`
 - **select conversation:** `/sessions`, here conversations can also be deleted
 - **new conversation:** `/new`
@@ -401,6 +402,7 @@ Commands ("slash commands") for standard work with the `auggie` CLI are:
 See also other added commands in `.agents/commands` and skills in `.agents/skills`.
 
 Keyboard shortcuts:
+
 - beginning of line: `Ctrl Shift A`
 - end of line: `Ctrl Shift E`
 - move back one word: `Alt B`
@@ -415,18 +417,18 @@ See also [official docs](https://docs.augmentcode.com/cli/interactive).
 
 Auggie can be configured as follows:
 
-| File / folder                     | Purpose                                          | Note                                                                                                                                                                                                               |
-| --------------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `.augment/rules/*.md`             | Project rules                                    | Rules in `.augment/rules` are Markdown files; supported types are **always_apply** and **agent_requested**. Workspace rules are intended to be committed to the repository. In this project, `.augment/rules` is materialized as a real directory rather than symlinked, see the [temporary workaround](#temporary-workaround-materialized-rules). ([docs.augmentcode.com][augment-1])   |
-| `AGENTS.md`                       | Hierarchical rules                               | Can be in root and subdirectories; Auggie searches for it in the current and parent directories when working with a file. ([docs.augmentcode.com][augment-2], [agents.md](https://agents.md/))                   |
-| `CLAUDE.md`                       | Hierarchical rules compatible with Claude Code   | Works similarly to `AGENTS.md`; only `AGENTS.md` and `CLAUDE.md` appear hierarchically, not `.augment/rules` in subdirectories. ([docs.augmentcode.com][augment-2])                                                |
-| `.augment/skills/<name>/SKILL.md` | Skills                                           | Each skill is its own directory with `SKILL.md`; must have YAML frontmatter `name` and `description`. ([docs.augmentcode.com][augment-3])                                                                           |
-| `.claude/skills/<name>/SKILL.md`  | Skills compatible with Claude Code               | Auggie can discover them as workspace skills. ([docs.augmentcode.com][augment-3])                                                                                                                                  |
-| `.agents/skills/<name>/SKILL.md`  | Standard agentskills.io format                   | Also supported as workspace skills. ([docs.augmentcode.com][augment-3])                                                                                                                                            |
-| `.augment/commands/*.md`          | Custom slash commands                            | Triggered via `/security-review` in interactive mode or `auggie command security-review`; e.g., `.augment/commands/security-review.md` → `/security-review`. ([docs.augmentcode.com][augment-4])                   |
-| `.augment/commands/foo/bar.md`    | Namespaced commands                              | E.g., `.augment/commands/frontend/component.md` → `/frontend:component`. ([docs.augmentcode.com][augment-4])                                                                                                       |
-| `.claude/commands/*.md`           | Claude-compatible commands                       | Auggie automatically recognizes them for compatibility with existing Claude Code setups. ([docs.augmentcode.com][augment-4])                                                                                       |
-| `.augmentignore`                  | Files to exclude from indexing                  | Works similarly to `.gitignore`; Auggie indexes the workspace except for files in `.gitignore` and `.augmentignore`. You can also use `!` to include gitignored files. ([docs.augmentcode.com][augment-5])         |
+| File / folder                     | Purpose                                        | Note                                                                                                                                                                                                                                                                                                                                                                                   |
+| --------------------------------- | ---------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `.augment/rules/*.md`             | Project rules                                  | Rules in `.augment/rules` are Markdown files; supported types are **always_apply** and **agent_requested**. Workspace rules are intended to be committed to the repository. In this project, `.augment/rules` is materialized as a real directory rather than symlinked, see the [temporary workaround](#temporary-workaround-materialized-rules). ([docs.augmentcode.com][augment-1]) |
+| `AGENTS.md`                       | Hierarchical rules                             | Can be in root and subdirectories; Auggie searches for it in the current and parent directories when working with a file. ([docs.augmentcode.com][augment-2], [agents.md](https://agents.md/))                                                                                                                                                                                         |
+| `CLAUDE.md`                       | Hierarchical rules compatible with Claude Code | Works similarly to `AGENTS.md`; only `AGENTS.md` and `CLAUDE.md` appear hierarchically, not `.augment/rules` in subdirectories. ([docs.augmentcode.com][augment-2])                                                                                                                                                                                                                    |
+| `.augment/skills/<name>/SKILL.md` | Skills                                         | Each skill is its own directory with `SKILL.md`; must have YAML frontmatter `name` and `description`. ([docs.augmentcode.com][augment-3])                                                                                                                                                                                                                                              |
+| `.claude/skills/<name>/SKILL.md`  | Skills compatible with Claude Code             | Auggie can discover them as workspace skills. ([docs.augmentcode.com][augment-3])                                                                                                                                                                                                                                                                                                      |
+| `.agents/skills/<name>/SKILL.md`  | Standard agentskills.io format                 | Also supported as workspace skills. ([docs.augmentcode.com][augment-3])                                                                                                                                                                                                                                                                                                                |
+| `.augment/commands/*.md`          | Custom slash commands                          | Triggered via `/security-review` in interactive mode or `auggie command security-review`; e.g., `.augment/commands/security-review.md` → `/security-review`. ([docs.augmentcode.com][augment-4])                                                                                                                                                                                       |
+| `.augment/commands/foo/bar.md`    | Namespaced commands                            | E.g., `.augment/commands/frontend/component.md` → `/frontend:component`. ([docs.augmentcode.com][augment-4])                                                                                                                                                                                                                                                                           |
+| `.claude/commands/*.md`           | Claude-compatible commands                     | Auggie automatically recognizes them for compatibility with existing Claude Code setups. ([docs.augmentcode.com][augment-4])                                                                                                                                                                                                                                                           |
+| `.augmentignore`                  | Files to exclude from indexing                 | Works similarly to `.gitignore`; Auggie indexes the workspace except for files in `.gitignore` and `.augmentignore`. You can also use `!` to include gitignored files. ([docs.augmentcode.com][augment-5])                                                                                                                                                                             |
 
 [augment-1]: https://docs.augmentcode.com/cli/rules "Rules & Guidelines - Auggie"
 [augment-2]: https://docs.augmentcode.com/cli/rules "Rules & Guidelines - Auggie"
@@ -494,6 +496,7 @@ On the Company plan, you can track [credits consumed by individual users](https:
 ##### Initial Company plan setup
 
 You need to create an account on [chatgpt.com](https://chatgpt.com/) and pay for [business plan](https://chatgpt.com/pricing/?type=team):
+
 - [Invite members](https://chatgpt.com/admin/members), seat type must be "ChatGPT".
 - [Allow automatic reload of credits](https://chatgpt.com/admin/billing?tab=plan) > "Credits balance" > "Automatic reload"
 
@@ -511,8 +514,8 @@ Commands ("slash commands") for standard work with the `codex` CLI are:
 - **select model:** `/model`
 - **set default model:** no separate action needed — the model selected via `/model` persists across sessions
 - **allow full permissions:**
-    - fast version: `codex --dangerously-bypass-approvals-and-sandbox`
-    - slower version: `/permissions` > `Full Access`
+  - fast version: `codex --dangerously-bypass-approvals-and-sandbox`
+  - slower version: `/permissions` > `Full Access`
 - **new line in prompt:** `Alt Enter`
 - **select conversation:** `/resume`
 - **new conversation:** `/new`, `/clear`
@@ -525,8 +528,8 @@ Commands ("slash commands") for standard work with the `codex` CLI are:
 - **code-review:** has no built-in command, but you can use the added `$run-review-changes` skill
 - **list and select skill:** `/skills` or start typing by `$`
 - **show usage/credits:**
-    - `/status` – current 5h and week window token usage
-    - `/statusline` – customization of a persistent status line showing live usage in the terminal
+  - `/status` – current 5h and week window token usage
+  - `/statusline` – customization of a persistent status line showing live usage in the terminal
 - **update:** `codex update`
 - **debugging:** `RUST_LOG=debug codex -c log_dir=./.codex-log`
 - **exit work:** `/exit`
@@ -537,22 +540,22 @@ See also [official docs](https://learn.chatgpt.com/docs/developer-commands?surfa
 
 ### Configuration
 
-| File / folder                                | Purpose                                                                                                                   | Note                                                                                                                                                                                                   |
-| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `AGENTS.md`                                  | Main project instructions for Codex: build/test commands, architecture, conventions, what “done” means.                   | Codex reads `AGENTS.md` before starting work; it looks for it in the project from the root to the current directory and aggregates instructions hierarchically. ([OpenAI Developers][codex-1])         |
-| `AGENTS.override.md`                         | Optional override for instructions in a given directory.                                                                  | Has priority over `AGENTS.md` during discovery; Codex takes at most one instruction file per directory. ([OpenAI Developers][codex-1])                                                                 |
-| `*/AGENTS.md`                                | Instructions for a specific subdirectory, module, or service.                                                             | Files closer to the active workplace are loaded later, so they can override more general rules from the root. ([OpenAI Developers][codex-1])                                                            |
-| `.codex/config.toml`                         | Project settings for Codex: model, approvals, sandbox, MCP servers, inline hooks, skill overrides, subagent settings.     | Codex uses `~/.codex/config.toml` for user config and `.codex/config.toml` for project overrides; project `.codex/` layers are loaded only in trusted projects. ([OpenAI Developers][codex-2])          |
-| `.codex/hooks.json`                          | Lifecycle hooks for the project, e.g., prompt validation, logging, checks after a tool call, or at the end of a turn.     | Codex looks for hooks alongside active config layers as `hooks.json` or inline `[hooks]` in `config.toml`; project hooks are loaded only in trusted projects. ([OpenAI Developers][codex-3])           |
-| `.codex/rules/*.rules`                       | Rules for allowing/prompting/blocking commands outside the sandbox.                                                       | `.rules` are experimental command rules; Codex scans `rules/` alongside the active config layer, including `<repo>/.codex/rules/`. ([OpenAI Developers][codex-4])                                      |
-| `.codex/agents/*.toml`                       | Project custom subagents / custom agents with their own model, sandbox, MCP, skills, and developer instructions.          | Project custom agents are separate TOML files in `.codex/agents/`; mandatory fields are `name`, `description`, `developer_instructions`. ([OpenAI Developers][codex-5])                                |
-| `.agents/skills/<skill>/SKILL.md`            | Repo skills: repeatable workflows, runbooks, checklists, and specialized procedures.                                      | Codex reads repo skills from `.agents/skills` from the current directory to the repository root; a skill is a folder with `SKILL.md` and optional `scripts/`, `references/`, `assets/`. ([OpenAI Developers][codex-6]) |
-| `.agents/plugins/marketplace.json`           | Repo marketplace plugin catalog for the team/project.                                                                     | A repo-scoped marketplace can be saved to `$REPO_ROOT/.agents/plugins/marketplace.json`; entries point to plugin folders, often under `./plugins/`. ([OpenAI Developers][codex-7])                      |
-| `plugins/<plugin>/.codex-plugin/plugin.json` | Manifest of a Codex plugin.                                                                                               | A plugin must have a manifest `.codex-plugin/plugin.json`; it can package skills, MCP servers, hooks, app integrations, and assets. ([OpenAI Developers][codex-7])                                     |
-| `plugins/<plugin>/skills/<skill>/SKILL.md`   | Skills packaged in a plugin.                                                                                              | A plugin manifest can point to a `skills` directory and thus distribute one or more skills. ([OpenAI Developers][codex-7])                                                                             |
-| `plugins/<plugin>/hooks/hooks.json`          | Hooks packaged in a plugin.                                                                                               | A plugin can contain lifecycle hooks; the user must review and trust them before execution. ([OpenAI Developers][codex-7])                                                                             |
-| `plugins/<plugin>/.mcp.json`                 | MCP servers packaged in a plugin.                                                                                         | In a standard project, MCP is configured via `.codex/config.toml`; a plugin can have its own `.mcp.json` pointed to by the manifest. ([OpenAI Developers][codex-8])                                    |
-| `plugins/<plugin>/.app.json`                 | App / connector mappings for the plugin.                                                                                  | A plugin structure can contain `.app.json` for app or connector integrations. ([OpenAI Developers][codex-7])                                                                                           |
+| File / folder                                | Purpose                                                                                                               | Note                                                                                                                                                                                                                   |
+| -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `AGENTS.md`                                  | Main project instructions for Codex: build/test commands, architecture, conventions, what “done” means.               | Codex reads `AGENTS.md` before starting work; it looks for it in the project from the root to the current directory and aggregates instructions hierarchically. ([OpenAI Developers][codex-1])                         |
+| `AGENTS.override.md`                         | Optional override for instructions in a given directory.                                                              | Has priority over `AGENTS.md` during discovery; Codex takes at most one instruction file per directory. ([OpenAI Developers][codex-1])                                                                                 |
+| `*/AGENTS.md`                                | Instructions for a specific subdirectory, module, or service.                                                         | Files closer to the active workplace are loaded later, so they can override more general rules from the root. ([OpenAI Developers][codex-1])                                                                           |
+| `.codex/config.toml`                         | Project settings for Codex: model, approvals, sandbox, MCP servers, inline hooks, skill overrides, subagent settings. | Codex uses `~/.codex/config.toml` for user config and `.codex/config.toml` for project overrides; project `.codex/` layers are loaded only in trusted projects. ([OpenAI Developers][codex-2])                         |
+| `.codex/hooks.json`                          | Lifecycle hooks for the project, e.g., prompt validation, logging, checks after a tool call, or at the end of a turn. | Codex looks for hooks alongside active config layers as `hooks.json` or inline `[hooks]` in `config.toml`; project hooks are loaded only in trusted projects. ([OpenAI Developers][codex-3])                           |
+| `.codex/rules/*.rules`                       | Rules for allowing/prompting/blocking commands outside the sandbox.                                                   | `.rules` are experimental command rules; Codex scans `rules/` alongside the active config layer, including `<repo>/.codex/rules/`. ([OpenAI Developers][codex-4])                                                      |
+| `.codex/agents/*.toml`                       | Project custom subagents / custom agents with their own model, sandbox, MCP, skills, and developer instructions.      | Project custom agents are separate TOML files in `.codex/agents/`; mandatory fields are `name`, `description`, `developer_instructions`. ([OpenAI Developers][codex-5])                                                |
+| `.agents/skills/<skill>/SKILL.md`            | Repo skills: repeatable workflows, runbooks, checklists, and specialized procedures.                                  | Codex reads repo skills from `.agents/skills` from the current directory to the repository root; a skill is a folder with `SKILL.md` and optional `scripts/`, `references/`, `assets/`. ([OpenAI Developers][codex-6]) |
+| `.agents/plugins/marketplace.json`           | Repo marketplace plugin catalog for the team/project.                                                                 | A repo-scoped marketplace can be saved to `$REPO_ROOT/.agents/plugins/marketplace.json`; entries point to plugin folders, often under `./plugins/`. ([OpenAI Developers][codex-7])                                     |
+| `plugins/<plugin>/.codex-plugin/plugin.json` | Manifest of a Codex plugin.                                                                                           | A plugin must have a manifest `.codex-plugin/plugin.json`; it can package skills, MCP servers, hooks, app integrations, and assets. ([OpenAI Developers][codex-7])                                                     |
+| `plugins/<plugin>/skills/<skill>/SKILL.md`   | Skills packaged in a plugin.                                                                                          | A plugin manifest can point to a `skills` directory and thus distribute one or more skills. ([OpenAI Developers][codex-7])                                                                                             |
+| `plugins/<plugin>/hooks/hooks.json`          | Hooks packaged in a plugin.                                                                                           | A plugin can contain lifecycle hooks; the user must review and trust them before execution. ([OpenAI Developers][codex-7])                                                                                             |
+| `plugins/<plugin>/.mcp.json`                 | MCP servers packaged in a plugin.                                                                                     | In a standard project, MCP is configured via `.codex/config.toml`; a plugin can have its own `.mcp.json` pointed to by the manifest. ([OpenAI Developers][codex-8])                                                    |
+| `plugins/<plugin>/.app.json`                 | App / connector mappings for the plugin.                                                                              | A plugin structure can contain `.app.json` for app or connector integrations. ([OpenAI Developers][codex-7])                                                                                                           |
 
 [codex-1]: https://developers.openai.com/codex/guides/agents-md "Custom instructions with AGENTS.md – Codex | OpenAI Developers"
 [codex-2]: https://developers.openai.com/codex/config-basic "Config basics – Codex | OpenAI Developers"
@@ -639,9 +642,9 @@ Commands ("slash commands") for standard work with the `agy` CLI are:
 - **select model:** `/model`
 - **set default model:** no separate action needed — the model selected via `/model` persists across sessions
 - **allow full permissions:**
-    - fast version: `agy --dangerously-skip-permissions`
-    - slower version: `/config` > `Tools Permission` > `always-proceed`
-    - controlled version: `/permissions` > `Project` > `allowlist` > `command(*)`, `read_file(*)`, `write_file(*)`, `read_url(*)`, `mcp(*)`
+  - fast version: `agy --dangerously-skip-permissions`
+  - slower version: `/config` > `Tools Permission` > `always-proceed`
+  - controlled version: `/permissions` > `Project` > `allowlist` > `command(*)`, `read_file(*)`, `write_file(*)`, `read_url(*)`, `mcp(*)`
 - **new line in prompt:** `Alt Enter`
 - **select conversation:** `/resume`
 - **new conversation:** `/clear`
@@ -666,15 +669,15 @@ See also [officia docs](https://antigravity.google/docs/cli/using)
 
 Antigravity can be configured as follows:
 
-| File / folder                     | Purpose                                                                                   | Note                                                                                                                                                                                                                                |
-| --------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `GEMINI.md`                       | Workspace context / general project instructions for Gemini/Antigravity CLI.              | Antigravity CLI supports workspace context files `GEMINI.md` as well as `AGENTS.md`. ([Google Antigravity][agy-1])                                                                                                                   |
-| `AGENTS.md`                       | Tool-agnostic project instructions for coding agents.                                     | Antigravity CLI reads `AGENTS.md` from the active workspace; AGENTS.md is a general open format for agent instructions. ([Google Antigravity][agy-1], [agents.md](https://agents.md/))                                              |
-| `.agents/agents.md`               | Definition of the team/personas, e.g., PM, engineer, QA, DevOps.                          | Google codelab uses `.agents/agents.md` to centrally define specialized agent personas. ([Google Codelabs][agy-2])                                                                                                                  |
-| `.agents/rules/*.md`              | Workspace rules: project rules for code style, architecture, testing, and security.       | Workspace rules live in `.agents/rules/`; global rules are in `~/.gemini/GEMINI.md`. ([Google Antigravity][agy-3])                                                                                                                  |
-| `.agents/skills/<skill>/SKILL.md` | Project skills: repeatable abilities/workflows packaged as a directory with `SKILL.md`.   | Antigravity currently defaults to `.agents/skills`; a skill is a folder containing `SKILL.md`. ([Google Antigravity][agy-4], [medium][agy-5])                                                                                       |
-| `.agents/hooks.json`              | Hooks: local shell scripts run at specified points in the agent execution cycle.          | Hooks are configured in `hooks.json` in the customization directory, e.g., `.agents/` in the workspace. ([Google Antigravity][agy-6])                                                                                               |
-| `.agents/mcp_config.json`         | Project MCP configuration, mainly for Antigravity CLI / workspace setup.                  | Antigravity uses a separate `mcp_config.json`; IDE documentation mentions global `~/.gemini/antigravity/mcp_config.json`, while CLI/workspace guides also mention project MCP under `.agents/`. ([Google Antigravity][agy-7])       |
+| File / folder                     | Purpose                                                                                 | Note                                                                                                                                                                                                                          |
+| --------------------------------- | --------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `GEMINI.md`                       | Workspace context / general project instructions for Gemini/Antigravity CLI.            | Antigravity CLI supports workspace context files `GEMINI.md` as well as `AGENTS.md`. ([Google Antigravity][agy-1])                                                                                                            |
+| `AGENTS.md`                       | Tool-agnostic project instructions for coding agents.                                   | Antigravity CLI reads `AGENTS.md` from the active workspace; AGENTS.md is a general open format for agent instructions. ([Google Antigravity][agy-1], [agents.md](https://agents.md/))                                        |
+| `.agents/agents.md`               | Definition of the team/personas, e.g., PM, engineer, QA, DevOps.                        | Google codelab uses `.agents/agents.md` to centrally define specialized agent personas. ([Google Codelabs][agy-2])                                                                                                            |
+| `.agents/rules/*.md`              | Workspace rules: project rules for code style, architecture, testing, and security.     | Workspace rules live in `.agents/rules/`; global rules are in `~/.gemini/GEMINI.md`. ([Google Antigravity][agy-3])                                                                                                            |
+| `.agents/skills/<skill>/SKILL.md` | Project skills: repeatable abilities/workflows packaged as a directory with `SKILL.md`. | Antigravity currently defaults to `.agents/skills`; a skill is a folder containing `SKILL.md`. ([Google Antigravity][agy-4], [medium][agy-5])                                                                                 |
+| `.agents/hooks.json`              | Hooks: local shell scripts run at specified points in the agent execution cycle.        | Hooks are configured in `hooks.json` in the customization directory, e.g., `.agents/` in the workspace. ([Google Antigravity][agy-6])                                                                                         |
+| `.agents/mcp_config.json`         | Project MCP configuration, mainly for Antigravity CLI / workspace setup.                | Antigravity uses a separate `mcp_config.json`; IDE documentation mentions global `~/.gemini/antigravity/mcp_config.json`, while CLI/workspace guides also mention project MCP under `.agents/`. ([Google Antigravity][agy-7]) |
 
 [agy-1]: https://antigravity.google/docs/gcli-migration "Migrating from Gemini CLI"
 [agy-2]: https://codelabs.developers.google.com/autonomous-ai-developer-pipelines-antigravity "Build Autonomous Developer Pipelines using agents.md and skills.md in Antigravity  |  Google Codelabs"

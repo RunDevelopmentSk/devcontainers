@@ -26,12 +26,12 @@ Skill for **literally saving the entire chat history** – all prompts and agent
 
 Suffix = short identifier of the running agent/CLI:
 
-| Agent            | Suffix   |
-| ---------------- | -------- |
-| Auggie           | `auggie` |
-| Claude Code      | `claude` |
-| Antigravity      | `agy`    |
-| Codex            | `codex`  |
+| Agent       | Suffix   |
+| ----------- | -------- |
+| Auggie      | `auggie` |
+| Claude Code | `claude` |
+| Antigravity | `agy`    |
+| Codex       | `codex`  |
 
 ## 2. Determine target path (algorithm)
 
@@ -50,13 +50,13 @@ Follow this order:
 
 ### Examples
 
-| Argument                                  | Suffix   | Resulting path                                       |
-| ----------------------------------------- | -------- | ---------------------------------------------------- |
-| *(none)*                                  | `auggie` | `tmp/tax-analyze-auggie.md` (slug auto-generated)    |
-| `my-chat.md`                              | `auggie` | `tmp/my-chat-auggie.md`                              |
-| `my-chat`                                 | `auggie` | `tmp/my-chat-auggie.md`                              |
-| `.agents/user-prompts/my-chat.md`         | `auggie` | `.agents/user-prompts/my-chat-auggie.md`             |
-| `.agents/user-prompts/my-chat`            | `claude` | `.agents/user-prompts/my-chat-claude.md`             |
+| Argument                          | Suffix   | Resulting path                                    |
+| --------------------------------- | -------- | ------------------------------------------------- |
+| _(none)_                          | `auggie` | `tmp/tax-analyze-auggie.md` (slug auto-generated) |
+| `my-chat.md`                      | `auggie` | `tmp/my-chat-auggie.md`                           |
+| `my-chat`                         | `auggie` | `tmp/my-chat-auggie.md`                           |
+| `.agents/user-prompts/my-chat.md` | `auggie` | `.agents/user-prompts/my-chat-auggie.md`          |
+| `.agents/user-prompts/my-chat`    | `claude` | `.agents/user-prompts/my-chat-claude.md`          |
 
 ## 3. Save all prompts and responses
 

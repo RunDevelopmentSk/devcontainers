@@ -24,7 +24,7 @@ Before working, check:
 
 ## General description
 
-The current project is built on  <@todo>. Functional code is located in the directories <@todo>.
+The current project is built on <@todo>. Functional code is located in the directories <@todo>.
 
 It is a <@todo> project.
 
