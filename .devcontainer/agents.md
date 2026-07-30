@@ -33,6 +33,13 @@ Add the following to the `.gitignore` file:
 *.local.toml
 ```
 
+Remove files if they exist:
+
+- .agents/agents/run.compare-solutions.md
+- .agents/agents/run.compare-solutions.toml
+- .agents/agents/scripts/run.compare-solutions-fanout.sh
+- .agents/commands/run.compare-solutions.md
+
 Rebuild the devcontainer.
 
 ## Known limitation
@@ -41,6 +48,6 @@ Rebuild the devcontainer.
 
 ## Removal
 
-Delete everything that was added.
+Delete everything that was added on installation, but ignore installation removals.
 
 Rebuild the devcontainer.
