@@ -1,4 +1,5 @@
 - claude > /export - pridat do docs > commands
+- rule ktoré určí že ak sa pýtam na riešenie/ návrh / info / ..., tak sa nič nezapracováva. Zmeny sa vykonávajú  len keď explicitne žiadam o zmenu (oprav / uprav / dolaď / ...) - jednoducho keď je kacia zmeny jednoznačná z promptu
 - features/agents/docs/ai-agents.md - pridaj časové návestia k videotutoriálom
 - `docker-compose.yml` súbory - odstáň odtiaľ pomenované volumes vytvárané pre jednotlivých AI agentov a prenestoto do `features/agents/.devcontainer/agents.md`
 -! check if https://github.com/augmentcode/auggie/issues/154 is resolved and if yes then restore symlink .augment/rules back

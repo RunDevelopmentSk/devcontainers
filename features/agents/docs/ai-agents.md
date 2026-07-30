@@ -284,9 +284,10 @@ Commands ("slash commands") for standard work with the `claude` CLI are:
 - **rename conversation:** `/rename`
 - **save conversation:** saves automatically
 - **compact conversation:** `/compact`
-- **create a copy of conversation:** `/fork`
+- **create a copy of conversation:** `/branch`, to come back to parent conversation use `resume`
+- **fork conversation:** `/fork`, to come back to parent conversation use arrow left (`<-`) on empty promt line, see [docs](https://code.claude.com/docs/en/commands) > `/fork`
 - **copy last response:** `/copy`, `/copy [N]` to select a specific response
-- **save conversation to file:** `/export`
+- **save conversation to file:** `/export`, you can also use the added `/run.save-chat` command. Before running `/run.save-chat`, it is recommended to create a copy of the conversation using `/branch` so that the history of the original conversation remains untouched
 - **code-review:** `/code-review` or you can use the added `/run.review-changes` command or `/run-review-changes` skill
 - **list and select skill:** `/skills`
 - **show usage/credits:**
@@ -387,7 +388,7 @@ Commands ("slash commands") for standard work with the `auggie` CLI are:
 - **rename conversation:** `/rename <name>`
 - **save conversation:** saves automatically
 - **compact conversation:** has no built-in command
-- **create a copy of conversation:** `/fork`
+- **create a copy of conversation:** `/fork`, to come back to parent conversation use `/sessions`
 - **copy last response:** `/copy`
 - **save conversation to file:** has no built-in command, but you can use the added `/run.save-chat` command. Before running `/run.save-chat`, it is recommended to create a copy of the conversation using `/fork` so that the history of the original conversation remains untouched
 - **code-review:** has no built-in command, but you can use the added `/run.review-changes` command or `/run-review-changes` skill
@@ -518,7 +519,7 @@ Commands ("slash commands") for standard work with the `codex` CLI are:
 - **rename conversation:** `/rename`
 - **save conversation:** saves automatically
 - **compact conversation:** `/compact`
-- **create a copy of conversation:** `/fork`
+- **create a copy of conversation:** `/fork`, to come back to parent conversation use `/resume`
 - **copy last response:** `/copy`
 - **save conversation to file:** has no built-in command, but you can use the added `$run-save-chat` skill. Before running `$run-save-chat`, it is recommended to create a copy of the conversation using `/fork` so that the history of the original conversation remains untouched
 - **code-review:** has no built-in command, but you can use the added `$run-review-changes` skill
