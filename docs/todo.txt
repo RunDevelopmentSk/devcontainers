@@ -1,5 +1,8 @@
 - claude > /export - pridat do docs > commands
 x rule ktoré určí, že ak sa pýtam na riešenie/ návrh / info / ... - bez ohľadu na jazyk komunikácie, tak sa nič nezapracováva a v projekte sa nerobia žiadne zmeny. Zmeny sa vykonávajú  len keď explicitne žiadam o zmenu (oprav / uprav / dolaď / ... - bez ohľadu na jazyk komunikácie) - jednoducho keď je akcia zmeny jednoznačná z promptu
+- rule ktoré keď sa do textu napíše stručne / v krátkosti (bez ohľadu na jazyk komunikácie) - jednoducho keď je požiadavka stručnosti jednoznačná z promptu, tak sa agent nevykecáva ale jeho odpoveď je len stručná
+- rule "krok za krokom" - až keď sa dokončí zapracovanie jedného ktoku tak sa na môj pokyn pustíme do ďalšieho
+- rule aby nepísal do komentárov vysvetlenia aktuálnych úprav a odvolával sa na predošlé prerobené riešenie. Nech komentáre píše tak akoby to bolo od začiatku implementované novým spôsobom. Nemá presta odvolávať sa ne nejaké predošlé nevhodné/horšie/slabšie riešenie ktoré už v kóde neexistuje
 - features/agents/docs/ai-agents.md - pridaj časové návestia k videotutoriálom
 - `docker-compose.yml` súbory - odstáň odtiaľ pomenované volumes vytvárané pre jednotlivých AI agentov a prenestoto do `features/agents/.devcontainer/agents.md`
 -! check if https://github.com/augmentcode/auggie/issues/154 is resolved and if yes then restore symlink .augment/rules back
@@ -13,9 +16,10 @@ x rule ktoré určí, že ak sa pýtam na riešenie/ návrh / info / ... - bez o
     -? https://github.com/bmad-code-org/bmad-method
     -? https://github.com/Fission-AI/openspec
     -? https://github.com/open-gsd/gsd-core
-- also separate as add-ons:
-    - `_pre-commit`
-    - `_runtools`
+- also separate/add as add-ons:
+    - feature `pre-commit`
+    - feature `runtools`
+    - feature `wordpress` (see /home/mojo/Projects/ebookshop/)
 - consider the following refactoring of add-ons according to how it is done officially (feature):
     - https://chatgpt.com/c/6a27c715-9ab4-83ed-872f-6dbd508d2407
     - https://chatgpt.com/s/t_6a44bdb1257081918393efe5ce8dbecd
