@@ -23,6 +23,24 @@ const config = {
                 proseWrap: "preserve",
             },
         },
+        {
+            // Two-space indentation is the de-facto YAML standard (docker-compose,
+            // GitHub Actions docs, yamllint default). Without this override YAML would
+            // inherit the global tabWidth: 4.
+            files: ["*.yml", "*.yaml"],
+            options: {
+                tabWidth: 2,
+            },
+        },
+        {
+            // Same for JSON: 2 spaces is the ecosystem default (npm, VS Code,
+            // JSON.stringify(x, null, 2)) and what Odoo 19 CE uses for the spreadsheet
+            // dashboard files that data/files/*.json here mirrors.
+            files: "*.json",
+            options: {
+                tabWidth: 2,
+            },
+        },
     ],
 };
 
