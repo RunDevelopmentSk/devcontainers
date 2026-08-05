@@ -5,6 +5,7 @@
 To work locally on the project in a devcontainer, do the following:
 
 - If you use Windows:
+
   - For existing symlinks in the project to clone correctly, you need to have `git config core.symlinks=true` and the user must have `SeCreateSymbolicLinkPrivilege` permission:
     - Set `git config --global core.symlinks true` - this only needs to be done once globally, at the beginning.
     - Go to "Settings" (`Win + I`) > "System" > "Advanced" > "For developers" - this only needs to be done once globally, at the beginning.
@@ -24,7 +25,7 @@ To work locally on the project in a devcontainer, do the following:
 
 - Once in VS Code in the devcontainer, run the `odoo` command in the console.
 
-- Open http://localhost:50030/ in your browser. This URL is also available in VS Code in the "Ports" tab (`CTRL P` > `view ports`) > "drinkcentrum-is-odoo odoo". Upon the first Odoo run, a configuration screen will appear to set the database name and Odoo access credentials:<br><img src="./img/odoo-create-db-screen.png" style="width:400px;"><br>Enter the same credentials (especially the database name) so the project works based on preconfigured values in [`.devcontainer/config/odoo.conf`](../.devcontainer/config/odoo.conf) and [`.devcontainer/docker-compose.yml`](../.devcontainer/docker-compose.yml). You can also select a specific language and country. The fiscal localization (taxes, etc.) will be configured according to the selected country. You can also check the box to load demo data.
+- Open http://localhost:50030/ in your browser. This URL is also available in VS Code in the "Ports" tab (`CTRL P` > `view ports`) > "drinkcentrum-is-odoo odoo". Upon the first Odoo run, a configuration screen will appear to set the database name and Odoo access credentials:<br><img src="./img/odoo-create-db-screen.png" style="width:400px;"><br>Enter the same credentials (especially the database name) so the project works based on preconfigured values in [`.devcontainer/config/odoo.conf`](../.devcontainer/config/odoo.conf) and [`.devcontainer/docker-compose.yml`](../.devcontainer/docker-compose.yml). You can also select a specific language and country. The fiscal localization (taxes, etc.) will be configured according to the selected country. You can also check the box to load demo data.<br><br>NOTE: **To make Odoo database manager easily accesible** add following bookmarklet:<br>`javascript:(function(){var u=location.origin+'/web/database/manager';if(location.href===u){location.reload();}else{location.href=u;}})();`<br>Add it as a bookmark in your browser.
 
 - After the initial database creation, the login screen will appear. If you entered the credentials above, you can log in using the username `test@run.sk` and password `odoo`.
 
