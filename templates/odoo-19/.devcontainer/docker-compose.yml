@@ -31,6 +31,7 @@ services:
       - ./config:/etc/odoo
       # Mount other shared local folders if needed
       #- ../../my-project:/mnt/_shared/my-project:cached
+      #- $HOME/Documents:/mnt/_shared/Documents:cached
       # Mount local user:
       # - .gitconfig files to ensure the same user for Git.
       # - .ssh files to allow Git to use local user SSH key for authentication.

@@ -30,7 +30,8 @@ services:
       # Mount project folder (`:cached` improves the performance on Mac and Windows)
       - ..:/var/www/html:cached
       # Mount other shared local folders if needed
-      #- ../../perly:/var/www/html/_shared/perly:cached
+      #- ../../my-project:/var/www/html/_shared/my-project:cached
+      #- $HOME/Documents:/var/www/html/_shared/Documents:cached
       # Mount shared node_modules folder.
       # If local node_modules folder does not exist, then docker will create it.
       - ../../node_modules:/var/www/node_modules:cached

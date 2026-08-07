@@ -17,8 +17,9 @@ services:
       - TZ=${TZ:-Europe/Bratislava}
     volumes:
       # Mount workspaces folder (`:cached` improves the performance on Mac and Windows)
-      - ../..:/home/ubuntu/workspaces:cached
+      - ..:/home/ubuntu/workspaces:cached
       # Mount other shared local folders if needed
+      #- ../../my-project:/home/ubuntu/workspaces/_shared/my-project:cached
       #- $HOME/Documents:/home/ubuntu/workspaces/_shared/Documents:cached
       # Mount local user:
       # - .hgrc and .gitconfig files to ensure the same user for Mercurial and Git.

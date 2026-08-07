@@ -48,7 +48,7 @@
       ],
       "settings": {
         // general settings
-        "window.title": "${dirty}${rootName}${separator}${activeEditorShort}${separator}${profileName}${separator}${appName}",
+        "window.title": "${dirty}${localWorkspaceFolderBasename}${separator}${activeEditorShort}${separator}${profileName}${separator}${appName}",
         "workbench.editor.openPositioning": "last",
         "editor.renderWhitespace": "all",
         "editor.renderControlCharacters": true,
