@@ -1,3 +1,25 @@
+- skills run-save-chat.md a run-save-response.md uprav tak aby prompt a response boli odlíšené nie odsadením:
+
+    **Prompt:**
+
+        <my_prompt>
+
+    **Response:**
+
+        <ai_response>
+
+    ale speclálnmy zápisom promt a response oddeľovačov
+
+    **=+=+=+=+=+= PROMPT =+=+=+=+=+=**
+
+    <my_prompt>
+
+    **=+=+=+=+=+= RESPONSE =+=+=+=+=+=**
+
+    <ai_response>
+
+    Ide o to aby markdown preview bola dostupná bez toho aby sa menilo odsadenie pre <my_prompt> a <my_prompt>. Následne treba toto aktualizovať aj v run-compare-(sub)agent-outputs
+
 - claude > /export - pridat do docs > commands
 x rule ktoré určí, že ak sa pýtam na riešenie/ návrh / info / ... - bez ohľadu na jazyk komunikácie, tak sa nič nezapracováva a v projekte sa nerobia žiadne zmeny. Zmeny sa vykonávajú  len keď explicitne žiadam o zmenu (oprav / uprav / dolaď / ... - bez ohľadu na jazyk komunikácie) - jednoducho keď je akcia zmeny jednoznačná z promptu
 - rule ktoré keď sa do textu napíše stručne / v krátkosti (bez ohľadu na jazyk komunikácie) - jednoducho keď je požiadavka stručnosti jednoznačná z promptu, tak sa agent nevykecáva ale jeho odpoveď je len stručná
@@ -19,7 +41,10 @@ x rule ktoré určí, že ak sa pýtam na riešenie/ návrh / info / ... - bez o
 - also separate/add as add-ons:
     - feature `pre-commit`
     - feature `runtools`
-    - feature `wordpress` (see /home/mojo/Projects/ebookshop/)
+    - feature `wordpress` (see /home/mojo/Projects/ebookshop/), vhodné pre php-* templates
+    - feature `python` - pridá najme vyladené pre-commity pre python a .vscode/launch.json (viď /home/mojo/Projects/ai-agents/), vhodné pre ubuntu-noble template
+    - feature .github/workflows/docker-publish.yml - prenes z projektu https://github.com/arm-gravich/cost_estimator
+        - prípadne to uprav tak aby vyhľadával Dockerfiles v podpriečinkoch daného projektu a vždy im nastavil kontext na priečinok v ktorom ich nájde. V takom prípade by sa táto verzia .github/workflows/docker-publish.yml mohla preniesť aj do https://github.com/RunDevelopmentSk/dockerfiles projektu
 - consider the following refactoring of add-ons according to how it is done officially (feature):
     - https://chatgpt.com/c/6a27c715-9ab4-83ed-872f-6dbd508d2407
     - https://chatgpt.com/s/t_6a44bdb1257081918393efe5ce8dbecd
