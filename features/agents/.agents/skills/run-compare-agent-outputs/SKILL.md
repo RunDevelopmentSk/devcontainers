@@ -50,7 +50,7 @@ An explicit assignment from the user always wins over the file name.
 Inputs come in different shapes – get to the actual analysis before comparing:
 
 - **fan-out output** – the whole file is the analysis, structured per the Output Contract (headings + a mandatory `## Conclusion / Recommendation` section); for `codex` it is only the final message (the reasoning is in the `.transcript` sidecar).
-- **saved response** (`run-save-response`, `run-save-chat`) – the `**Prompt:**` / `**Response:**` blocks with the body indented by 4 spaces; the indentation is a wrapper, not content – strip it, and read the prompt block as the task the agents were solving. `run-save-chat` may hold several turns – then the analysis is the whole thread, not just the last message.
+- **saved response** (`run-save-response`, `run-save-chat`) – blocks delimited by `**=+=+=+=+=+= PROMPT =+=+=+=+=+=**` / `**=+=+=+=+=+= RESPONSE =+=+=+=+=+=**` separator lines, content unindented; read the prompt block as the task the agents were solving. Files saved by older versions use `**Prompt:**` / `**Response:**` headers with the body indented by 4 spaces – strip that indentation, it is a wrapper, not content. `run-save-chat` may hold several turns – then the analysis is the whole thread, not just the last message.
 - **plain free text** – take it as is.
 
 **A missing conclusion is the normal case here** (only the fan-out enforces one). If a file has no explicit recommendation, infer the agent's position from the whole text and **mark it in the output as inferred, not quoted** – e.g. "(inferred)" next to the stance. Never present an inferred stance as the agent's own wording.

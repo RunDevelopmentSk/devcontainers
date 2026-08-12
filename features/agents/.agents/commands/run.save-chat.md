@@ -17,7 +17,7 @@ In short (details in the skill):
    - name with a folder -> stays in that folder,
    - missing extension -> append `.md`.
 3. Add the suffix `-<agent>` before `.md` (e.g., `my-chat-auggie.md`).
-4. Write the **literal** (verbatim) content of the entire conversation – **all** prompts and responses in chronological order under `**Prompt:**` / `**Response:**` headers (exact file format in the skill) – and announce the resulting path.
+4. Write the **literal** (verbatim) content of the entire conversation – **all** prompts and responses in chronological order, delimited by `PROMPT` / `RESPONSE` separator lines (exact file format in the skill) – and announce the resulting path.
 
 Hard rules: prompts and responses are verbatim, the entire chat history is saved (not just the last turn), the agent suffix is always added, no secrets in the file (`.agents/rules/run.secret-safety.md`).
 

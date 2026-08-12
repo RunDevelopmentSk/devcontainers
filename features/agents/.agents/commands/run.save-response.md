@@ -17,7 +17,7 @@ In short (details in the skill):
    - name with a folder -> stays in that folder,
    - missing extension -> append `.md`.
 3. Add the suffix `-<agent>` before `.md` (e.g., `my-tax-analyze-auggie.md`).
-4. Write the **literal** (verbatim) last prompt and response under `**Prompt:**` / `**Response:**` headers (exact file format in the skill) – and announce the resulting path.
+4. Write the **literal** (verbatim) last prompt and response, delimited by `PROMPT` / `RESPONSE` separator lines (exact file format in the skill) – and announce the resulting path.
 
 Hard rules: the prompt and response are verbatim, the agent suffix is always added, no secrets in the file (`.agents/rules/run.secret-safety.md`).
 
