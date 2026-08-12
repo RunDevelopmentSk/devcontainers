@@ -7,7 +7,7 @@ Adds `claude`, `codex`, `agy` and `auggie` CLI AI agents in the form of a [unifi
 
 Copy the contents of the `features/agents` folder into the project folder.
 
-Add the following to the end of the `.devcontainer/.post-create.sh` file:
+Add the following to the end of the `.devcontainer/post-create.sh` file:
 
 ```sh
 # AI agents: install
@@ -31,6 +31,9 @@ Add the following to the `.gitignore` file:
 *.local.md
 *.local.json
 *.local.toml
+# ignore the materialized copy of .agents/rules (auggie symlinked-rules workaround),
+# recreated on every container start by post-start-agents.sh
+.augment/rules
 ```
 
 Remove files if they exist:

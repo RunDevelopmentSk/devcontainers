@@ -39,7 +39,7 @@ If it is not a new type of artifact, **new symlinks are not needed** – existin
 ### Rule (`.agents/rules/run.<name>.md`)
 
 - Combined frontmatter: `description` + `type:` (Auggie: `always_apply|agent_requested`, `manual` is skipped by CLI – only works in IDE extensions) + `trigger:` (Antigravity: `always_on|glob|model_decision|manual`). Unknown keys are ignored by each agent.
-- Claude Code and Codex do not have a rules folder -> if the `always_apply|always_on` rule should apply to them as well, add a `@.agents/rules/run.<name>.md` import to `AGENTS.md`.
+- Codex has no rules folder, and Claude Code's native `.claude/rules/` is not wired into this setup -> if the `always_apply|always_on` rule should apply to them as well, add a `@.agents/rules/run.<name>.md` import to `AGENTS.md`.
 
 ### Skill (`.agents/skills/run-<name>/SKILL.md`)
 
@@ -70,9 +70,9 @@ If it is not a new type of artifact, **new symlinks are not needed** – existin
 
 After creation, verify that the artifact is visible to each relevant agent:
 
-- **Auggie** – skills natively from `.agents/skills`; commands/agents/rules via `.augment/*` symlinks,
-- **Claude Code** – via `.claude/*` symlinks; rules only via `@`-import in `AGENTS.md`,
-- **Antigravity** – `.agents/*` natively; commands via symlink `workflows -> commands`; does not read subagents from files,
+- **Auggie** – skills and subagents natively from `.agents/skills` / `.agents/agents`; commands via the `.claude/commands` compatibility fallback; rules via the materialized `.augment/rules` directory (temporary workaround in `docs/ai-agents.md` – reopen the devcontainer after editing rules),
+- **Claude Code** – commands/skills/subagents via `.claude/*` symlinks; rules only via `@`-import in `AGENTS.md`,
+- **Antigravity** – rules and skills natively from `.agents/*`; does not support commands in the CLI; does not read subagents from files,
 - **Codex** – `.agents/skills` and `AGENTS.md` natively; subagents from `.codex/agents` (`.toml`) via symlink; does not support commands; rules only by reference from `AGENTS.md`.
 
 ## Related

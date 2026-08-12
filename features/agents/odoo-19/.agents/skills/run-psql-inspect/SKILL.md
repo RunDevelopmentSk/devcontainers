@@ -8,6 +8,10 @@ description: Inspect the structure and content of the Odoo PostgreSQL database v
 The devcontainer has PostgreSQL access on host `db`, user `odoo`, password `odoo`,
 database `odoo`. Shortcut via `Makefile`: `make db-cli` (opens interactive `psql`).
 
+These credentials are well-known defaults of the local devcontainer environment only
+(they are not production credentials and are not secrets in the sense of
+`.agents/rules/run.secret-safety.md`), so using them literally in commands here is fine.
+
 ## Common Queries
 
 ```bash

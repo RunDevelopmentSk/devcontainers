@@ -27,6 +27,6 @@ Standard sentence at the end of the task:
 
 ## Anti-pattern
 
-- ❌ Do not run `odoo …` via `launch-process` or in any script within an automated task.
+- ❌ Do not run `odoo …` via any shell/process-launching tool of the agent, nor in any script within an automated task.
 - ❌ Do not restart the systemd service `odoo.service`.
 - ❌ Do not use `pkill odoo` or `kill -HUP`.

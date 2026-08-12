@@ -84,7 +84,6 @@ Write the **literal** (verbatim) content of the entire conversation in chronolog
 - Prompts and responses are written **verbatim** (Markdown as-is), without summarization, shortening, or modification – only with a 4-space indentation added at the beginning of each non-empty line (empty lines remain empty).
 - The 4-space indentation applies to **all** lines of content, including headings, lists, tables, and code blocks – so that they can be visually distinguished from the structural headers `**Prompt:**` and `**Response:**` (and the empty separator lines).
 - Do not add anything else (no additional heading, metadata, or comment) besides the `**Prompt:**` and `**Response:**` headers (and the empty separator lines).
-- Template of a single block format: `.agents/user-prompts/ai-namespacing-auggie.md`.
 - If the file already exists, warn the user and ask whether to overwrite.
 - After saving, notify the user of the resulting path.
 
