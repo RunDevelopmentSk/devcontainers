@@ -22,6 +22,7 @@ Before working, check:
 - @.agents/rules/run.secret-safety.md
 - @.agents/rules/run.dry-and-brief.md
 - @.agents/rules/run.explicit-change-only.md
+- @.agents/rules/run.timeless-comments.md
 
 ## General description
 
