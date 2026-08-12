@@ -1,8 +1,7 @@
 ---
 description: >-
-  Compare already existing agent outputs (proposals, analyses) from files and present a
-  recommended solution - without running any agents. Accepts a loose input format
-  (fan-out output, a response saved by run-save-response / run-save-chat, plain text).
+  Entry point to the run-compare-agent-outputs skill – compare already existing
+  agent outputs from files and recommend a solution, without running any agents.
 ---
 
 # /run.compare-agent-outputs – Compare existing agent outputs

@@ -10,7 +10,7 @@ This file is a **shared source of truth** for all AI agents in the project
 and Codex read it natively; Claude Code reads it via the symlink `CLAUDE.md → AGENTS.md`.
 
 Configuration details of individual agents and the unified structure are in
-[`docs/ai-agents.md`](docs/ai-agents.md).
+`docs/ai-agents.md`.
 
 Before working, check:
 
@@ -22,6 +22,7 @@ Before working, check:
 - @.agents/rules/run.secret-safety.md
 - @.agents/rules/run.dry-and-brief.md
 - @.agents/rules/run.explicit-change-only.md
+- @.agents/rules/run.timeless-comments.md
 
 ## General description
 

@@ -10,11 +10,7 @@ trigger: always_on
 
 # Rule: DRY and brief content
 
-Applies to all agents and all skills in this workspace, for both documentation and code.
-
-## The problem
-
-AI agents tend to over-generate: restating what was already written, summarizing a summary, or repeating the same information (even if rephrased) several times within one document or across multiple locations. This adds volume without adding information and makes content harder, not easier, for a human to read.
+AI agents tend to over-generate: restating, re-summarizing, or repeating the same information (even if rephrased) within one document or across locations - volume without added information. Applies to both documentation and code.
 
 ## When duplication is required (allowed)
 

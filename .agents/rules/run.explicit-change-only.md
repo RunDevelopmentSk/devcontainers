@@ -4,13 +4,12 @@ description: >-
   Questions asking for a solution, proposal, analysis or information are
   answered in chat only - nothing is written, edited, deleted or applied.
   Language-independent: intent is judged by meaning, not by keyword language.
+  Applies to all agents and all skills in this workspace.
 type: always_apply
 trigger: always_on
 ---
 
 # Rule: change the project only on an explicit request
-
-Applies to all agents and all skills in this workspace.
 
 ## Two kinds of prompts
 

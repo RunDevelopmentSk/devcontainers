@@ -1,9 +1,7 @@
 ---
 description: >-
-  Remove a previously integrated devcontainer add-on from the current project by following
-  the `## Removal` instructions in its `.devcontainer/<add-on>.md` descriptor. Accepts
-  `<add-on>` or `<add-on>.md` as an argument; without one, lists the add-ons currently
-  integrated in the project and asks which to remove.
+  Entry point to the run-remove-devcontainer-addon skill – remove an integrated
+  devcontainer add-on per the `## Removal` section of its descriptor.
 ---
 
 # /run.remove-devcontainer-addon – Remove a devcontainer add-on

@@ -60,37 +60,36 @@ Follow this order:
 
 ## 3. Save all prompts and responses
 
-Write the **literal** (verbatim) content of the entire conversation in chronological order to the final path. **For each turn** (user prompt and the subsequent agent response), repeat the same format as below – i.e., as many `**Prompt:**` / `**Response:**` blocks as there were turns in the chat. The first line of the file is empty, headers are bold, and **each non-empty line of the prompt and response is indented by 4 spaces to the right**:
+Write the **literal** (verbatim) content of the entire conversation in chronological order to the final path. **For each turn** (user prompt and the subsequent agent response), repeat the same format as below – i.e., as many `PROMPT` / `RESPONSE` blocks as there were turns in the chat. The first line of the file is empty and the content is written as-is, **with no indentation added**:
 
 ```
-**Prompt:**
+**=+=+=+=+=+= PROMPT =+=+=+=+=+=**
 
-    <literal text of 1st prompt – each line indented by 4 spaces>
+<literal text of 1st prompt>
 
-**Response:**
+**=+=+=+=+=+= RESPONSE =+=+=+=+=+=**
 
-    <literal text of 1st response – each line indented by 4 spaces>
+<literal text of 1st response>
 
-**Prompt:**
+**=+=+=+=+=+= PROMPT =+=+=+=+=+=**
 
-    <literal text of 2nd prompt – each line indented by 4 spaces>
+<literal text of 2nd prompt>
 
-**Response:**
+**=+=+=+=+=+= RESPONSE =+=+=+=+=+=**
 
-    <literal text of 2nd response – each line indented by 4 spaces>
+<literal text of 2nd response>
 ```
 
 - **The entire chat history is saved** – all prompts and responses from the beginning of the conversation to the last turn, in the order they occurred.
-- Prompts and responses are written **verbatim** (Markdown as-is), without summarization, shortening, or modification – only with a 4-space indentation added at the beginning of each non-empty line (empty lines remain empty).
-- The 4-space indentation applies to **all** lines of content, including headings, lists, tables, and code blocks – so that they can be visually distinguished from the structural headers `**Prompt:**` and `**Response:**` (and the empty separator lines).
-- Do not add anything else (no additional heading, metadata, or comment) besides the `**Prompt:**` and `**Response:**` headers (and the empty separator lines).
-- Template of a single block format: `.agents/user-prompts/ai-namespacing-auggie.md`.
+- Prompts and responses are written **verbatim** (Markdown as-is), without summarization, shortening, or modification.
+- The distinctive `=+=+…` separator lines mark the prompt/response boundaries without touching the content itself – the file stays unindented, so it renders correctly in Markdown preview.
+- Do not add anything else (no additional heading, metadata, or comment) besides the separator lines (and the empty lines around them).
 - If the file already exists, warn the user and ask whether to overwrite.
 - After saving, notify the user of the resulting path.
 
 ## Hard Rules
 
-- Prompts and responses are **verbatim** – no paraphrasing or additions (the only allowed modification is the 4-space line indentation).
+- Prompts and responses are **verbatim** – no paraphrasing, additions, or reformatting.
 - The **entire** chat history is saved, not just the last turn.
 - The agent suffix is **always** added.
 - Never save secrets to the file (`.agents/rules/run.secret-safety.md`).

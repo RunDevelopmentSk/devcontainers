@@ -60,28 +60,27 @@ Follow this order:
 
 ## 3. Save prompt and response
 
-Write the **literal** (verbatim) content in exactly this format to the final path (the first line of the file is empty, headers are bold, and **each non-empty line of the prompt and response is indented by 4 spaces to the right**):
+Write the **literal** (verbatim) content in exactly this format to the final path (the first line of the file is empty and the content is written as-is, **with no indentation added**):
 
 ```
-**Prompt:**
+**=+=+=+=+=+= PROMPT =+=+=+=+=+=**
 
-    <literal text of last prompt – each line indented by 4 spaces>
+<literal text of last prompt>
 
-**Response:**
+**=+=+=+=+=+= RESPONSE =+=+=+=+=+=**
 
-    <literal text of last response – each line indented by 4 spaces>
+<literal text of last response>
 ```
 
-- Both the prompt and response are written **verbatim** (Markdown as-is), without summarization, shortening, or modification – only with a 4-space indentation added at the beginning of each non-empty line (empty lines remain empty).
-- The 4-space indentation applies to **all** lines of content, including headings, lists, tables, and code blocks – so that they can be visually distinguished from the structural headers `**Prompt:**` and `**Response:**` (and the empty separator lines).
-- Do not add anything else (no additional heading, metadata, or comment) besides the `**Prompt:**` and `**Response:**` headers (and the empty separator lines).
-- Template of correctly formatted output: `.agents/user-prompts/ai-namespacing-auggie.md`.
+- Both the prompt and response are written **verbatim** (Markdown as-is), without summarization, shortening, or modification.
+- The distinctive `=+=+…` separator lines mark the prompt/response boundaries without touching the content itself – the file stays unindented, so it renders correctly in Markdown preview.
+- Do not add anything else (no additional heading, metadata, or comment) besides the separator lines (and the empty lines around them).
 - If the file already exists, warn the user and ask whether to overwrite.
 - After saving, notify the user of the resulting path.
 
 ## Hard Rules
 
-- The prompt and response are **verbatim** – no paraphrasing or additions (the only allowed modification is the 4-space line indentation).
+- The prompt and response are **verbatim** – no paraphrasing, additions, or reformatting.
 - The agent suffix is **always** added.
 - Never save secrets to the file (`.agents/rules/run.secret-safety.md`).
 

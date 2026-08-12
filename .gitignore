@@ -16,6 +16,9 @@ Project DB.session.sql
 *.local.md
 *.local.json
 *.local.toml
+# ignore the materialized copy of .agents/rules (auggie symlinked-rules workaround),
+# recreated on every container start by post-start-agents.sh
+.augment/rules
 
 #
 # Debug
