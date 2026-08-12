@@ -1,3 +1,7 @@
+- skontroluj správnosť zapracovania všetkých AI agent assets (features/agents) pomocou Fable modelu
+- jednotlivé AI agent assets upraviť tak aby boli čo najmenšie aby nemíňali zytočne kontext(ové okno)
+    - toto pridať aj do run.add-agent-assents
+- skill run-add-agent-assest - pridaj prvidlo že cesty ksúborom sa majú písať len `my/file/path.md` a nie ako linky [`my/file/path.md`](../../my/file/path.md) - je to nadbytočné, AI agentovi to nepomôže. Oprav to aj v existujúcich assets.
 - skills run-save-chat.md a run-save-response.md uprav tak aby prompt a response boli odlíšené nie odsadením:
 
     **Prompt:**
@@ -31,6 +35,7 @@ x rule ktoré určí, že ak sa pýtam na riešenie/ návrh / info / ... - bez o
 -! templates: add installation and removal details in `.devcontainer/<template>.md` files (e.g. regarding unique ports setting in docker-compose.yml)
 - ubuntu-noble: change so that `~/workspaces/` folder is mounted directly to local project folder.
 - integrate agentic toolkits:
+    - !!! https://github.com/dietrichgebert/ponytail - aby agenti pracovali efektívne
     x https://github.com/obra/superpowers
         - add a section to docs/ai-agents.md
     x https://github.com/github/spec-kit

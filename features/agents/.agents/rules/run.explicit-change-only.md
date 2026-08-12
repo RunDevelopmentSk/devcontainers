@@ -31,7 +31,10 @@ rules apply to Slovak, Czech, English, or any other language.
 
 - **Question -> answer only.** No file is created, edited, deleted, moved, or
   renamed; no command with side effects is run; nothing is staged or committed;
-  no configuration is applied. The proposal stays in the chat response.
+  no configuration is applied; no state-changing call is made to **any**
+  external system reachable through an API, tool, or MCP server – databases,
+  ticketing/PM systems, web services and the like (e.g. Odoo PM via RPC).
+  The proposal stays in the chat response.
 - **Change request -> carry out the change** in full, as the prompt describes.
 - **Unclear intent -> treat it as a question.** Answer, state what change you
   would make, and ask whether to apply it. Never resolve the ambiguity by
@@ -39,8 +42,9 @@ rules apply to Slovak, Czech, English, or any other language.
 - A question about earlier work, or a remark that something is wrong, is **not**
   a change request on its own - describe the fix and wait for the go-ahead.
 - Read-only inspection (reading files, searching, `git status`/`git diff`,
-  running tests or linters that do not rewrite files) is always allowed while
-  answering a question.
+  running tests or linters that do not rewrite files, read-only calls to any
+  external API – e.g. Odoo PM via RPC) is always allowed while answering a
+  question.
 
 ## Scope of a change request
 
