@@ -2,19 +2,11 @@
 name: run-remove-devcontainer-addon
 description: >-
   Remove a previously integrated devcontainer add-on (a template or feature folder from
-  https://github.com/RunDevelopmentSk/devcontainers, e.g. `templates/odoo-19`,
-  `templates/php-*`, `features/agents`, `features/agents-speckit`,
-  `features/agents-superpowers`) from the current project, following the
-  `## Removal` instructions in that add-on's `.devcontainer/<add-on>.md` descriptor. Accepts
-  the add-on name with or without the `.md` suffix as an argument; if none is given, lists the
-  add-ons currently integrated in the project (found via their `.devcontainer/<add-on>.md`
-  descriptors) and asks the user to pick one. Builds a concrete removal plan (files/folders to
-  delete, appended snippets to strip from scripts/`.gitignore`, symlinks or other Removal-
-  section steps to restore) and asks for explicit confirmation before touching anything, since
-  deleting untracked files is not reversible. Never commits, stages, or otherwise changes git
-  state. Use for "remove add-on", "uninstall devcontainer add-on", "remove
-  templates/odoo-19, features/agents, features/agents-speckit,
-  features/agents-superpowers, ...", "undo devcontainer feature".
+  https://github.com/RunDevelopmentSk/devcontainers) from the current project, following
+  the `## Removal` instructions in its `.devcontainer/<add-on>.md` descriptor; accepts the
+  add-on name as an argument, otherwise lists the integrated add-ons and asks. Builds a
+  removal plan and asks for explicit confirmation before deleting anything. Use for
+  "remove add-on", "uninstall devcontainer add-on", "undo devcontainer feature".
 ---
 
 # run-remove-devcontainer-addon

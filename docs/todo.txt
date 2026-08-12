@@ -1,7 +1,7 @@
-- skontroluj správnosť zapracovania všetkých AI agent assets (features/agents) pomocou Fable modelu
-- jednotlivé AI agent assets upraviť tak aby boli čo najmenšie aby nemíňali zytočne kontext(ové okno)
-    - toto pridať aj do run.add-agent-assents
-- skill run-add-agent-assest - pridaj prvidlo že cesty ksúborom sa majú písať len `my/file/path.md` a nie ako linky [`my/file/path.md`](../../my/file/path.md) - je to nadbytočné, AI agentovi to nepomôže. Oprav to aj v existujúcich assets.
+x skontroluj správnosť zapracovania všetkých AI agent assets (features/agents) pomocou Fable modelu
+x jednotlivé AI agent assets upraviť tak aby boli čo najmenšie aby nemíňali zytočne kontext(ové okno)
+    x toto pridať aj do run.add-agent-assents
+x skill run-add-agent-assest - pridaj pravidlo že cesty ksúborom sa majú písať len `my/file/path.md` a nie ako linky [`my/file/path.md`](../../my/file/path.md) - je to nadbytočné, AI agentovi to nepomôže. Oprav to aj v existujúcich assets.
 - skills run-save-chat.md a run-save-response.md uprav tak aby prompt a response boli odlíšené nie odsadením:
 
     **Prompt:**

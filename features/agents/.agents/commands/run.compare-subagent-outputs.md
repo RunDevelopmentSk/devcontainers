@@ -1,8 +1,7 @@
 ---
 description: >-
-  Solve a complex task by comparing proposals from multiple CLI subagents
-  (claude/auggie/codex/agy) with different LLM models and present a recommended solution.
-  Runs only on request; intermediate outputs remain in tmp/ for verification.
+  Entry point to the run.compare-subagent-outputs subagent – run CLI subagents
+  (claude/auggie/codex/agy) on a task and compare their proposals. Runs only on request.
 ---
 
 # /run.compare-subagent-outputs – Run CLI subagents on a task and compare their outputs

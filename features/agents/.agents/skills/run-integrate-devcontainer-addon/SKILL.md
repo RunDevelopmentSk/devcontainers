@@ -3,21 +3,11 @@ name: run-integrate-devcontainer-addon
 description: >-
   Integrate a devcontainer add-on (a template or feature folder from
   https://github.com/RunDevelopmentSk/devcontainers, e.g. `templates/odoo-19`,
-  `templates/php-*`, `features/agents`, `features/agents-speckit`,
-  `features/agents-superpowers`) into the current project. Reads the newly added/changed
-  `.devcontainer/<add-on>.md` descriptor that was copied in together with the add-on and
-  applies its instructions (script hooks, `.gitignore` entries, ...). For any pre-existing
-  project file the copy overwrote, reconciles the raw overwrite against the previous committed
-  version instead of leaving it as-is: restores project-specific content the
-  overwrite dropped, and merges genuinely new add-on content into the
-  project-specific version. If the working tree has no pending changes, first
-  asks which add-on to fetch from the source repo, downloads it, and copies it
-  into the project. Never commits, stages, or otherwise touches git state -
-  reports a summary of what it did and asks about any spot it could not resolve
-  confidently. Use for "integrate add-on", "add devcontainer add-on", "integrate
-  templates/odoo-19, features/agents, features/agents-speckit,
-  features/agents-superpowers, ...", "apply devcontainer feature", "wire in the
-  copied add-on".
+  `features/agents`) into the current project: apply the instructions of its copied-in
+  `.devcontainer/<add-on>.md` descriptor and reconcile project files the raw copy
+  overwrote; with a clean working tree, first offers to fetch and copy the add-on.
+  Use for "integrate add-on", "add devcontainer add-on", "apply devcontainer
+  feature", "wire in the copied add-on".
 ---
 
 # run-integrate-devcontainer-addon

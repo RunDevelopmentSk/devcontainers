@@ -1,16 +1,11 @@
 ---
 name: run-review-changes
 description: >-
-  Review changes made by an AI agent - either currently staged files, specific
-  commit(s), or branch changes against main - and report remarks only (read-only,
-  no edits/commits). For source code, reviews against architectural and
-  language/framework-specific quality criteria for the identified type (proper
-  code review); for non-code changes (docs, config, data, prompts, ...), evaluates
-  correctness and completeness against the original user request/prompt. Asks for
-  the change source (staged vs commit hash(es) vs branch) and the original request
-  if not already given. Use for "review changes", "changes review", "revise AI agent
-  changes", "review staged files", "review commit <hash>", "review branch changes",
-  "review branch", "PR review".
+  Review changes made by an AI agent - staged files, specific commit(s), or branch
+  changes against main - and report remarks only (read-only, no edits/commits).
+  Source code gets a proper code review; non-code changes are checked for correctness
+  and completeness against the original request. Use for "review changes", "review
+  staged files", "review commit <hash>", "review branch changes", "PR review".
 ---
 
 # run-review-changes

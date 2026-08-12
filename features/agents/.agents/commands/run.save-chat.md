@@ -1,9 +1,7 @@
 ---
 description: >-
-  Literally save the entire chat history – all prompts and agent responses – to
-  a .md file. Without arguments, it asks whether to auto-generate the name or
-  have the user enter it; names without a folder go to tmp/, with a folder stay in place;
-  appends missing extension and always adds a suffix with the agent's name.
+  Entry point to the run-save-chat skill – save the entire chat history verbatim
+  to a .md file.
 ---
 
 # /run.save-chat – Save entire chat history to .md

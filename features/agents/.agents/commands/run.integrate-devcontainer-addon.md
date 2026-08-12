@@ -1,8 +1,7 @@
 ---
 description: >-
-  Integrate a devcontainer add-on from https://github.com/RunDevelopmentSk/devcontainers
-  into the current project: apply its copied-in `.devcontainer/<add-on>.md` instructions and
-  reconcile any project files the copy overwrote.
+  Entry point to the run-integrate-devcontainer-addon skill – integrate a copied-in
+  devcontainer add-on and reconcile project files the copy overwrote.
 ---
 
 # /run.integrate-devcontainer-addon – Integrate a devcontainer add-on

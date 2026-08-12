@@ -1,10 +1,7 @@
 ---
 description: >-
-  Review/revise changes made by an AI agent - staged files, specific commit(s),
-  or branch changes against main - and report remarks only (read-only, no edits/commits).
-  Source code is reviewed against architectural and language/framework-specific quality
-  criteria for the identified type; non-code changes are evaluated for correctness/completeness
-  against the original user request.
+  Entry point to the run-review-changes skill – review staged/commit/branch changes
+  made by an AI agent and report remarks only (read-only).
 ---
 
 # /run.review-changes – Review AI agent changes

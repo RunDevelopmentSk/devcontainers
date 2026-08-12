@@ -32,7 +32,12 @@ If it is not a new type of artifact, **new symlinks are not needed** – existin
 - kebab-case for the part of the name after the prefix (e.g., `run.deploy-staging`, `run-review-pr`),
 - avoid double-prefixing (`run.run.<name>`, `run-run-<name>`) – if a requested name already carries a `run.` or `run-` prefix, strip that prefix first and then apply the correct prefix for the artifact type (`run.` for command/rule/subagent files, `run-` for skill directories),
 - content and `description` **in English**,
-- keep `description` brief and clear – the agent decides on activation based on it during `agent_requested` / `model_decision`.
+- **plain file paths** – write paths as plain code spans (`docs/ai-agents.md`, `.agents/rules/run.<name>.md`), never as Markdown links (`[...](...)`) – the link target duplicates the path and does not help an AI agent,
+- **context economy** – size an artifact by when it is loaded, not by how much there is to say:
+  - **always in context** (every session, every agent): rule bodies, `AGENTS.md`, and the `description` of every skill, command, and subagent – keep these minimal and free of motivational prose or content restated elsewhere (e.g. do not repeat the `description` in the body),
+  - skill/subagent `description` drives activation (`agent_requested` / `model_decision`) and delegation – 2–4 lines: what it does + trigger phrases; procedure details belong in the body, which loads only on activation,
+  - command `description` is not used for model activation (commands are user-invoked) – one line in the form "Entry point to the `run-<name>` skill – <what it does>",
+  - bodies of skills, commands, and subagents load only on use – completeness there costs nothing per session.
 
 ## 3. Cookbook by type
 
