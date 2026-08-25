@@ -19,6 +19,7 @@
     }
   },
   "containerEnv": {
+    "DOCKER_WORKDIR_LOCAL": "${localWorkspaceFolder}",
     "DOCKER_WORKDIR_LOCAL_BASENAME": "${localWorkspaceFolderBasename}"
   },
   "customizations": {

@@ -6,6 +6,7 @@
   "postStartCommand": "bash ./.devcontainer/post-start.sh",
   "postCreateCommand": "bash ./.devcontainer/post-create.sh",
   "containerEnv": {
+    "DOCKER_WORKDIR_LOCAL": "${localWorkspaceFolder}",
     "DOCKER_WORKDIR_LOCAL_BASENAME": "${localWorkspaceFolderBasename}"
   },
   "forwardPorts": [5678],
