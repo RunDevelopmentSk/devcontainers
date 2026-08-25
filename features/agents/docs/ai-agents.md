@@ -100,6 +100,25 @@ trigger: model_decision
 - …
 ```
 
+### Hierarchical (nested) `AGENTS.md` / `CLAUDE.md`
+
+Beyond the root-level file, all four agents can read `AGENTS.md` / `CLAUDE.md` placed in **subdirectories** and treat them as directory-scoped (they apply only when the agent works inside that folder / subtree). This scoping is a matter of _which context gets loaded_, not a hard enforcement — the agent receives the nested rules as text and is expected to respect them; on root-vs-subfolder conflicts the model may not always pick the intended one. Discovery by agent:
+
+| Agent       | Nested `AGENTS.md` / `CLAUDE.md` | Directory-scoped? | How they are loaded                                                                                                                                                                                                                 |
+| ----------- | -------------------------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Auggie      | yes, natively                    | yes, hierarchical | When working on a file, Auggie looks for `CLAUDE.md` / `AGENTS.md` in the file's directory and **walks up** to parent directories through the workspace root. Branches off that path do not apply.                                  |
+| Claude Code | yes                              | yes               | The root `CLAUDE.md` is loaded at session start; nested files (below cwd) are loaded **lazily / on demand** — only when Claude reads or edits a file in that subtree. Sibling directories are not loaded.                           |
+| Codex       | yes, natively                    | yes, hierarchical | Codex walks from the project root **down to the current working directory**, concatenating files (root → down); files closer to cwd override earlier ones. At most one file per directory (`AGENTS.override.md` takes precedence).  |
+| Antigravity | yes, but **off by default**      | yes (when on)     | Must be enabled via "Load nested AGENTS.md files" (Settings → Agent). Without it, only the root `AGENTS.md` / `GEMINI.md` plus the global `~/.gemini/` files are read. Nested rules **supplement** (do not replace) the root rules. |
+
+Important caveats:
+
+- **Codex discovery is cwd-based, not edited-file-based.** Codex collects `AGENTS.md` only along the path from the project root to the directory it was launched from. If you start `codex` at the repo root and it edits `sub/module/`, it will **not** load `sub/module/AGENTS.md` — this is [intended behavior](https://github.com/openai/codex/issues/13288), not a bug. Auggie and Claude Code, by contrast, follow the file actually being worked on.
+- **"Applies only to this folder" is not sandboxed.** For every agent the content is merely appended to the context and the model is expected to honor it. On contradictory root-vs-subfolder rules "flapping" occurs (sometimes the root wins, sometimes the deeper file). The recommended practice is to **state the scope in plain English at the top of each nested `AGENTS.md`** (e.g. "These rules apply only to `services/api/`.") and to phrase the root file as project-wide.
+- **Only `AGENTS.md` / `CLAUDE.md` are hierarchical.** The modular rules under `.agents/rules/` (resp. `.augment/rules/`) are **not** discovered per subdirectory — they are anchored at the workspace root and pulled into the root `AGENTS.md` by reference (`@.agents/rules/<file>.md`). A rule meant for a single subdirectory therefore belongs in an `AGENTS.md` inside that subdirectory (and, for `agy`, only with nested loading enabled), not in `.agents/rules/`.
+
+Sources: [Auggie – Rules](https://docs.augmentcode.com/cli/rules), [Codex – AGENTS.md](https://developers.openai.com/codex/guides/agents-md), [Claude Code – memory](https://code.claude.com/docs/en/memory), [Antigravity – Rules](https://antigravity.google/docs/rules-workflows/).
+
 ### Commands
 
 Custom slash commands are in `.agents/commands/*.md` (Markdown; each file creates a `/<name>` command). Discovery by agent:
@@ -150,9 +169,10 @@ The JSON schema for hooks is almost identical between Antigravity, Claude Code, 
 
 ### Notes
 
-- **Windows**: git symlinks work reliably on Linux/macOS. The devcontainer runs on Linux, so this issue is avoided. For a native Windows clone, `git config core.symlinks=true` is required, and the user must have `SeCreateSymbolicLinkPrivilege`:
+- **Windows**: git symlinks work reliably on Linux/macOS. The devcontainer runs on Linux, so this issue is avoided. For a native Windows clone, `git config core.symlinks=true` is required, and the user must have `SeCreateSymbolicLinkPrivilege` and all directories must be set as safe ones:
   - Set `git config --global core.symlinks true` - this only needs to be done once globally, at the beginning.
   - Turn on "Settings" (`Win + I`) > "System" > "Advanced" > "For developers" - this only needs to be done once globally, at the beginning.
+  - Set `git config --global safe.directory '*'` - this only needs to be done once globally, at the beginning.
 - **Local overrides**: files matching `*.local.md`, `*.local.json`, `*.local.toml` are in `.gitignore` – use them for your private notes/settings that do not belong in the repository.
 - **Skill format**: each skill is a `.agents/skills/<name>/SKILL.md` directory with YAML frontmatter `name` and `description` (a common requirement for Auggie CLI, Codex, and Antigravity).
 - **Antigravity tmp files**: Antigravity occasionally references files created in the `~/.gemini/antigravity-cli/brain` directory. To simplify access to these files, a symlink is created: `tmp/antigravity → ~/.gemini/antigravity-cli/brain`.
