@@ -1,3 +1,19 @@
+- zapacuj task-lists a exit-checklists z docs/todo/AGENTS-Artem.md - Artem sa inšpiroval augment code (auggie). Pomáha to aj pri compact context - agent si vie aj spätne pozrieť čo robil (hoci z kontextu to už vypadlo)
+- prenes AI to-read a to-try zo core-v2 sem
+-! How to keep Claude Code working overnight after you hit your limit:
+
+You hit your limit at 11 PM right in the middle of a refactor, and the session just stops. Even though the window resets at 3 AM, nobody’s awake to hit "continue," so you end up losing four hours of progress on work that was ready to go. Anthropic just shipped a fix for this:
+
+Step 1. In Claude Code desktop, check "Auto-continue when limits reset" on the usage card.
+
+Step 2. The CLI doesn't have that checkbox yet, and a standard cron job won't cut it because the reset time shifts based on your usage. Install the tool that reads the real reset time:
+
+npm i -g claude-auto-retry
+claude-auto-retry install
+
+Step 3. Run Claude in your CLI like you normally do. A background process watches for the limit message, waits for the printed reset time, and sends continue.
+
+- rule run.md-conventions - napr. namiesto `*xyz*` treba `_xyz_`
 x skontroluj správnosť zapracovania všetkých AI agent assets (features/agents) pomocou Fable modelu
 x jednotlivé AI agent assets upraviť tak aby boli čo najmenšie aby nemíňali zytočne kontext(ové okno)
     x toto pridať aj do run.add-agent-assents
