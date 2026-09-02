@@ -57,10 +57,14 @@ services:
       # Store Auggie config/login/settings
       - app-developer-augment:/home/developer/.augment
     extra_hosts:
-      # Map host.docker.internal to the host machine so that the app can access it like http://host.docker.internal
-      - "host.docker.internal:host-gateway"
-      # Map my-local-domain to the host machine so that the app can access it like http://my-local-domain
-      #- "my-local-domain:host-gateway"
+      # Map `host.docker.internal` to the host machine so that it is accesible
+      # from inside docker container like http://host.docker.internal
+      # ATTENTION: Do not use `localhost:host-gateway` as `localhost` is already
+      # used internally in docker container.
+      - host.docker.internal:host-gateway
+      # Map `my-local-domain` to the host machine so that it is accesible
+      # from inside docker container like http://my-local-domain
+      #- my-local-domain:host-gateway
     depends_on:
       - db
 

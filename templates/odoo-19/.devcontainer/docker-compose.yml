@@ -52,6 +52,16 @@ services:
       - odoo-developer-codex:/home/developer/.codex
       # Store Auggie config/login/settings
       - odoo-developer-augment:/home/developer/.augment
+    extra_hosts:
+      # Map `host.docker.internal` to the host machine so that it is accesible
+      # from inside docker container like http://host.docker.internal
+      # ATTENTION: Do not use `localhost:host-gateway` as `localhost` is already
+      # used internally in docker container.
+      - host.docker.internal:host-gateway
+      # Map `my-local-domain` to the host machine so that it is accesible
+      # from inside docker container like http://my-local-domain
+      #- my-local-domain:host-gateway
+
   db:
     image: postgres:16
     environment:
