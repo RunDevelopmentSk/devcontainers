@@ -42,6 +42,7 @@ Remove files if they exist:
 - .agents/agents/run.compare-solutions.toml
 - .agents/agents/scripts/run.compare-solutions-fanout.sh
 - .agents/commands/run.compare-solutions.md
+- .agents/rules/run.dry-and-brief.md
 
 Rebuild the devcontainer.
 

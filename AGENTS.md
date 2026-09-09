@@ -20,7 +20,7 @@ Before working, check:
 
 - @.agents/rules/run.language-policy.md
 - @.agents/rules/run.secret-safety.md
-- @.agents/rules/run.dry-and-brief.md
+- @.agents/rules/run.dry-kiss-yagni-but-scalable.md
 - @.agents/rules/run.explicit-change-only.md
 - @.agents/rules/run.timeless-comments.md
 

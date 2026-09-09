@@ -9,7 +9,7 @@
 - pridaj skill na transkripciu záznamom rozhovorov. Nech to robí
     - cez openai API (0.12 € za 0.5h) - spýtaj sa Matúša, používa to
     - tak ako si to robil pri Syncol IS (skús prípadne nájsť lepšiu knižnicu - whispr... ?)
-- pridaj aj KISS rule (možno do DRY - nech je to všetko v jednom) aj YAGNI (You Aren’t Gonna Need It) pravidlo
+x pridaj aj KISS rule (možno do DRY - nech je to všetko v jednom) aj YAGNI (You Aren’t Gonna Need It) pravidlo
 - stalo sa mi že run.save-chat zapísal aj obsah skillu run-save-chat a tiež prompt zapísal pomocou XML tagov. Treba tam dať upresnenie aby zapísal len to čo užívateľ poskytol ako prompt a agent zobrazil užívateľovi ako odpoveď.
 - `.devcontainer/agents.md` pôsobí ako chybná verzia pre `.devcontainer/AGENTS.md`. Jednotlivé "agents" features nech sa premenujú na `ai-agents` a súbor potom bude `.devcontainer/ai-agents.md`
 - zapacuj task-lists a exit-checklists z docs/todo/AGENTS-Artem.md - Artem sa inšpiroval augment code (auggie). Pomáha to aj pri compact context - agent si vie aj spätne pozrieť čo robil (hoci z kontextu to už vypadlo)
