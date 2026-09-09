@@ -7,7 +7,7 @@ The following coding AI agents are available in devcontainer:
 - **Codex** (VS Code extension) and/or `codex` (Codex CLI)
 - `agy` (**Antigravity** CLI)
 
-You can download the current version for a given project from [github.com/RunDevelopmentSk/devcontainers](https://github.com/RunDevelopmentSk/devcontainers) > `features/agents`.
+You can download the current version for a given project from [github.com/RunDevelopmentSk/devcontainers](https://github.com/RunDevelopmentSk/devcontainers) > `features/ai-agents`.
 
 Details on how to use individual AI agents are described below.
 
@@ -57,9 +57,9 @@ ln -s .agents/mcp_config.json .mcp.json
 
 `auggie` (via `.augment/rules`) fails to read any files through a **symlinked directory** — it silently reports zero rules, with no error. A real (non-symlinked) directory in the same location is read correctly. This looks like the tool resolving directory entries by their raw, non-dereferenced type, under which a symlinked directory is reported as neither a file nor a directory and gets silently skipped.
 
-Until this is fixed upstream, [`.devcontainer/post-start-agents.sh`](../.devcontainer/post-start-agents.sh) (wired into `.devcontainer/post-start.sh`) replaces the symlink with a real directory containing a fresh copy of the source `.md` files (`.gitkeep` excluded) on every container start. `.augment/rules` is therefore a plain, gitignored directory in this repo, not a symlink — the `ln -s ../.agents/rules .augment/rules` command above only applies once the workaround is dropped.
+Until this is fixed upstream, [`.devcontainer/post-start-ai-agents.sh`](../.devcontainer/post-start-ai-agents.sh) (wired into `.devcontainer/post-start.sh`) replaces the symlink with a real directory containing a fresh copy of the source `.md` files (`.gitkeep` excluded) on every container start. `.augment/rules` is therefore a plain, gitignored directory in this repo, not a symlink — the `ln -s ../.agents/rules .augment/rules` command above only applies once the workaround is dropped.
 
-The `materialize_dir` call in `post-start-agents.sh` takes a `true`/`false` (`1`/`0`) flag, so it can be switched back to a plain symlink (`false`) — useful for re-testing whether the underlying bug is fixed.
+The `materialize_dir` call in `post-start-ai-agents.sh` takes a `true`/`false` (`1`/`0`) flag, so it can be switched back to a plain symlink (`false`) — useful for re-testing whether the underlying bug is fixed.
 
 **After editing `.agents/rules/`, reopen the devcontainer** (so `postStartCommand` re-runs) to get the changes copied into `.augment/rules` — editing the materialized copy directly has no effect, it gets overwritten on the next container start.
 
@@ -257,7 +257,7 @@ Approximate value ranking, depending on the models in use (July 2026):
 
 The VS Code extension is installed **automatically** in the devcontainer using `.devcontainer/devcontainer.json` > `"customizations"` > `"vscode"` > `"extensions"` > `"anthropic.claude-code"`.
 
-The CLI (`claude`) is installed **automatically** in the devcontainer using `.devcontainer/post-create-agents.sh` > `# install Claude Code CLI`.
+The CLI (`claude`) is installed **automatically** in the devcontainer using `.devcontainer/post-create-ai-agents.sh` > `# install Claude Code CLI`.
 
 ### Logging In
 
@@ -384,7 +384,7 @@ repo/
 
 ### Installation
 
-The CLI (`auggie`) is installed **automatically** in the devcontainer using `.devcontainer/post-create-agents.sh` > `# install Auggie CLI (Augment Code)`.
+The CLI (`auggie`) is installed **automatically** in the devcontainer using `.devcontainer/post-create-ai-agents.sh` > `# install Auggie CLI (Augment Code)`.
 
 ### Logging In
 
@@ -499,7 +499,7 @@ repo/
 
 The VS Code extension is installed **automatically** in the devcontainer using `.devcontainer/devcontainer.json` > `"customizations"` > `"vscode"` > `"extensions"` > `"openai.chatgpt"`.
 
-The CLI (`codex`) is installed **automatically** in the devcontainer using `.devcontainer/post-create-agents.sh` > `# install Codex CLI`.
+The CLI (`codex`) is installed **automatically** in the devcontainer using `.devcontainer/post-create-ai-agents.sh` > `# install Codex CLI`.
 
 ### Logging In
 
@@ -637,7 +637,7 @@ repo/
 
 The VS Code extension is not installed (it does not exist).
 
-The CLI (`agy`) is installed **automatically** in the devcontainer using `.devcontainer/post-create-agents.sh` > `# install Antigravity CLI`.
+The CLI (`agy`) is installed **automatically** in the devcontainer using `.devcontainer/post-create-ai-agents.sh` > `# install Antigravity CLI`.
 
 ### Logging In
 

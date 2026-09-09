@@ -10,5 +10,5 @@ if [ ! -f "${SCRATCHPAD_FILE}" ]; then
     echo "This is your scratchpad..." > "${SCRATCHPAD_FILE}"
 fi
 
-# AI agents: materialize symlinked rules/workflows dirs that some agents can't read as symlinks
-bash "$(dirname "${BASH_SOURCE[0]}")/post-start-agents.sh"
+# AI agents: materialize the symlinked rules dir that auggie can't read as a symlink
+bash "$(dirname "${BASH_SOURCE[0]}")/post-start-ai-agents.sh"

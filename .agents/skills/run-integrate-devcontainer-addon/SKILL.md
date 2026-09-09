@@ -3,7 +3,7 @@ name: run-integrate-devcontainer-addon
 description: >-
   Integrate a devcontainer add-on (a template or feature folder from
   https://github.com/RunDevelopmentSk/devcontainers, e.g. `templates/odoo-19`,
-  `features/agents`) into the current project: apply the instructions of its copied-in
+  `features/ai-agents`) into the current project: apply the instructions of its copied-in
   `.devcontainer/<add-on>.md` descriptor and reconcile project files the raw copy
   overwrote; with a clean working tree, first offers to fetch and copy the add-on.
   Use for "integrate add-on", "add devcontainer add-on", "apply devcontainer
@@ -19,15 +19,15 @@ and reconciles any project file the raw copy overwrote so project-specific conte
 
 ## When to use
 
-- "integrate add-on", "add devcontainer add-on", "integrate `templates/odoo-19`/`features/agents`/`features/agents-speckit`/`features/agents-superpowers`/... into this project", "apply devcontainer feature", "wire in the copied add-on",
+- "integrate add-on", "add devcontainer add-on", "integrate `templates/odoo-19`/`features/ai-agents`/`features/ai-agents-speckit`/`features/ai-agents-superpowers`/... into this project", "apply devcontainer feature", "wire in the copied add-on",
 - the entry point is also the command `/run.integrate-devcontainer-addon`.
 
 ## Add-on shape (context)
 
 The source repo has two top-level categories: `templates/<name>` - a complete, standalone
 devcontainer base (e.g. `templates/odoo-19`, `templates/php-7.3_mysql-5.7`) - and
-`features/<name>` - an add-on merged into an existing devcontainer (e.g. `features/agents`,
-`features/agents-speckit`, `features/agents-superpowers`); excluding dotfiles and `docs`/`tmp`.
+`features/<name>` - an add-on merged into an existing devcontainer (e.g. `features/ai-agents`,
+`features/ai-agents-speckit`, `features/ai-agents-superpowers`); excluding dotfiles and `docs`/`tmp`.
 Each such folder (one level under `templates/` or `features/`) is one add-on. Consumers
 integrate it by copying the folder's _contents_ into their project root, which lands a
 `.devcontainer/<add-on>.md` descriptor at the project's `.devcontainer/` path alongside
@@ -41,7 +41,7 @@ then "rebuild the devcontainer"; often followed by a `## Removal` section. A pla
 _identification_ stub, not an add-on descriptor - ignore those.
 
 A feature folder may also ship a **nested technology-specific folder** named after one of the
-templates (e.g. `features/agents/odoo-19`) - extra content for that feature that only applies
+templates (e.g. `features/ai-agents/odoo-19`) - extra content for that feature that only applies
 when it is combined with the matching template (e.g. `templates/odoo-19`). This nested folder
 comes along with the raw copy of the feature's contents; see step 4 for how to handle it.
 
@@ -59,7 +59,7 @@ Run `git status --porcelain` (repo root).
    `features/` in
    [RunDevelopmentSk/devcontainers](https://github.com/RunDevelopmentSk/devcontainers) as
    candidates if known, otherwise fetch both category listings first; present candidates with
-   their category prefix, e.g. `templates/odoo-19` or `features/agents`).
+   their category prefix, e.g. `templates/odoo-19` or `features/ai-agents`).
 2. Clone the source repo shallowly into a temporary directory outside the project (e.g.
    `git clone --depth 1 https://github.com/RunDevelopmentSk/devcontainers <tmp-dir>`).
 3. Copy the chosen add-on folder's _contents_ (not the folder itself) into the project root,
@@ -101,7 +101,7 @@ Follow the `## Installation` section (or equivalently named instructions) step b
 - if the descriptor has a `## Known limitation` or similar note, keep it in mind for the final
   summary but do not act on it beyond what it explicitly instructs,
 - if the raw copy included a nested technology-specific folder named after a template (e.g.
-  `odoo-19/` inside a `features/agents` copy) and the project is actually based on that
+  `odoo-19/` inside a `features/ai-agents` copy) and the project is actually based on that
   template, merge that folder's contents into the project root (same reconciliation rules as
   step 5 below applies to any file it overwrites) and then delete the now-empty nested folder;
   if the project is not based on that template, or it is unclear, leave the folder in place and
@@ -168,7 +168,7 @@ End with:
 - `.agents/commands/run.integrate-devcontainer-addon.md` - paired command
   `/run.integrate-devcontainer-addon` (entry point to this skill).
 - `docs/ai-agents.md` - source of truth on this project's own unified agent configuration (the
-  `features/agents` add-on's target shape when integrating it into a project).
+  `features/ai-agents` add-on's target shape when integrating it into a project).
 - `.agents/skills/run-remove-devcontainer-addon/SKILL.md` - the inverse operation (uninstalling
   an add-on).
 - `.agents/rules/run.secret-safety.md`, `.agents/rules/run.language-policy.md`.

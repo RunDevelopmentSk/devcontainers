@@ -1,7 +1,7 @@
 #!/bin/bash
 # this script is used as part of "postStartCommand" in devcontainer.json (called from post-start.sh)
 #
-# WORKAROUND (temporary, see docs/ai-agents.md and .devcontainer/agents.md):
+# WORKAROUND (temporary, see docs/ai-agents.md and .devcontainer/ai-agents.md):
 # `auggie` (Auggie CLI) silently finds zero rules through the symlink `.augment/rules ->
 # ../.agents/rules` - it appears to resolve directory entries by their raw (non-dereferenced)
 # type, under which a symlinked directory looks like neither a file nor a directory, so it gets
