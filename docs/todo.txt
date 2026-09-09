@@ -1,3 +1,17 @@
+- Ako výrazne znížiť spotrebu drahých tokenov v Claude Code: neposielať frontier modelu všetku „mechanickú“ prácu, ale delegovať ju lacnejšiemu modelu. Autor tvrdí, že pri čítaní veľkých súborov takto dosiahol v priemere približne 90 % úsporu tokenov Claude:
+    - https://engineering.atspotify.com/2026/9/portal-by-spotify-cut-my-claude-code-token-usage-by-90
+    - https://chatgpt.com/g/g-p-69ca1d43432481918d3882a0f6151712-slovenske-sumare-clankov/c/6aa0f6d7-ca98-83ed-b0ea-252e584ffae1
+- pri feature ai-agents-odoo-project-management - podľa projektu https://github.com/RunDevelopmentSk/run-ai-odoo > revízia ea5741d358c59e6ff8d8fb888faceae2826b6b78 (tretia od začiatku)
+- E2E testy - prenes z drinkcentrum-is ako feature
+- inštaláciu `claude`, `codex` zakomentovať (alebo podmieniť cez nejakú env premennú) - namiesto nich sa používajú VS Code rozšírenia
+- templates/odoo-19: z projektu run-portal > pyproject.toml - pozri zmeny ktoré sa tam vytvorili 1.9.2026 (komit ~ Prenesenie kódu z pôvodného projektu robeného cez Claude Desktop) a zisti či majú zmysel preniesť to aj do všeobecného template. Zrejme súviseli s tým že v extra-addons boli umiestnené aj vendor addons. Keby bolo korektne v priečinku vendor-addons tak by k tomu nedošlo (vendor-addons sú vylúčené z pre-commitu)
+- features/agents: pridaj AI rule aby sa nový kód písal tak aby vyhovoval nastavenýxm pre-commit pravidlám (? - nie je to zbytočná komplikácia, však pre-commit to uprace)
+- pridaj skill na transkripciu záznamom rozhovorov. Nech to robí
+    - cez openai API (0.12 € za 0.5h) - spýtaj sa Matúša, používa to
+    - tak ako si to robil pri Syncol IS (skús prípadne nájsť lepšiu knižnicu - whispr... ?)
+- pridaj aj KISS rule (možno do DRY - nech je to všetko v jednom) aj YAGNI (You Aren’t Gonna Need It) pravidlo
+- stalo sa mi že run.save-chat zapísal aj obsah skillu run-save-chat a tiež prompt zapísal pomocou XML tagov. Treba tam dať upresnenie aby zapísal len to čo užívateľ poskytol ako prompt a agent zobrazil užívateľovi ako odpoveď.
+- `.devcontainer/agents.md` pôsobí ako chybná verzia pre `.devcontainer/AGENTS.md`. Jednotlivé "agents" features nech sa premenujú na `ai-agents` a súbor potom bude `.devcontainer/ai-agents.md`
 - zapacuj task-lists a exit-checklists z docs/todo/AGENTS-Artem.md - Artem sa inšpiroval augment code (auggie). Pomáha to aj pri compact context - agent si vie aj spätne pozrieť čo robil (hoci z kontextu to už vypadlo)
 - prenes AI to-read a to-try zo core-v2 sem
 -! How to keep Claude Code working overnight after you hit your limit:
