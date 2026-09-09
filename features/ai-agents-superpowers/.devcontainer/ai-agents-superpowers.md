@@ -1,19 +1,19 @@
 # Superpowers tools for AI agents
 
-Devcontainer feature [`agents-superpowers`](https://github.com/RunDevelopmentSk/devcontainers). Adds [superpowers tools](https://github.com/obra/superpowers) for AI agents.
+Devcontainer feature [`ai-agents-superpowers`](https://github.com/RunDevelopmentSk/devcontainers). Adds [superpowers tools](https://github.com/obra/superpowers) for AI agents.
 
-It only makes sense to add this feature if the `agents` feature is already added.
+It only makes sense to add this feature if the `ai-agents` feature is already added.
 
 ## Installation
 
-Copy the contents of the `features/agents-superpowers` folder into the project folder.
+Copy the contents of the `features/ai-agents-superpowers` folder into the project folder.
 
-Add the following to the end of the `.devcontainer/post-create-agents.sh` file:
+Add the following to the end of the `.devcontainer/post-create-ai-agents.sh` file:
 
 ```sh
 # install Superpowers skills
 SUPERPOWERS_INSTALL="original" # "original"|"vendor"
-bash "$(dirname "${BASH_SOURCE[0]}")/post-create-superpowers.sh"
+bash "$(dirname "${BASH_SOURCE[0]}")/post-create-ai-agents-superpowers.sh"
 ```
 
 The `SUPERPOWERS_INSTALL` variable can have the following values:
@@ -28,6 +28,11 @@ For the `vendor` installation, add a `.GEMINI.md` file with the following conten
 ```
 
 This acts as a replacement for the missing session start hook for `agy`.
+
+Remove files if they exist:
+
+- .devcontainer/agents-superpowers.md
+- .devcontainer/post-create-superpowers.sh
 
 Rebuild the devcontainer.
 

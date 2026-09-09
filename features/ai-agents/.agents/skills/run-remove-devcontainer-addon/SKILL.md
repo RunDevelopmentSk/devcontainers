@@ -17,15 +17,15 @@ Skill for reversing a devcontainer add-on integration performed via the
 
 ## When to use
 
-- "remove add-on", "uninstall devcontainer add-on", "remove `templates/odoo-19`/`features/agents`/`features/agents-speckit`/`features/agents-superpowers`/... from this project", "undo devcontainer feature",
+- "remove add-on", "uninstall devcontainer add-on", "remove `templates/odoo-19`/`features/ai-agents`/`features/ai-agents-speckit`/`features/ai-agents-superpowers`/... from this project", "undo devcontainer feature",
 - the entry point is also the command `/run.remove-devcontainer-addon`.
 
 ## Input
 
 An add-on name, optionally as an argument to the command/skill:
 
-- accepted forms: `<add-on>` (e.g. `agents-speckit`) or `<add-on>.md` (e.g.
-  `agents-speckit.md`) or a path to it (e.g. `.devcontainer/agents-speckit.md`) - normalize by
+- accepted forms: `<add-on>` (e.g. `ai-agents-speckit`) or `<add-on>.md` (e.g.
+  `ai-agents-speckit.md`) or a path to it (e.g. `.devcontainer/ai-agents-speckit.md`) - normalize by
   stripping any directory prefix and a trailing `.md` suffix to get the bare add-on name,
 - **no argument given**: list the add-ons currently integrated in the project - scan
   `.devcontainer/*.md` for descriptors that have a `## Removal` section (plain one-line

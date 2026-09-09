@@ -14,7 +14,7 @@
 #                 for claude, codex and auggie that simulates Superpowers' own bootstrap
 #                 injection (see .agents/hooks/superpowers-session-start.sh).
 #
-# This variable may be preset/exported by the caller (e.g. post-create-agents.sh) before
+# This variable may be preset/exported by the caller (e.g. post-create-ai-agents.sh) before
 # running this script; the value below is only default used when not already set.
 SUPERPOWERS_INSTALL="${SUPERPOWERS_INSTALL:-original}"
 
@@ -22,7 +22,7 @@ SUPERPOWERS_INSTALL="${SUPERPOWERS_INSTALL:-original}"
 # tag; set to a concrete tag (e.g. "v6.1.1") to pin a specific version instead.
 # (Ignored for "original" - each agent's plugin manager tracks its own version.)
 #
-# This variable may be preset/exported by the caller (e.g. post-create-agents.sh) before
+# This variable may be preset/exported by the caller (e.g. post-create-ai-agents.sh) before
 # running this script; the value below is only default used when not already set.
 SUPERPOWERS_VERSION="${SUPERPOWERS_VERSION:-latest}"
 
